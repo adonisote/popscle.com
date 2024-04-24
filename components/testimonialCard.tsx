@@ -15,7 +15,7 @@ export default function TestimonialCard({
   return (
     <>
       <div className='py-8 px-4 mx-auto w-96 max-w-screen-xl text-center animate-in'>
-        <Card className='rounded-xl bg-slate-900 border-none'>
+        <Card className='rounded-xl bg-slate-900 border-none shadow-2xl'>
           <CardHeader className='flex items-center'>
             <div className='rounded-full'>
               <Image
@@ -31,14 +31,14 @@ export default function TestimonialCard({
             <h1 className='mb-2 text-xl font-medium tracking-tight leading-none text-white'>
               {name}
             </h1>
-            <p className='mb-2 font-normal text-slate-500 lg:text-md sm:px-16'>
+            <p className='mb-2 font-normal text-slate-400 lg:text-md sm:px-16'>
               {role}
             </p>
           </CardContent>
           <CardFooter className='flex items-center'>
             <Button
               variant='secondary'
-              className='w-full bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-500'
+              className='w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-500'
             >
               Join {name.split(' ')[0]}
             </Button>
