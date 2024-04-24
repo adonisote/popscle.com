@@ -17,7 +17,11 @@ export default function Home() {
           role='Product Enablement @ CarByte'
           image='/people/malik.jpeg'
         />
-        <TestimonialCard />
+        <TestimonialCard
+          name='Johann Hemmann'
+          role='Rust Developer @ Ferrous Systems'
+          image='/people/johann.jpg'
+        />
       </section>
     </main>
   );
