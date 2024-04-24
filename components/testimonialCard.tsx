@@ -4,19 +4,23 @@ import Image from 'next/image';
 
 const person = {
   name: 'Malik Piara',
-  role: 'Product Enablement',
+  role: 'Product Enablement @ CarByte',
 };
 
-export default function TestimonialCard() {
+export default function TestimonialCard({
+  name = person.name,
+  role = person.role,
+  image = '/people/malik.jpeg',
+}) {
   return (
     <>
-      <div className='py-8 px-4 mx-auto max-w-screen-xl text-center animate-in'>
-        <Card>
+      <div className='py-8 px-4 mx-auto w-96 max-w-screen-xl text-center animate-in'>
+        <Card className='rounded-xl bg-slate-900 border-none'>
           <CardHeader className='flex items-center'>
             <div className='rounded-full'>
               <Image
                 alt='Malik'
-                src='/people/malik.jpeg'
+                src={image}
                 width={150}
                 height={150}
                 className='rounded-full w-24 h-24'
@@ -24,16 +28,19 @@ export default function TestimonialCard() {
             </div>
           </CardHeader>
           <CardContent>
-            <h1 className='mb-2 text-xl font-medium tracking-tight leading-none text-gray-900 dark:text-white'>
-              {person.name}
+            <h1 className='mb-2 text-xl font-medium tracking-tight leading-none text-white'>
+              {name}
             </h1>
-            <p className='mb-2 font-normal text-gray-500 lg:text-md sm:px-16 dark:text-gray-400'>
-              {person.role}
+            <p className='mb-2 font-normal text-slate-500 lg:text-md sm:px-16'>
+              {role}
             </p>
           </CardContent>
           <CardFooter className='flex items-center'>
-            <Button variant='secondary' className='w-full'>
-              Join {person.name.split(' ')[0]}
+            <Button
+              variant='secondary'
+              className='w-full bg-slate-800 hover:bg-rose-600 hover:text-white text-slate-500'
+            >
+              Join {name.split(' ')[0]}
             </Button>
           </CardFooter>
         </Card>
