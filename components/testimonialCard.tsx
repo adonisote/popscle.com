@@ -55,7 +55,7 @@ export default function TestimonialCard({
                   <SheetDescription>
                     {`We're rolling out Popscle by invitation. If you'd like to give it a spin, drop ${
                       name.split(' ')[0]
-                    } a message on Slack or LinkedIn — Maybe throw in some cat gifs 😘`}
+                    } a message on Slack or LinkedIn — Here's some kittens 😘`}
                   </SheetDescription>
                 </SheetHeader>
                 <Image
