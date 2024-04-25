@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className='bg-slate-900 flex min-h-screen flex-col items-center justify-between md:p-24'>
+    <main className='bg-slate-900 flex min-h-screen flex-col items-center justify-between p-6 md:p-24'>
       <div className='relative isolate px-6 pt-14 lg:px-8'>
         <div
           className='absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80'
@@ -22,21 +22,32 @@ export default function Home() {
 
       <HeroHeader />
 
-      <section className='flex flex-col md:flex-row overflow-x-scroll  w-full rounded'>
+      <span className='text-pink-400 text-base font-semibold leading-7 animate-in'>
+        Community Contributors
+      </span>
+
+      <section className='flex flex-col md:flex-row overflow-x-scroll w-full'>
         <TestimonialCard
           name='Ben Bachem'
           role='Founding Engineer @ Superchat'
           image='/people/ben.jpeg'
         />
         <TestimonialCard
-          name='Malik Piara'
-          role='Product Enablement @ CarByte'
-          image='/people/malik.jpeg'
+          name='Manuel Dolderer'
+          role='Co-Founder @ CODE'
+          image='/people/manuel.jpeg'
         />
         <TestimonialCard
           name='Johann Hemmann'
           role='Rust Developer @ Ferrous Systems'
-          image='/people/johann.jpg'
+          image='/people/johann2.jpg'
+        />
+      </section>
+      <section className='flex flex-col md:flex-row overflow-x-scroll w-full'>
+        <TestimonialCard
+          name='Malik Piara'
+          role='Product Enablement @ CarByte'
+          image='/people/malik.jpeg'
         />
       </section>
     </main>
