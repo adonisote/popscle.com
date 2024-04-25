@@ -29,24 +29,24 @@ export default function Home() {
       <section className='flex flex-col md:flex-row overflow-x-scroll w-full'>
         <TestimonialCard
           name='Ben Bachem'
-          role='Founding Engineer @ Superchat'
+          role='Founding Engineer, Superchat'
           image='/people/ben.jpeg'
         />
         <TestimonialCard
           name='Manuel Dolderer'
-          role='Co-Founder @ CODE'
+          role='Co-Founder, CODE'
           image='/people/manuel.jpeg'
         />
         <TestimonialCard
           name='Johann Hemmann'
-          role='Rust Developer @ Ferrous Systems'
+          role='Rust Developer, Ferrous Systems'
           image='/people/johann2.jpg'
         />
       </section>
       <section className='flex flex-col md:flex-row overflow-x-scroll w-full'>
         <TestimonialCard
           name='Malik Piara'
-          role='Product Enablement @ CarByte'
+          role='Product Enablement, CarByte'
           image='/people/malik.jpeg'
         />
       </section>

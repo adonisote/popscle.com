@@ -1,6 +1,7 @@
 import { Button } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import Image from 'next/image';
+import catGif from '../public/people/cat.webp';
 import {
   Sheet,
   SheetContent,
@@ -50,12 +51,20 @@ export default function TestimonialCard({
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
-                  <SheetTitle>Join {name.split(' ')[0]}</SheetTitle>
+                  <SheetTitle>Join {name.split(' ')[0]} on Popscle</SheetTitle>
                   <SheetDescription>
-                    Popscle is invite-only. If you'd like to become one of our
-                    first contributors, drop Malik a message.
+                    {`We're rolling out Popscle by invitation. If you'd like to give it a spin, drop ${
+                      name.split(' ')[0]
+                    } a message.`}
                   </SheetDescription>
                 </SheetHeader>
+                <Image
+                  className='mt-10 rounded'
+                  alt={'cat'}
+                  src={catGif}
+                  width={350}
+                  height={200}
+                />
               </SheetContent>
             </Sheet>
           </CardFooter>
