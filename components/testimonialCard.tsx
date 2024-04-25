@@ -1,6 +1,14 @@
 import { Button } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import Image from 'next/image';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 const person = {
   name: 'Malik Piara',
@@ -35,13 +43,21 @@ export default function TestimonialCard({
               {role}
             </p>
           </CardContent>
-          <CardFooter className='flex'>
-            <Button
-              variant='secondary'
-              className='w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-500'
-            >
-              Join {name.split(' ')[0]}
-            </Button>
+          <CardFooter>
+            <Sheet>
+              <SheetTrigger className='h-10 px-4 py-2 w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-500 rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
+                Join {name.split(' ')[0]}
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Join {name.split(' ')[0]}</SheetTitle>
+                  <SheetDescription>
+                    Popscle is invite-only. If you'd like to become one of our
+                    first contributors, drop Malik a message.
+                  </SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
           </CardFooter>
         </Card>
       </div>
