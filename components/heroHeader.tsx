@@ -1,5 +1,5 @@
 const content = {
-  title: 'The Best Resources for Learning Anything, Curated by the Internet.',
+  title: 'Resources to Learn Anything, Curated by People you Trust.',
   subtitle:
     'There are more books and online courses out there than ever before. Popscle lets you discover, rank and curate them.',
 };
