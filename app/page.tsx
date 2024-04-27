@@ -47,6 +47,11 @@ export default function Home() {
         </section>
         <section className='flex flex-col md:flex-row overflow-x-scroll w-full'>
           <TestimonialCard
+            name='Svitlana Midianko'
+            role='Product Enablement, Google Labs'
+            image='/people/svitlana.jpg'
+          />
+          <TestimonialCard
             name='Malik Piara'
             role='Product Enablement, CarByte'
             image='/people/malik.jpeg'
