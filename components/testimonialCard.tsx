@@ -1,3 +1,4 @@
+'use client';
 import { Button } from './ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import Image from 'next/image';
@@ -10,10 +11,19 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import posthog from 'posthog-js';
 
 const person = {
   name: 'Malik Piara',
   role: 'Product Enablement @ CarByte',
+};
+
+// This handler is letting us capture and visualise the
+// person who our visiting users click on the most.
+const handleClick = (person_name: string) => {
+  posthog.capture('click_join_person', {
+    name: person_name,
+  });
 };
 
 export default function TestimonialCard({
@@ -46,7 +56,10 @@ export default function TestimonialCard({
           </CardContent>
           <CardFooter>
             <Sheet>
-              <SheetTrigger className='h-10 px-4 py-2 w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-500 rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>
+              <SheetTrigger
+                className='h-10 px-4 py-2 w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-500 rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
+                onClick={() => handleClick(name)}
+              >
                 Join {name.split(' ')[0]}
               </SheetTrigger>
               <SheetContent>
