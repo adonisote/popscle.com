@@ -28,7 +28,7 @@ export default function Home() {
           Community Contributors
         </span>
 
-        <section className='flex flex-col md:flex-row overflow-x-scroll w-full'>
+        <section className='flex flex-col md:flex-row'>
           <TestimonialCard
             name='Ben Bachem'
             role='Founding Engineer, Superchat'
@@ -45,7 +45,7 @@ export default function Home() {
             image='/people/johann2.jpg'
           />
         </section>
-        <section className='flex flex-col md:flex-row overflow-x-scroll w-full'>
+        <section className='flex flex-col md:flex-row'>
           <TestimonialCard
             name='Svitlana Midianko'
             role='Product Enablement, Google Labs'
@@ -55,6 +55,28 @@ export default function Home() {
             name='Malik Piara'
             role='Product Enablement, CarByte'
             image='/people/malik.jpeg'
+          />
+          <TestimonialCard
+            name='Maya Alroy'
+            role='UX & Design Acessibility'
+            image='/people/maya.png'
+          />
+        </section>
+        <section className='flex flex-col md:flex-row'>
+          <TestimonialCard
+            name='Lennart Schoch'
+            role='Senior Product Engineer, Bounce'
+            image='/people/lennart.jpeg'
+          />
+          <TestimonialCard
+            name='Jonathan Freiberger'
+            role='Backend Development'
+            image='/people/joni.jpeg'
+          />
+          <TestimonialCard
+            name='Linus Bolls'
+            role='Founder, Flamingo'
+            image='/people/linus.png'
           />
         </section>
       </main>
