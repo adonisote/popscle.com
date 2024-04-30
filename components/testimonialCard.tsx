@@ -1,5 +1,15 @@
 'use client';
 import { Button } from './ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import Image from 'next/image';
 import catGif from '../public/people/cat.webp';
@@ -7,11 +17,24 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import posthog from 'posthog-js';
+import { useState } from 'react';
+import ConfettiButton from './confettiButton';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Textarea } from './ui/textarea';
+
+const formSchema = z.object({
+  name: z.string().min(3).max(50),
+  email: z.string().email(),
+  whatAreYouLearning: z.string().min(5),
+});
 
 const person = {
   name: 'Malik Piara',
@@ -31,6 +54,7 @@ export default function TestimonialCard({
   role = person.role,
   image = '/people/malik.jpeg',
 }) {
+  const [formIsSubmitted, setFormIsSubmitted] = useState(false);
   return (
     <>
       <div className='py-8 px-4 mx-auto w-96 max-w-screen-xl text-center animate-in'>
@@ -66,23 +90,112 @@ export default function TestimonialCard({
                 <SheetHeader>
                   <SheetTitle>Join {name.split(' ')[0]} on Popscle</SheetTitle>
                   <SheetDescription>
-                    {`We're rolling out Popscle by invitation. If you'd like to give it a spin, drop ${
-                      name.split(' ')[0]
-                    } a message on Slack or LinkedIn — Here's some kittens 😘`}
+                    {`We're rolling out Popscle by invitation. If you'd like to give it a spin, fill this form.`}
+                    <section className='mt-10'>
+                      <ProfileForm />
+                    </section>
                   </SheetDescription>
                 </SheetHeader>
-                <Image
-                  className='mt-10 rounded'
-                  alt={'cat'}
-                  src={catGif}
-                  width={350}
-                  height={200}
-                />
+
+                {formIsSubmitted && (
+                  <Image
+                    className='mt-10 rounded'
+                    alt={'cat'}
+                    src={catGif}
+                    width={350}
+                    height={200}
+                  />
+                )}
+                <SheetFooter>
+                  <ConfettiButton />
+                </SheetFooter>
               </SheetContent>
             </Sheet>
           </CardFooter>
         </Card>
       </div>
     </>
+  );
+}
+
+export function ProfileForm() {
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+    },
+  });
+
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+        <FormField
+          control={form.control}
+          name='name'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your Name</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder='Ada Lovelace'
+                  className='placeholder:opacity-60'
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder='ada.lovelace@code.berlin'
+                  className='placeholder:opacity-60'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='whatAreYouLearning'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>What are you learning right now?</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder='Machine Learning'
+                  className='placeholder:opacity-60 resize-none'
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type='submit' className='w-full'>
+          Join the waitlist
+        </Button>
+      </form>
+    </Form>
   );
 }
