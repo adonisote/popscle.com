@@ -26,11 +26,13 @@ import {
 } from '@/components/ui/sheet';
 import posthog from 'posthog-js';
 import { useState } from 'react';
-import ConfettiButton from './confettiButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Textarea } from './ui/textarea';
+import { createClient } from '@/utils/supabase/client';
+
+const supabase = createClient();
 
 const formSchema = z.object({
   name: z.string().min(3).max(50),
@@ -57,6 +59,7 @@ export default function TestimonialCard({
   image = '/people/malik.jpeg',
 }) {
   const [formIsSubmitted, setFormIsSubmitted] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   return (
     <>
@@ -84,7 +87,7 @@ export default function TestimonialCard({
           <CardFooter>
             <Sheet>
               <SheetTrigger
-                className='h-10 px-4 py-2 w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-500 rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
+                className='h-10 px-4 py-2 w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-400 rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
                 onClick={() => handleClick(name)}
               >
                 Join {name.split(' ')[0]}
@@ -93,9 +96,25 @@ export default function TestimonialCard({
                 <SheetHeader>
                   <SheetTitle>Join {name.split(' ')[0]} on Popscle</SheetTitle>
                   <SheetDescription>
-                    {`We're rolling out Popscle by invitation. If you'd like to be the first to try it, signup below ✨`}
+                    <p>
+                      We&apos;re rolling out Popscle by invitation. If you'd
+                      like to be the first to try it, signup below ✨
+                    </p>
                     <section className='mt-10'>
-                      <SignupForm setFormIsSubmitted={setFormIsSubmitted} />
+                      {!formIsSubmitted && (
+                        <SignupForm
+                          setFormIsSubmitted={setFormIsSubmitted}
+                          setShowConfetti={setShowConfetti}
+                        />
+                      )}
+                      {showConfetti && (
+                        // I'm using 335px below because that is the width
+                        // of the button.
+                        <Confetti
+                          className='overflow-visible fixed w-[335px] h-full top-0 pointer-events-none'
+                          autorun={{ speed: 0.3, duration: 2500 }}
+                        />
+                      )}
                     </section>
                   </SheetDescription>
                 </SheetHeader>
@@ -110,22 +129,34 @@ export default function TestimonialCard({
   );
 }
 
-export function SignupForm({ setFormIsSubmitted }: any) {
-  const [isVisible, setIsVisible] = useState(false);
+export function SignupForm({ setFormIsSubmitted, setShowConfetti }: any) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: 'onBlur', // Validate on every change to disable/enable the button
+    mode: 'onBlur', // Validate on every change to disable/enable the submit button
   });
 
   const { isValid } = form.formState; // Track overall form validity
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    setFormIsSubmitted(true);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const { error } = await supabase.from('popscle_waitlist').insert(values);
+
+      if (error) {
+        console.error('Subscription error:', error);
+        // TODO: display an error message to the user here
+      } else {
+        console.log('Subscription Sucessful');
+        console.log(values);
+        setFormIsSubmitted(true);
+        setShowConfetti(true);
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      // TODO: handle general errors
+      // TODO: handle duplicated email address error.
+    }
   }
   return (
     <Form {...form}>
@@ -190,14 +221,7 @@ export function SignupForm({ setFormIsSubmitted }: any) {
           type='submit'
           disabled={!isValid}
           className='w-full transition-all'
-          onClick={() => setIsVisible(true)}
         >
-          {isVisible && (
-            <Confetti
-              className='overflow-visible fixed w-full h-full top-0 pointer-events-none'
-              autorun={{ speed: 0.3, duration: 2500 }}
-            />
-          )}
           Join the waitlist
         </Button>
       </form>
@@ -215,6 +239,10 @@ export function SuccessMessage() {
         width={350}
         height={200}
       />
+      <p className='py-8 px-4 mb-2 text-slate-300'>
+        You&apos;re on the list but there are 432 members ahead of you.
+        We&apos;ll keep you posted!
+      </p>
     </>
   );
 }
