@@ -97,8 +97,8 @@ export default function TestimonialCard({
                   <SheetTitle>Join {name.split(' ')[0]} on Popscle</SheetTitle>
                   <SheetDescription>
                     <p>
-                      We&apos;re rolling out Popscle by invitation. If you'd
-                      like to be the first to try it, signup below ✨
+                      We&apos;re rolling out Popscle by invitation. If
+                      you&apos;d like to be the first to try it, signup below ✨
                     </p>
                     <section className='mt-10'>
                       {!formIsSubmitted && (
