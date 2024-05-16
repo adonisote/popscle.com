@@ -16,6 +16,7 @@ import Image from 'next/image';
 import catGif from '../public/people/cat.webp';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -56,6 +57,7 @@ export default function TestimonialCard({
   image = '/people/malik.jpeg',
 }) {
   const [formIsSubmitted, setFormIsSubmitted] = useState(false);
+
   return (
     <>
       <div className='py-8 px-4 mx-auto w-96 max-w-screen-xl text-center animate-in'>
@@ -72,9 +74,9 @@ export default function TestimonialCard({
             </div>
           </CardHeader>
           <CardContent className='lg:min-h-20 space-y-2'>
-            <h1 className='mb-2 text-xl font-medium tracking-tight leading-none text-white'>
+            <h3 className='mb-2 text-xl font-medium tracking-tight leading-none text-white'>
               {name}
-            </h1>
+            </h3>
             <p className='mb-2 font-normal text-slate-400 lg:text-md sm:px-16 md:min-h-12'>
               {role}
             </p>
@@ -93,21 +95,12 @@ export default function TestimonialCard({
                   <SheetDescription>
                     {`We're rolling out Popscle by invitation. If you'd like to be the first to try it, signup below ✨`}
                     <section className='mt-10'>
-                      <SignupForm />
+                      <SignupForm setFormIsSubmitted={setFormIsSubmitted} />
                     </section>
                   </SheetDescription>
                 </SheetHeader>
 
-                {formIsSubmitted && (
-                  <Image
-                    className='mt-10 rounded'
-                    alt={'cat'}
-                    src={catGif}
-                    width={350}
-                    height={200}
-                  />
-                )}
-                <SheetFooter></SheetFooter>
+                {formIsSubmitted && <SuccessMessage />}
               </SheetContent>
             </Sheet>
           </CardFooter>
@@ -117,18 +110,22 @@ export default function TestimonialCard({
   );
 }
 
-export function SignupForm() {
+export function SignupForm({ setFormIsSubmitted }) {
   const [isVisible, setIsVisible] = useState(false);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: 'onBlur', // Validate on every change to disable/enable the button
   });
+
+  const { isValid } = form.formState; // Track overall form validity
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    setFormIsSubmitted(true);
   }
   return (
     <Form {...form}>
@@ -191,7 +188,8 @@ export function SignupForm() {
 
         <Button
           type='submit'
-          className='w-full'
+          disabled={!isValid}
+          className='w-full transition-all'
           onClick={() => setIsVisible(true)}
         >
           {isVisible && (
@@ -204,5 +202,19 @@ export function SignupForm() {
         </Button>
       </form>
     </Form>
+  );
+}
+
+export function SuccessMessage() {
+  return (
+    <>
+      <Image
+        className='mt-10 rounded'
+        alt={'cat'}
+        src={catGif}
+        width={350}
+        height={200}
+      />
+    </>
   );
 }
