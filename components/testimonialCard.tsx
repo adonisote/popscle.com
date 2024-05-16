@@ -110,7 +110,7 @@ export default function TestimonialCard({
   );
 }
 
-export function SignupForm({ setFormIsSubmitted }) {
+export function SignupForm({ setFormIsSubmitted }: any) {
   const [isVisible, setIsVisible] = useState(false);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
