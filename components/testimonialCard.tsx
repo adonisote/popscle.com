@@ -1,5 +1,6 @@
 'use client';
 import { Button } from './ui/button';
+import Confetti from 'react-canvas-confetti/dist/presets/realistic';
 import {
   Form,
   FormControl,
@@ -90,9 +91,9 @@ export default function TestimonialCard({
                 <SheetHeader>
                   <SheetTitle>Join {name.split(' ')[0]} on Popscle</SheetTitle>
                   <SheetDescription>
-                    {`We're rolling out Popscle by invitation. If you'd like to give it a spin, fill this form.`}
+                    {`We're rolling out Popscle by invitation. If you'd like to be the first to try it, signup below ✨`}
                     <section className='mt-10'>
-                      <ProfileForm />
+                      <SignupForm />
                     </section>
                   </SheetDescription>
                 </SheetHeader>
@@ -106,9 +107,7 @@ export default function TestimonialCard({
                     height={200}
                   />
                 )}
-                <SheetFooter>
-                  <ConfettiButton />
-                </SheetFooter>
+                <SheetFooter></SheetFooter>
               </SheetContent>
             </Sheet>
           </CardFooter>
@@ -118,7 +117,8 @@ export default function TestimonialCard({
   );
 }
 
-export function ProfileForm() {
+export function SignupForm() {
+  const [isVisible, setIsVisible] = useState(false);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -181,7 +181,7 @@ export function ProfileForm() {
               <FormLabel>What are you learning right now?</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder='Machine Learning'
+                  placeholder='Tell us more about what you are learning and why. There are no right or wrong answers!'
                   className='placeholder:opacity-60 resize-none'
                   {...field}
                 />
@@ -192,7 +192,17 @@ export function ProfileForm() {
           )}
         />
 
-        <Button type='submit' className='w-full'>
+        <Button
+          type='submit'
+          className='w-full'
+          onClick={() => setIsVisible(true)}
+        >
+          {isVisible && (
+            <Confetti
+              className='overflow-visible fixed w-full h-full top-0 pointer-events-none'
+              autorun={{ speed: 0.3, duration: 2500 }}
+            />
+          )}
           Join the waitlist
         </Button>
       </form>

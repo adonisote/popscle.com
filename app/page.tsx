@@ -26,7 +26,7 @@ export default function Home() {
         <HeroHeader />
 
         <span className='text-pink-400 text-base font-semibold leading-7 animate-in'>
-          Community Contributors
+          Join Our Community
         </span>
 
         <section className='flex flex-col md:flex-row'>
