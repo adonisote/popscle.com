@@ -141,13 +141,27 @@ export function SignupForm({ setFormIsSubmitted, setShowConfetti }: any) {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const { error } = await supabase.from('popscle_waitlist').insert(values);
+      const params = new URLSearchParams();
+      params.append('email', values.email);
+      params.append('fields[name]', values.name);
+      params.append('fields[whatAreYouLearning]', values.whatAreYouLearning);
 
-      if (error) {
-        console.error('Subscription error:', error);
+      const response = await fetch(
+        'https://app.loops.so/api/newsletter-form/clw9psubi01431nc1i7yxsfbz',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: params.toString(),
+        }
+      );
+
+      if (!response.ok) {
+        console.error('Subscription error:', response.statusText);
         // TODO: display an error message to the user here
       } else {
-        console.log('Subscription Sucessful');
+        console.log('Subscription Successful');
         console.log(values);
         setFormIsSubmitted(true);
         setShowConfetti(true);
@@ -155,7 +169,6 @@ export function SignupForm({ setFormIsSubmitted, setShowConfetti }: any) {
     } catch (error) {
       console.error('Subscription error:', error);
       // TODO: handle general errors
-      // TODO: handle duplicated email address error.
     }
   }
   return (
