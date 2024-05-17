@@ -143,8 +143,8 @@ export function SignupForm({ setFormIsSubmitted, setShowConfetti }: any) {
     try {
       const params = new URLSearchParams();
       params.append('email', values.email);
-      params.append('fields[name]', values.name);
-      params.append('fields[whatAreYouLearning]', values.whatAreYouLearning);
+      params.append('name', values.name);
+      params.append('whatAreYouLearning', values.whatAreYouLearning);
 
       const response = await fetch(
         'https://app.loops.so/api/newsletter-form/clw9psubi01431nc1i7yxsfbz',
