@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 import { CSPostHogProvider } from './providers';
 
-const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['100', '300', '500'] });
 
 export const metadata: Metadata = {
   title: 'Popscle',
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <CSPostHogProvider>
-        <body className={inter.className}>{children}</body>
+        <body className={poppins.className}>{children}</body>
       </CSPostHogProvider>
     </html>
   );

@@ -77,10 +77,10 @@ export default function TestimonialCard({
             </div>
           </CardHeader>
           <CardContent className='lg:min-h-20 space-y-2'>
-            <h3 className='mb-2 text-xl font-medium tracking-tight leading-none text-white'>
+            <h3 className='mb-2 text-xl font-normal tracking-tight leading-none text-white'>
               {name}
             </h3>
-            <p className='mb-2 font-normal text-slate-400 lg:text-md sm:px-16 md:min-h-12'>
+            <p className='mb-2 font-light text-slate-400 lg:text-md sm:px-16 md:min-h-12'>
               {role}
             </p>
           </CardContent>
