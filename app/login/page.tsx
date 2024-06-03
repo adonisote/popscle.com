@@ -39,7 +39,7 @@ export default function LoginPage() {
                   />
                 </div>
                 {/* Password to be eliminate when magic link is working */}
-                <div className="grid gap-2">
+                {/* <div className="grid gap-2">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     <Link
@@ -55,7 +55,7 @@ export default function LoginPage() {
                     type="password"
                     required
                   />
-                </div>
+                </div> */}
                 <Button formAction={login} className="w-full">
                   Login
                 </Button>
@@ -65,13 +65,14 @@ export default function LoginPage() {
 
 
               </form>
+
+              {/* Login with Github will come here:
+
               <Button formAction={'#'} variant="outline" className="w-full">
                 Login with Github
-              </Button>
+              </Button> */}
             </div>
             {/* </form> */}
-
-
 
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}

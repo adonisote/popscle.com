@@ -10,19 +10,26 @@ export async function login(formData: FormData) {
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
+  // const data = {
+  //   email: formData.get('email') as string,
+  //   // password: formData.get('password') as string,
+  // }
+  const email = formData.get('email') as string
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error } = await supabase.auth.signInWithOtp({
+    email, options: {
+      shouldCreateUser: false,
+      emailRedirectTo: 'https://popscle.com/account'
+    }
+  })
 
   if (error) {
     redirect('/error')
   }
 
   revalidatePath('/', 'layout')
-  redirect('/account')
+  console.log('check your email')
+  // redirect('/account')
 }
 
 export async function signup(formData: FormData) {
