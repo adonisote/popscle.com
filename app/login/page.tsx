@@ -1,4 +1,4 @@
-import { login, signup } from './actions'
+import { login, signup, signInWithGithub } from './actions'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -22,7 +22,7 @@ export default function LoginPage() {
                 Enter your email below to login to your account
               </p>
             </div>
-            {/* <form> */}
+
 
 
             <div className="grid gap-4">
@@ -59,20 +59,20 @@ export default function LoginPage() {
                 <Button formAction={login} className="w-full">
                   Login
                 </Button>
-                {/* <Button formAction={signup} className="w-full">
-                  Sign up
-                </Button> */}
-
 
               </form>
 
-              {/* Login with Github will come here:
+              {/* Login with Github */}
 
-              <Button formAction={'#'} variant="outline" className="w-full">
-                Login with Github
-              </Button> */}
+              <form>
+                <Button formAction={signInWithGithub} variant="outline" className="w-full">
+                  Login with Github
+                </Button>
+
+              </form>
+
             </div>
-            {/* </form> */}
+
 
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
