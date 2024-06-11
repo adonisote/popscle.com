@@ -34,7 +34,7 @@ export default function AccountForm({ user }: { user: User | null }) {
         setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
-      alert('Error loading user data! If you just register, check your email.')
+      alert('Error loading user data!')
     } finally {
       setLoading(false)
     }
