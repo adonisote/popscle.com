@@ -12,8 +12,8 @@ import { Form } from '@/components/ui/form' // to be implemented
 
 export default function LoginPage() {
   return (
-    <div className='w-full h-full flex items-center content-center '>
-      <div className="w-full h-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div className='w-full h-full flex flex-col items-center  justify-center  '>
+      <div className="w-full h-full flex flex-col item-center justify-center lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div className="hidden bg-muted lg:block lg:bg-white">
           <p>Popscle</p>
           {/* <Image
