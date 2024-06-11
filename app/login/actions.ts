@@ -8,17 +8,19 @@ import { headers } from 'next/headers'
 
 export async function login(formData: FormData) {
   const supabase = createClient()
+  // const origin = headers().get('origin')
+  // const redirectToUrl = `${origin}/auth/confirm`
 
   //Retrieve email from form data
   const email = formData.get('email') as string
 
   const { error } = await supabase.auth.signInWithOtp({
-    email, options: {
+    email: email,
+    options: {
       shouldCreateUser: false,
-
+      // emailRedirectTo: redirectToUrl,
     }
   })
-
   if (error) {
     console.log('Loging error: ', error.message)
     redirect('/error')
@@ -28,7 +30,7 @@ export async function login(formData: FormData) {
   console.log('Magic Link sent to your email') //Implement pop up to 'check your email'.
 
 }
-
+// Sign up not availabla at the moment. Access only trough invitation.
 export async function signup(formData: FormData) {
   const supabase = createClient()
 
@@ -53,7 +55,7 @@ export async function signup(formData: FormData) {
 export async function signInWithGithub() {
   const supabase = createClient()
   const origin = headers().get('origin')
-  const redirectToUrl = `${origin}/auth/callback`
+  const redirectToUrl = `${origin}/auth/callback?next=/hello`
 
   console.log('Redirecting to:', redirectToUrl)
 
