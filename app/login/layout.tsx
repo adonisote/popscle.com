@@ -6,7 +6,7 @@ export default function Layout({
   return (
     <html>
       <body>
-        <main className="min-h-screen flex flex-col items-center">
+        <main className="h-screen w-screen flex flex-col items-center  justify-center content-center ">
           {children}
         </main>
       </body>

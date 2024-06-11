@@ -12,8 +12,18 @@ import { Form } from '@/components/ui/form' // to be implemented
 
 export default function LoginPage() {
   return (
-    <>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div className='w-full h-full flex items-center content-center '>
+      <div className="w-full h-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+        <div className="hidden bg-muted lg:block lg:bg-white">
+          <p>Popscle</p>
+          {/* <Image
+            src="/placeholder.svg"
+            alt="Image"
+            width="1920"
+            height="1080"
+            className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          /> */}
+        </div>
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[350px] gap-6">
             <div className="grid gap-2 text-center">
@@ -82,18 +92,10 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
-        <div className="hidden bg-muted lg:block lg:bg-white">
-          <Image
-            src="/placeholder.svg"
-            alt="Image"
-            width="1920"
-            height="1080"
-            className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          />
-        </div>
+
       </div>
 
-    </>
+    </div>
 
   )
 }
