@@ -77,7 +77,7 @@ export default function Avatar({
         <div className="avatar no-image" style={{ height: size, width: size }} />
       )}
       <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
+        <label className="text-sm button primary block hover:underline hover:underline-offset-4" htmlFor="single">
           {uploading ? 'Uploading ...' : 'Upload'}
         </label>
         <input

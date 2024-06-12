@@ -3,6 +3,9 @@ import Avatar from './avatar'
 import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient()
@@ -75,68 +78,62 @@ export default function AccountForm({ user }: { user: User | null }) {
   }
 
   return (
-    <div className="form-widget">
-      <Avatar
-        uid={user?.id ?? null}
-        url={avatar_url}
-        size={150}
-        onUpload={(url) => {
-          setAvatarUrl(url)
-          updateProfile({ fullname, username, website, avatar_url: url })
-        }}
-      />
-      <div>
-        <label htmlFor="email">Email</label>
-        <input className='text-black' id="email" type="text" value={user?.email} disabled />
-      </div>
-      <div>
-        <label htmlFor="fullName">Full Name</label>
-        <input
-          className='text-black'
-          id="fullName"
-          type="text"
-          value={fullname || ''}
-          onChange={(e) => setFullname(e.target.value)}
+    <div className='w-full h-full flex flex-col items-center justify-center'>
+      <div className='flex flex-col items-center'>
+        <Avatar
+          uid={user?.id ?? null}
+          url={avatar_url}
+          size={150}
+          onUpload={(url) => {
+            setAvatarUrl(url)
+            updateProfile({ fullname, username, website, avatar_url: url })
+          }}
         />
-      </div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          className='text-black'
-          id="username"
-          type="text"
-          value={username || ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <input
-          className='text-black'
-          id="website"
-          type="url"
-          value={website || ''}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div>
+        <div className=''>
+          <Label htmlFor="email">Email</Label>
+          <Input className='md:w-[250px]' id="email" type="text" value={user?.email} disabled />
+        </div>
+        <div>
+          <Label htmlFor="fullName">Full Name</Label>
+          <Input
+            className='md:w-[250px]'
+            id="fullName"
+            type="text"
+            value={fullname || ''}
+            onChange={(e) => setFullname(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="username">Username</Label>
+          <Input
+            className='md:w-[250px]'
+            id="username"
+            type="text"
+            value={username || ''}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="website">Website</Label>
+          <Input
+            className='md:w-[250px]'
+            id="website"
+            type="url"
+            value={website || ''}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
 
-      <div>
-        <button
-          className="button primary block border border-white "
-          onClick={() => updateProfile({ fullname, username, website, avatar_url })}
-          disabled={loading}
-        >
-          {loading ? 'Loading ...' : 'Update'}
-        </button>
-      </div>
-
-      <div>
-        <form action="/auth/signout" method="post">
-          <button className="button block border border-white" type="submit">
-            Sign out
-          </button>
-        </form>
+        <div className='p-4'>
+          <Button
+            onClick={() => updateProfile({ fullname, username, website, avatar_url })}
+            disabled={loading}
+          >
+            {loading ? 'Loading ...' : 'Update'}
+          </Button>
+        </div>
       </div>
     </div>
+
   )
 }
