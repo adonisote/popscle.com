@@ -1,7 +1,10 @@
+'use client'
+
 import { login, signup, signInWithGithub } from './actions'
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { FormEvent } from '@/types/types'
 
 
 import { Button } from '@/components/ui/button' // to be implemented
@@ -9,8 +12,27 @@ import { Input } from '@/components/ui/input' // to be implemented
 import { Label } from '@/components/ui/label'
 
 import { Form } from '@/components/ui/form' // to be implemented
+import { useState } from 'react'
 
 export default function LoginPage() {
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSucess] = useState<boolean>(false)
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault() // Prevent the default form submission behavior
+    const formData = new FormData(e.currentTarget) // Extract form data from the form element that triggered the event
+    const result = await login(formData) // Call the login function and wait for the result
+    if (result.error) {
+      setError(result.error) // Set the error state with the error message
+      setSucess(false) // Set the success state to false
+    } else {
+      setError(null) // Clear the error state
+      setSucess(true) // Set the success state to true
+    }
+
+  }
+
+
   return (
     <div className='w-full h-full flex flex-col items-center  justify-center  '>
       <div className="w-full h-full flex flex-col item-center justify-center lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
@@ -36,7 +58,7 @@ export default function LoginPage() {
 
 
             <div className="grid gap-4">
-              <form className='grid gap-4'>
+              <form onSubmit={handleLogin} className='grid gap-4'>
 
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
@@ -66,11 +88,26 @@ export default function LoginPage() {
                     required
                   />
                 </div> */}
-                <Button formAction={login} className="w-full">
+                <Button type='submit' className="w-full">
                   Login
                 </Button>
 
               </form>
+              {error && (
+                <div className='text-red-500 text-center'>
+                  {error}
+                </div>
+              )
+
+              }
+
+              {success && (
+                <div className='text-green-500 text-center'>
+                  Check your email
+                </div>
+              )}
+
+
 
               {/* Login with Github */}
 

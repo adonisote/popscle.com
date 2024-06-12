@@ -24,11 +24,13 @@ export async function login(formData: FormData) {
   })
   if (error) {
     console.log('Loging error: ', error.message)
-    redirect('/error')
+    return { error: error.message }
+    // redirect('/error')
   }
 
   revalidatePath('/', 'layout')
   console.log('Magic Link sent to your email') //Implement pop up to 'check your email'.
+  return { success: true }
 
 }
 // Sign up not availabla at the moment. Access only trough invitation.
