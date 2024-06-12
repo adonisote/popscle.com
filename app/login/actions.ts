@@ -8,8 +8,9 @@ import { headers } from 'next/headers'
 
 export async function login(formData: FormData) {
   const supabase = createClient()
-  // const origin = headers().get('origin')
-  // const redirectToUrl = `${origin}/auth/confirm`
+  const origin = headers().get('origin')
+  const redirectToUrl = `${origin}`
+  console.log('Redirect to:', redirectToUrl)
 
   //Retrieve email from form data
   const email = formData.get('email') as string
@@ -18,7 +19,7 @@ export async function login(formData: FormData) {
     email: email,
     options: {
       shouldCreateUser: false,
-      // emailRedirectTo: redirectToUrl,
+      emailRedirectTo: redirectToUrl,
     }
   })
   if (error) {
