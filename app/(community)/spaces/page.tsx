@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Nav from "@/components/ui/nav";
 
+
 export default async function PrivatePage() {
   const supabase = createClient()
   const { data: { user }, error } = await supabase.auth.getUser()
@@ -14,7 +15,6 @@ export default async function PrivatePage() {
         <p>React</p>
 
       </div>
-
     </div>
   )
 
