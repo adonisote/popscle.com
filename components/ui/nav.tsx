@@ -16,7 +16,7 @@ export default async function Nav() {
 
         )}
 
-        <Link className='p-2 hover:underline hover:underline-offset-4' href="/spaces">Spaces</Link>
+        <Link className='p-2 hover:underline hover:underline-offset-4' href="/home">Spaces</Link>
         {user && (
           <>
             <Link className=" p-2 hover:underline hover:underline-offset-4" href={`/account`}>Profile</Link>
