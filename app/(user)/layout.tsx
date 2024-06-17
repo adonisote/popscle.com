@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import FeedbackSheet from "@/components/ui/feedback";
 
 export default async function Layout({
   children,
@@ -20,6 +21,7 @@ export default async function Layout({
       <body>
         <main className="h-screen w-screen flex flex-col items-center justify-center">
           {children}
+          <FeedbackSheet />
         </main>
       </body>
     </html>
