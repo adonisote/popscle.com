@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import Nav from "@/components/ui/nav";
+
 import Link from "next/link";
 
 const spaces = ['React', 'NextJs', 'Automotive']
@@ -14,7 +14,6 @@ export default async function PrivatePage() {
 
   return (
     <div className=" w-full h-full flex flex-col items-center">
-      <Nav />
 
 
       <div className="w-full h-full flex flex-col items-center justify-center">
