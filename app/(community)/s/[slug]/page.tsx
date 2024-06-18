@@ -2,6 +2,9 @@ import { createClient } from "@/utils/supabase/server"
 import Link from "next/link"
 import { Resource } from "@/types/types"
 
+import { redirect } from "next/navigation";
+
+
 export default async function Page({
   params
 }: {
@@ -13,18 +16,20 @@ export default async function Page({
     .from("spaces")
     .select("id, title")
     .ilike("title", params.slug)
-  const spaceId = spaces[0].id
+  const spaceId = spaces[0]?.id
   console.log('spaceId: ', spaceId)
-  if (spaceError) {
-    console.log(spaceError)
-    return <div>Space couldn&#39;t be found</div>
+  // If there is no space with the id redirect to /home
+  if (!spaceId) {
+    console.log('spaceError;:', spaceError)
+    redirect('/home')
   }
+
+  //Fetch resources matching the space_id
   const { data: resources, error: resourcesError } = await supabase
     .from('resources')
     .select()
     .eq("space_id", spaceId)
-  // need to find a way to select only the resources from the respective space
-  // console.log(resources)
+
   if (!resources) {
     return <div>No resources available for the space</div>
     console.log(resourcesError)
