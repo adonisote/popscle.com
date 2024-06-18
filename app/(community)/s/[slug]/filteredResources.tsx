@@ -7,6 +7,7 @@ import { Resource } from "@/types/types"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import clsx from "clsx"
+import UpvoteResource from "./upvote"
 
 export default function Resources({ spaceId }: { spaceId: string }) {
   const [data, setData] = useState<Resource[]>([])
@@ -72,9 +73,9 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     <div className="md:w-max-[800px] mx-4">
       <div className="my-4 w-full flex flex-col  items-end ">
         <div>
-          <Button onClick={() => setFilter('ALL')} className="mx-4">All</Button>
-          <Button onClick={() => setFilter('FREE')} className="mx-4">Free</Button>
-          <Button onClick={() => setFilter('PAID')} className="mx-4">Paid</Button>
+          <Button variant='outline' onClick={() => setFilter('ALL')} className="mx-4">All</Button>
+          <Button variant='outline' onClick={() => setFilter('FREE')} className="mx-4">Free</Button>
+          <Button variant='outline' onClick={() => setFilter('PAID')} className="mx-4">Paid</Button>
         </div>
       </div>
       <div>
@@ -100,6 +101,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         {data?.map((resource: Resource) =>
           <div key={resource.id} className="my-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
             <div className="p-2 flex flex-col items-center justify-center">
+              <UpvoteResource />
               {resource.votes}
             </div>
             <Link
