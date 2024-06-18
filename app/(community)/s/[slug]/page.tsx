@@ -52,53 +52,6 @@ export default async function Page({
       </div>
 
       <Resources spaceId={spaceId} />
-
-      {/* <div className="w-full md:max-w-[800px]" >
-        <p>
-          Paid resources
-        </p>
-        <div>
-          {paidResources?.map((resource: Resource) => (
-            <div key={resource.id} className="m-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
-              <div className="p-2 flex flex-col items-center justify-center">
-                {resource.votes}
-              </div>
-              <Link
-                href={resource.url}
-              >
-                <p>
-                  {resource.title}
-                </p>
-                <p>{resource.description}</p>
-              </Link>
-            </div>
-          ))}
-        </div>
-
-      </div> */}
-
-      {/* <div className="w-full md:max-w-[800px]" >
-        <p>Free resources</p>
-        <div>
-          {freeResources?.map((resource: Resource) => (
-            <div key={resource.id} className="m-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
-              <div className="p-2 flex flex-col items-center justify-center">
-                {resource.votes}
-              </div>
-              <Link
-                href={resource.url}
-              >
-                <p>
-                  {resource.title}
-                </p>
-                <p>{resource.description}</p>
-              </Link>
-            </div>
-          ))}
-
-        </div>
-      </div> */}
-
     </div>
 
 
