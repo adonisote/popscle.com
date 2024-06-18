@@ -8,8 +8,17 @@ type Space = {
   icon_url?: string,
   updated_at?: string
 }
-
+type Resource = {
+  id: string,
+  created_at: string,
+  title: string,
+  description: string,
+  votes: number,
+  url: string,
+  updated_at?: string
+}
 export type {
   FormEvent,
-  Space
+  Space,
+  Resource
 } 
