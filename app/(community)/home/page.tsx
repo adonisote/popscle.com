@@ -12,7 +12,7 @@ export default async function PrivatePage() {
   const supabase = createClient()
   // const { data: { user }, error } = await supabase.auth.getUser()
   const { data: spaces, error } = await supabase
-    .from<Space>('spaces')
+    .from('spaces')
     .select()
 
   if (error) {
