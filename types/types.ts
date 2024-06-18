@@ -6,7 +6,7 @@ type Space = {
   title: string,
   description: string,
   icon_url?: string,
-  updated_at: string
+  updated_at?: string
 }
 
 export type {
