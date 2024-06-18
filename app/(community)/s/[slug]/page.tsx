@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import Resources from "./filteredResources";
+import SubmitResource from "./submitResource";
 
 export default async function Page({
   params
@@ -49,6 +50,11 @@ export default async function Page({
       <div className="text-center">
         <p className="text-xl">{spaceTitle}</p>
         <p>{spaceDescription}</p>
+      </div>
+      <div className="my-4 w-full flex flex-col items-end">
+
+        <SubmitResource />
+
       </div>
 
       <Resources spaceId={spaceId} />
