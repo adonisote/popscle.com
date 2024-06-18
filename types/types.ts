@@ -9,14 +9,20 @@ type Space = {
   updated_at?: string
 }
 type Resource = {
-  id: string,
-  created_at: string,
-  title: string,
-  description: string,
-  votes: number,
-  url: string,
-  updated_at?: string
-}
+  id: string;
+  created_at: string;
+  title: string;
+  description: string;
+  votes: number;
+  url: string;
+  updated_at?: string;
+  user_id: string;
+  space_id: string;
+  type_id: number;
+  paid: boolean;
+};
+
+
 export type {
   FormEvent,
   Space,
