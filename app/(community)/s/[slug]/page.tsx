@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <p>{params.slug}</p>
 
       <div>
-        {resources.map((resource: Resource) => (
+        {resources?.map((resource: Resource) => (
           <div key={resource.id} className="m-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
             <div className="p-2 flex flex-col items-center justify-center">
               {resource.votes}
