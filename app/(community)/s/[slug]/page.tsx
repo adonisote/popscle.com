@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import Resources from "./filteredResources";
-import SubmitResource from "./submitResource";
+import ResourceSheet from "./submitResource";
 
 export default async function Page({
   params
@@ -53,7 +53,7 @@ export default async function Page({
       </div>
       <div className="my-4 w-full flex flex-col items-end">
 
-        <SubmitResource />
+        <ResourceSheet />
 
       </div>
 
