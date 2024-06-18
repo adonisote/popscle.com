@@ -18,6 +18,9 @@ export default async function PrivatePage() {
   if (error) {
     console.error('Error fetching spaces:', error);
   }
+  if (!spaces) {
+    return <div>No spaces available at the moment</div>
+  }
 
   return (
     <div className=" w-full h-full flex flex-col items-center">
@@ -25,17 +28,7 @@ export default async function PrivatePage() {
 
       <div className="w-full h-full flex flex-col items-center justify-center">
         <p className="text-xl">Spaces</p>
-        {/* I need to create a table containing spaces that contain ressources */}
 
-        {/* <div>
-          {spaces.map(space => (
-            <div key={``} className="border rounded-lg m-4 border-slate-200">
-              <Link href={`/s/${space.toLocaleLowerCase()}`} >
-                <p className="text-center p-2">{space}</p>
-              </Link>
-            </div>
-          ))}
-        </div> */}
         <div className="w-full md:max-w-[800px]">
           {spaces?.map((space: Space) => (
             <div key={space.id} className="flex flex-col border rounded-lg m-4 border-slate-200 hover:bg-primary/90" >
