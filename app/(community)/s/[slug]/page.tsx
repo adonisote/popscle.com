@@ -1,9 +1,10 @@
 import { createClient } from "@/utils/supabase/server"
 import Link from "next/link"
 import { Resource } from "@/types/types"
-
 import { redirect } from "next/navigation";
-
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import Resources from "./filteredResources";
 
 export default async function Page({
   params
@@ -14,7 +15,7 @@ export default async function Page({
 
   const { data: spaces, error: spaceError } = await supabase
     .from("spaces")
-    .select("id, title")
+    .select("id, title, description")
     .ilike("title", params.slug)
   // If there is no space with the id redirect to /home
   if (!spaces || spaces.length === 0) {
@@ -22,6 +23,8 @@ export default async function Page({
     redirect('/home')
   }
   const spaceId = spaces[0]?.id
+  const spaceTitle = spaces[0]?.title
+  const spaceDescription = spaces[0]?.description
   console.log('spaceId: ', spaceId)
 
 
@@ -36,27 +39,65 @@ export default async function Page({
     console.log(resourcesError)
   }
 
+  //separate free resources from paid// This should change later to not fetch the whole data from the database
+  const paidResources = resources?.filter((resource: Resource) => resource.paid)
+  const freeResources = resources?.filter((resource: Resource) => !resource.paid)
   return (
-    <div className="flex flex-col items-center">
-      <p>{params.slug}</p>
 
-      <div>
-        {resources?.map((resource: Resource) => (
-          <div key={resource.id} className="m-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
-            <div className="p-2 flex flex-col items-center justify-center">
-              {resource.votes}
-            </div>
-            <Link
-              href={resource.url}
-            >
-              <p>
-                {resource.title}
-              </p>
-              <p>{resource.description}</p>
-            </Link>
-          </div>
-        ))}
+
+    <div className="flex flex-col items-center">
+      <div className="text-center">
+        <p className="text-xl">{spaceTitle}</p>
+        <p>{spaceDescription}</p>
       </div>
+
+      <Resources spaceId={spaceId} />
+
+      {/* <div className="w-full md:max-w-[800px]" >
+        <p>
+          Paid resources
+        </p>
+        <div>
+          {paidResources?.map((resource: Resource) => (
+            <div key={resource.id} className="m-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
+              <div className="p-2 flex flex-col items-center justify-center">
+                {resource.votes}
+              </div>
+              <Link
+                href={resource.url}
+              >
+                <p>
+                  {resource.title}
+                </p>
+                <p>{resource.description}</p>
+              </Link>
+            </div>
+          ))}
+        </div>
+
+      </div> */}
+
+      {/* <div className="w-full md:max-w-[800px]" >
+        <p>Free resources</p>
+        <div>
+          {freeResources?.map((resource: Resource) => (
+            <div key={resource.id} className="m-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
+              <div className="p-2 flex flex-col items-center justify-center">
+                {resource.votes}
+              </div>
+              <Link
+                href={resource.url}
+              >
+                <p>
+                  {resource.title}
+                </p>
+                <p>{resource.description}</p>
+              </Link>
+            </div>
+          ))}
+
+        </div>
+      </div> */}
 
     </div>
 
