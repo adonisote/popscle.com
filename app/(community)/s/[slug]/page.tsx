@@ -16,13 +16,14 @@ export default async function Page({
     .from("spaces")
     .select("id, title")
     .ilike("title", params.slug)
-  const spaceId = spaces[0]?.id
-  console.log('spaceId: ', spaceId)
   // If there is no space with the id redirect to /home
-  if (!spaceId) {
+  if (!spaces || spaces.length === 0) {
     console.log('spaceError;:', spaceError)
     redirect('/home')
   }
+  const spaceId = spaces[0]?.id
+  console.log('spaceId: ', spaceId)
+
 
   //Fetch resources matching the space_id
   const { data: resources, error: resourcesError } = await supabase
