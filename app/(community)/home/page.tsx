@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { Space } from '@/types/types';
-import { Popsicle, Ellipsis, ChevronUp, Plus } from 'lucide-react';
+import { Popsicle, Ellipsis } from 'lucide-react';
 
 const spaceData = [
   {
@@ -65,19 +65,19 @@ export default async function PrivatePage() {
       </h1>
 
       <div className='flex flex-col gap-2'>
-        {spaceData.map((item, i) => {
+        {spaces?.map((space: Space) => {
           return (
-            <Link href={item.slug} key={i}>
+            <Link href={space.title.toLocaleLowerCase()} key={space.id}>
               <div className='rounded-md px-2 py-3 flex items-center space-x-4 hover:bg-muted transition-all delay-100'>
                 <div className='bg-red-500 p-3 rounded-xl'>
                   <Popsicle />
                 </div>
                 <div className='flex-1 space-y-1'>
                   <p className='text-sm font-medium leading-none'>
-                    {item.name}
+                    {space.title}
                   </p>
                   <p className='text-sm text-muted-foreground'>
-                    {item.description}
+                    {space.description}
                   </p>
                 </div>
                 <Ellipsis className='text-muted-foreground' />
