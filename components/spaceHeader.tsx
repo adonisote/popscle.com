@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import ResourceSheet from '@/app/(community)/s/[slug]/submitResource';
 
 export type Space = {
   title: string;
@@ -27,10 +28,12 @@ export function SpaceHeader({ space }: { space: Space }) {
             </CardDescription>
           </div>
 
-          <Button className='self-start'>
+          <ResourceSheet />
+
+          {/* <Button className='self-start'>
             <Plus className='mr-2 h-4 w-4' />
             Add New Resource
-          </Button>
+          </Button> */}
         </div>
       </CardHeader>
     </Card>

@@ -56,10 +56,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <div className='flex flex-col items-center'>
       <SpaceHeader space={space} />
 
-      <div className='my-4 w-full flex flex-col items-end'>
-        <ResourceSheet />
-      </div>
-
       <div className='w-[850px] p-4 border-b'>
         <ResourceCard
           key={1}
