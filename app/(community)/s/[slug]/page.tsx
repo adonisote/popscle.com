@@ -8,6 +8,7 @@ import Resources from './filteredResources';
 import ResourceSheet from './submitResource';
 import { SpaceHeader } from '@/components/spaceHeader';
 import { Space } from '@/components/spaceHeader';
+import { ResourceCard } from '@/components/ResourceCard';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
@@ -57,6 +58,17 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
       <div className='my-4 w-full flex flex-col items-end'>
         <ResourceSheet />
+      </div>
+
+      <div className='w-[850px] p-4 border-b'>
+        <ResourceCard
+          key={1}
+          name={'item.name'}
+          score={'item.score'}
+          author={'item.author'}
+          url={'item.url'}
+          upvotedBy=''
+        />
       </div>
 
       <Resources spaceId={spaceId} />
