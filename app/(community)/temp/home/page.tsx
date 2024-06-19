@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { Space } from '@/types/types';
-import { Popsicle, Ellipsis, ChevronUp } from 'lucide-react';
+import { Popsicle, Ellipsis, ChevronUp, Plus } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import {
@@ -83,7 +83,7 @@ export default async function PrivatePage() {
   if (error) {
     console.error('Error fetching spaces:', error);
   }
-  if (!spaces) {
+  if (spaces) {
     return (
       <>
         <div className='w-[650px] p-4 border-b'>
@@ -196,16 +196,23 @@ export default async function PrivatePage() {
 
 export function SpaceInfoCard() {
   return (
-    <Card className='sm:col-span-2 w-[650px] rounded-lg'>
+    <Card className='sm:col-span-2 w-[850px] min-w-[650px] rounded-lg'>
       <CardHeader className='pb-3'>
-        <CardTitle>Frontend</CardTitle>
-        <CardDescription className='max-w-lg text-balance leading-relaxed'>
-          For front end web developers who want to move the web forward.
-        </CardDescription>
+        <div className='bg-gradient-to-tr from-[#FF72E1] to-[#F54C7A] w-full h-12 rounded-md relative' />
+        <div className='flex justify-between items-center py-8'>
+          <div className='flex flex-col'>
+            <CardTitle>Frontend</CardTitle>
+            <CardDescription className='max-w-lg text-balance leading-relaxed'>
+              For front end web developers who want to move the web forward.
+            </CardDescription>
+          </div>
+
+          <Button className='self-start'>
+            <Plus className='mr-2 h-4 w-4' />
+            Add New Resource
+          </Button>
+        </div>
       </CardHeader>
-      <CardFooter>
-        <Button>Add A New Resource</Button>
-      </CardFooter>
     </Card>
   );
 }
