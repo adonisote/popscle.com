@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { ChevronUp } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { SpaceHeader } from '@/components/spaceHeader';
 import { Space } from '@/components/spaceHeader';
 
@@ -60,6 +59,14 @@ export default async function PrivatePage() {
       isFree: true,
       upvotedBy: [],
     },
+    {
+      name: 'React Reference Overview',
+      score: 22,
+      author: 'Adonis',
+      url: 'https://react.dev/reference/react',
+      isFree: false,
+      upvotedBy: [],
+    },
   ];
 
   const supabase = createClient();
@@ -88,43 +95,14 @@ export default async function PrivatePage() {
                 .map((item, i) => {
                   return (
                     <>
-                      <Link href={item.url}>
-                        <div
-                          className='rounded-md px-2 py-3 flex space-x-4 hover:bg-muted transition-all delay-100 justify-between'
-                          key={i}
-                        >
-                          <div className='flex'>
-                            <div className='flex self-center text-sm'>
-                              {i + 1}.
-                            </div>
-                            <div className='p-3 hover:text-green-500 hover:animate-ping'>
-                              <ChevronUp />
-                            </div>
-                            <div className='flex flex-col'>
-                              <p>
-                                {item.name}{' '}
-                                <span className='text-sm text-muted-foreground'>
-                                  ({item.url.split('https://')})
-                                </span>
-                              </p>
-                              <div className='flex space-x-1'>
-                                <p className='text-muted-foreground text-sm'>
-                                  {item.score} points
-                                </p>
-                                <p className='text-muted-foreground text-sm'>
-                                  by{' '}
-                                  <span className='hover:underline underline-offset-4'>
-                                    {item.author}
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className='justify-end mr-20'>
-                            <AvatarStack />
-                          </div>
-                        </div>
-                      </Link>
+                      <ResourceCard
+                        key={i + 1}
+                        name={item.name}
+                        score={item.score}
+                        author={item.author}
+                        url={item.url}
+                        upvotedBy=''
+                      />
                     </>
                   );
                 })}
@@ -135,27 +113,14 @@ export default async function PrivatePage() {
                 .map((item, i) => {
                   return (
                     <>
-                      <Link href={item.url}>
-                        <div
-                          className='rounded-md px-2 py-3 flex space-x-4 hover:bg-muted transition-all delay-100'
-                          key={i}
-                        >
-                          <div className='p-3 hover:text-green-500 hover:animate-ping'>
-                            <ChevronUp />
-                          </div>
-                          <div className='flex flex-col'>
-                            <p>{item.name}</p>
-                            <div className='flex space-x-1'>
-                              <p className='text-muted-foreground text-sm'>
-                                {item.score} points
-                              </p>
-                              <p className='text-muted-foreground text-sm'>
-                                by {item.author}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
+                      <ResourceCard
+                        key={i + 1}
+                        name={item.name}
+                        score={item.score}
+                        author={item.author}
+                        url={item.url}
+                        upvotedBy=''
+                      />
                     </>
                   );
                 })}
@@ -201,3 +166,54 @@ export function AvatarStack() {
     </>
   );
 }
+
+interface ResourceCardProps {
+  name: any;
+  score: any;
+  author: any;
+  url: any;
+  upvotedBy: any;
+}
+
+const ResourceCard: React.FC<ResourceCardProps> = ({
+  name,
+  score,
+  author,
+  url,
+  upvotedBy,
+}) => {
+  return (
+    <>
+      <Link href={url}>
+        <div className='rounded-md px-2 py-3 flex space-x-4 hover:bg-muted transition-all delay-100 justify-between'>
+          <div className='flex'>
+            <div className='flex self-center text-sm'>{1}.</div>
+            <div className='p-3 hover:text-green-500 hover:animate-ping'>
+              <ChevronUp />
+            </div>
+            <div className='flex flex-col'>
+              <p>
+                {name}{' '}
+                <span className='text-sm text-muted-foreground'>
+                  ({url.split('https://')})
+                </span>
+              </p>
+              <div className='flex space-x-1'>
+                <p className='text-muted-foreground text-sm'>{score} points</p>
+                <p className='text-muted-foreground text-sm'>
+                  by{' '}
+                  <span className='hover:underline underline-offset-4'>
+                    {author}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className='justify-end mr-20'>
+            <AvatarStack />
+          </div>
+        </div>
+      </Link>
+    </>
+  );
+};
