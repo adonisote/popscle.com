@@ -9,6 +9,8 @@ import ResourceSheet from './submitResource';
 import { SpaceHeader } from '@/components/spaceHeader';
 import { Space } from '@/components/spaceHeader';
 import { ResourceCard } from '@/components/ResourceCard';
+import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
+import { Suspense } from 'react';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
