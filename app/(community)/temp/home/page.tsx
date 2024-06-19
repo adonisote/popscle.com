@@ -1,18 +1,24 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
-import { ChevronUp, Plus } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { SpaceHeader } from '@/components/spaceHeader';
+import { Space } from '@/components/spaceHeader';
 
 export default async function PrivatePage() {
+  const spaceTitle = 'Frontend';
+  const spaceDescription =
+    'For front end web developers who want to move the web forward.';
+
+  const space: Space = {
+    title: spaceTitle,
+    description: spaceDescription,
+    id: '',
+    created_at: '',
+  };
+
   const postData = [
     {
       name: 'MDN Web Docs',
@@ -67,7 +73,7 @@ export default async function PrivatePage() {
     return (
       <>
         <div className='mt-5'>
-          <SpaceInfoCard />
+          <SpaceHeader space={space} />
         </div>
 
         <div className='w-[850px] p-4 border-b'>
@@ -159,29 +165,6 @@ export default async function PrivatePage() {
       </>
     );
   }
-}
-
-export function SpaceInfoCard() {
-  return (
-    <Card className='sm:col-span-2 w-[850px] min-w-[650px] rounded-lg'>
-      <CardHeader className='pb-3'>
-        <div className='bg-gradient-to-tr from-[#FF72E1] to-[#F54C7A] w-full h-12 rounded-md relative' />
-        <div className='flex justify-between items-center py-8'>
-          <div className='flex flex-col'>
-            <CardTitle>Frontend</CardTitle>
-            <CardDescription className='max-w-lg text-balance leading-relaxed'>
-              For front end web developers who want to move the web forward.
-            </CardDescription>
-          </div>
-
-          <Button className='self-start'>
-            <Plus className='mr-2 h-4 w-4' />
-            Add New Resource
-          </Button>
-        </div>
-      </CardHeader>
-    </Card>
-  );
 }
 
 export function AvatarStack() {
