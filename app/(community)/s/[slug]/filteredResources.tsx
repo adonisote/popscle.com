@@ -101,8 +101,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         {data?.map((resource: Resource) =>
           <div key={resource.id} className="my-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 ">
             <div className="p-2 flex flex-col items-center justify-center">
-              <UpvoteResource />
-              {resource.votes}
+              <UpvoteResource resourceId={resource.id} />
             </div>
             <Link
               href={resource.url}
