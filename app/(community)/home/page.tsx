@@ -36,29 +36,6 @@ export default async function PrivatePage() {
   }
 
   return (
-    /*  <div className=' w-full h-full flex flex-col items-center'>
-      <div className='w-full h-full flex flex-col items-center justify-center'>
-        <p className='text-xl'>Spaces</p>
-
-        <div className='w-full md:max-w-[800px]'>
-          {spaces?.map((space: Space) => (
-            <div
-              key={space.id}
-              className='flex flex-col border rounded-lg m-4 border-slate-200 hover:bg-primary/90'
-            >
-              <Link
-                href={`/s/${space.title.toLocaleLowerCase()}`}
-                className=' w-full flex items-center h-[100px] mx-4 '
-              >
-                <div className='flex-grow'>
-                  <p className='text-center p-2'>{space.title}</p>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div> */
     <div className='w-[650px] p-4 border-b'>
       <h1 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
         Your Spaces
@@ -67,7 +44,7 @@ export default async function PrivatePage() {
       <div className='flex flex-col gap-2'>
         {spaces?.map((space: Space) => {
           return (
-            <Link href={space.title.toLocaleLowerCase()} key={space.id}>
+            <Link href={`/s/${space.title.toLocaleLowerCase()}`} key={space.id}>
               <div className='rounded-md px-2 py-3 flex items-center space-x-4 hover:bg-muted transition-all delay-100'>
                 <div className='bg-red-500 p-3 rounded-xl'>
                   <Popsicle />
