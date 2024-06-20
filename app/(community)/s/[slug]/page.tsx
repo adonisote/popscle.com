@@ -59,17 +59,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <SpaceHeader space={space} />
 
       <div className='w-[850px] p-4 border-b'>
-        <ResourceCard
-          key={1}
-          name={'item.name'}
-          score={'item.score'}
-          author={'item.author'}
-          url={'item.url'}
-          upvotedBy=''
-        />
+        <Resources spaceId={spaceId} />
       </div>
 
-      <Resources spaceId={spaceId} />
     </div>
   );
 }

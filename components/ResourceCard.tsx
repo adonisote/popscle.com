@@ -1,8 +1,10 @@
 import { AvatarStack } from './AvatarStack';
 import Link from 'next/link';
 import { ChevronUp } from 'lucide-react';
+import UpvoteResource from '@/app/(community)/s/[slug]/upvote';
 
 interface ResourceCardProps {
+  id: string;
   name: any;
   score: any;
   author: any;
@@ -11,6 +13,7 @@ interface ResourceCardProps {
 }
 
 export const ResourceCard: React.FC<ResourceCardProps> = ({
+  id,
   name,
   score,
   author,
@@ -18,14 +21,16 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   upvotedBy,
 }) => {
   return (
-    <>
-      <Link href={url}>
+    <div className='flex items-center'>
+      {/* The number 1 has to go */}
+      {/* <div className='flex self-center text-sm'>{1}.</div> */}
+      {/* <div className='p-3 hover:text-green-500 hover:animate-ping'>
+        <ChevronUp />
+      </div> */}
+      <UpvoteResource resourceId={id} />
+      <Link className='w-full' href={url}>
         <div className='rounded-md px-2 py-3 flex space-x-4 hover:bg-muted transition-all delay-100 justify-between'>
           <div className='flex'>
-            <div className='flex self-center text-sm'>{1}.</div>
-            <div className='p-3 hover:text-green-500 hover:animate-ping'>
-              <ChevronUp />
-            </div>
             <div className='flex flex-col'>
               <p>
                 {name}{' '}
@@ -47,8 +52,9 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           <div className='justify-end mr-20'>
             <AvatarStack />
           </div>
+
         </div>
       </Link>
-    </>
+    </div>
   );
 };

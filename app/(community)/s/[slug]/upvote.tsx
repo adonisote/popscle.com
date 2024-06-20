@@ -47,9 +47,10 @@ export default function UpvoteResource({ resourceId }: { resourceId: string }) {
 
   return (
     <div className='flex flex-col items-center'>
-      <Button variant="outline" size="icon" onClick={handleUpvote}>
-        <ChevronUp className="h-4 w-4" />
-      </Button>
+      {/* Not the same effect with a div. Needs to be fixed */}
+      <button className='p-3 hover:text-green-500 hover:animate-ping' onClick={handleUpvote}>
+        <ChevronUp />
+      </button>
       {votes}
     </div>
   )

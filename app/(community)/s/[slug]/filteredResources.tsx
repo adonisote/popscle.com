@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import clsx from 'clsx';
 import UpvoteResource from './upvote';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
+import { ResourceCard } from '@/components/ResourceCard';
 
 export default function Resources({ spaceId }: { spaceId: string }) {
   const [data, setData] = useState<Resource[]>([]);
@@ -29,7 +30,11 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   console.log(types);
 
   const getData = useCallback(async () => {
-    let query = supabase.from('resources').select().eq('space_id', spaceId);
+    let query = supabase
+      .from('resources')
+      .select(`*, profiles (username)`).eq('space_id', spaceId);
+
+    // let query = supabase.from('resources').select().eq('space_id', spaceId);
 
     if (filter === 'FREE') {
       query = query.eq('paid', false);
@@ -43,7 +48,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
 
     const { data, error } = await query;
     if (error) {
-      console.error(error);
+      console.log('Error fetching resources:', error);
     } else {
       setData(data);
     }
@@ -139,19 +144,34 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         )}
 
         {data?.map((resource: Resource) => (
-          <div
-            key={resource.id}
-            className='my-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 '
-          >
-            <div className='p-2 flex flex-col items-center justify-center'>
-              <UpvoteResource resourceId={resource.id} />
-            </div>
-            <Link href={resource.url}>
-              <p>{resource.title}</p>
-              <p>{resource.description}</p>
-            </Link>
-            <p>{resource.type_id}</p>
-          </div>
+          <>
+            <ResourceCard
+              key={resource.id}
+              id={resource.id}
+              name={resource.title}
+              score={resource.votes}
+              author={resource.profiles.username}
+              url={resource.url}
+              upvotedBy=''
+
+            />
+
+
+
+            {/* <div
+              key={resource.id}
+              className='my-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 '
+            >
+              <div className='p-2 flex flex-col items-center justify-center'>
+                <UpvoteResource resourceId={resource.id} />
+              </div>
+              <Link href={resource.url}>
+                <p>{resource.title}</p>
+                <p>{resource.description}</p>
+              </Link>
+              <p>{resource.type_id}</p>
+            </div> */}
+          </>
         ))}
       </div>
     </div>
