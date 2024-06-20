@@ -78,6 +78,19 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     });
   };
 
+  const handleUpvote = async (resourceId) => {
+    const { error } = await supabase.rpc('increment_votes', { resource_id: resourceId });
+    if (error) {
+      console.log('Error updating vote', error);
+    } else {
+      setData((prevData) =>
+        prevData.map((resource) =>
+          resource.id === resourceId ? { ...resource, votes: resource.votes + 1 } : resource
+        )
+      );
+    }
+  };
+
   return (
     <div className='md:w-max-[800px] mx-4'>
       <div className='my-4 w-full flex flex-col  items-end '>
@@ -153,7 +166,8 @@ export default function Resources({ spaceId }: { spaceId: string }) {
               author={resource.profiles.username}
               url={resource.url}
               upvotedBy=''
-
+              votes={resource.votes}
+              onUpvote={handleUpvote}
             />
 
 

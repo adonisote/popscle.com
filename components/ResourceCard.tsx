@@ -10,6 +10,8 @@ interface ResourceCardProps {
   author: any;
   url: any;
   upvotedBy: any;
+  votes: number;
+  onUpvote: (resourceId: string) => void;
 }
 
 export const ResourceCard: React.FC<ResourceCardProps> = ({
@@ -19,6 +21,8 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   author,
   url,
   upvotedBy,
+  votes,
+  onUpvote
 }) => {
   return (
     <div className='flex items-center'>
@@ -27,7 +31,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       {/* <div className='p-3 hover:text-green-500 hover:animate-ping'>
         <ChevronUp />
       </div> */}
-      <UpvoteResource resourceId={id} />
+      <UpvoteResource resourceId={id} votes={votes} onUpvote={onUpvote} />
       <Link className='w-full' href={url}>
         <div className='rounded-md px-2 py-3 flex space-x-4 hover:bg-muted transition-all delay-100 justify-between'>
           <div className='flex'>
