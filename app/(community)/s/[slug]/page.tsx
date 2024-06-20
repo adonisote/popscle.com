@@ -1,16 +1,11 @@
 import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
 import { Resource } from '@/types/types';
 import { redirect } from 'next/navigation';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
 import Resources from './filteredResources';
-import ResourceSheet from './submitResource';
 import { SpaceHeader } from '@/components/spaceHeader';
 import { Space } from '@/components/spaceHeader';
-import { ResourceCard } from '@/components/ResourceCard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
-import { Suspense } from 'react';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
@@ -59,9 +54,41 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <SpaceHeader space={space} />
 
       <div className='w-[850px] p-4 border-b'>
-        <Resources spaceId={spaceId} />
+        <Tabs defaultValue='all'>
+          <TabsList>
+            <TabsTrigger value='all'>All</TabsTrigger>
+            <TabsTrigger value='free'>Free</TabsTrigger>
+            <TabsTrigger value='paid'>Paid</TabsTrigger>
+          </TabsList>
+          <TabsContent value='all'>
+            <Resources spaceId={spaceId} />
+          </TabsContent>
+          <TabsContent value='free'>
+            <Resources spaceId={spaceId} />
+          </TabsContent>
+          <TabsContent value='paid'></TabsContent>
+        </Tabs>
       </div>
 
+      <div className='w-[850px] p-4 border-b'>
+        <h2 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
+          Online Courses
+        </h2>
+        <SkeletonResourceCard />
+        <SkeletonResourceCard />
+        <SkeletonResourceCard />
+        <SkeletonResourceCard />
+      </div>
+
+      <div className='w-[850px] p-4 border-b'>
+        <h2 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
+          Books
+        </h2>
+        <SkeletonResourceCard />
+        <SkeletonResourceCard />
+        <SkeletonResourceCard />
+        <SkeletonResourceCard />
+      </div>
     </div>
   );
 }

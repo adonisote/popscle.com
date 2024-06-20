@@ -22,10 +22,10 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   url,
   upvotedBy,
   votes,
-  onUpvote
+  onUpvote,
 }) => {
   return (
-    <div className='flex items-center'>
+    <div className='flex items-center ease-in-out'>
       {/* The number 1 has to go */}
       {/* <div className='flex self-center text-sm'>{1}.</div> */}
       {/* <div className='p-3 hover:text-green-500 hover:animate-ping'>
@@ -56,7 +56,6 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           <div className='justify-end mr-20'>
             <AvatarStack />
           </div>
-
         </div>
       </Link>
     </div>

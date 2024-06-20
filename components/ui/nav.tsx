@@ -37,16 +37,14 @@ export default async function Nav() {
         {user && (
           <>
             <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className='border-2 border-background mr-4'>
+              <DropdownMenuTrigger asChild>
+                <Avatar className='border-2 border-background'>
                   <AvatarImage src='#' />
                   <AvatarFallback>{user.email[0].toUpperCase()}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem className='text-muted-foreground'>
                   <Link className='w-full' href={`/account`}>
                     Profile
                   </Link>
@@ -54,7 +52,11 @@ export default async function Nav() {
 
                 <DropdownMenuItem>
                   <form action='/auth/signout' method='post'>
-                    <Button variant={'ghost'} className='p-0 m-0' type='submit'>
+                    <Button
+                      variant={'ghost'}
+                      className='p-0 m-0 text-muted-foreground'
+                      type='submit'
+                    >
                       Sign out
                     </Button>
                   </form>

@@ -32,7 +32,8 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   const getData = useCallback(async () => {
     let query = supabase
       .from('resources')
-      .select(`*, profiles (username)`).eq('space_id', spaceId);
+      .select(`*, profiles (username)`)
+      .eq('space_id', spaceId);
 
     // let query = supabase.from('resources').select().eq('space_id', spaceId);
 
@@ -79,13 +80,17 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   };
 
   const handleUpvote = async (resourceId: string) => {
-    const { error } = await supabase.rpc('increment_votes', { resource_id: resourceId });
+    const { error } = await supabase.rpc('increment_votes', {
+      resource_id: resourceId,
+    });
     if (error) {
       console.log('Error updating vote', error);
     } else {
       setData((prevData) =>
         prevData.map((resource) =>
-          resource.id === resourceId ? { ...resource, votes: resource.votes + 1 } : resource
+          resource.id === resourceId
+            ? { ...resource, votes: resource.votes + 1 }
+            : resource
         )
       );
     }
@@ -169,8 +174,6 @@ export default function Resources({ spaceId }: { spaceId: string }) {
               votes={resource.votes}
               onUpvote={handleUpvote}
             />
-
-
 
             {/* <div
               key={resource.id}
