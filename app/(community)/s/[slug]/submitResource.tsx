@@ -34,15 +34,15 @@ import { createClient } from '@/utils/supabase/client';
 // Define the schema for the resource form
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required.' }),
-  description: z.string().nullable(),
-  url: z.string().url({ message: 'Invalid URL.' }).nullable(),
-  votes: z.number().nullable(),
+  description: z.string().min(1, { message: 'Description is required.' }),
+  url: z.string().url({ message: 'Invalid URL.' }),
+  votes: z.number().nullable().default(0),
   user_id: z.string().uuid({ message: 'Invalid UUID.' }),
   space_id: z.string().uuid({ message: 'Invalid UUID.' }),
-  created_at: z.string().nullable(),
-  updated_at: z.string().nullable(),
-  type_id: z.number().nullable(),
-  paid: z.boolean().nullable(),
+  created_at: z.string().default(new Date().toISOString()),
+  updated_at: z.string().default(new Date().toISOString()),
+  type_id: z.number().int(),
+  paid: z.boolean(),
 });
 
 export function ResourceForm({ submit }: { submit: () => void }) {
@@ -61,17 +61,17 @@ export function ResourceForm({ submit }: { submit: () => void }) {
     };
 
     fetchTypes();
-  }, []);
+  }, [supabase]); // Added 'supabase' to the dependency array
 
   // 1. Define form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
-      description: null,
-      url: null,
-      type_id: null,
-      paid: null,
+      description: '',
+      url: '',
+      type_id: 1,
+      paid: false,
     },
   });
 
@@ -82,8 +82,8 @@ export function ResourceForm({ submit }: { submit: () => void }) {
     const formData = {
       ...values,
       votes: 0,
-      user_id: 'to be implemented',
-      space_id: 'to be implemend',
+      user_id: '1ae71fe5-5097-4672-bcfb-6d2e5e514915',
+      space_id: '8f79f14e-e33e-470d-b4d9-3e639a9e09b8',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -141,12 +141,31 @@ export function ResourceForm({ submit }: { submit: () => void }) {
             <FormItem>
               <FormLabel>Type ID</FormLabel>
               <FormControl>
-                <Input placeholder='Type' type='number' {...field} />
+                <Input
+                  placeholder='Type'
+                  type='number'
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))} // Convert to number
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        {/* <FormField
+          control={form.control}
+          name='type_id'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Type ID</FormLabel>
+              <FormControl>
+                <Input placeholder='Type' type='number' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
+
         <FormField
           control={form.control}
           name='paid'
@@ -154,7 +173,7 @@ export function ResourceForm({ submit }: { submit: () => void }) {
             <FormItem>
               <FormLabel>Paid</FormLabel>
               <FormControl>
-                <Input placeholder='Paid' type='checkbox' {...field} />
+                <Input placeholder='Paid' type='checkbox' {...field} checked={field.value || false} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
