@@ -166,6 +166,19 @@ export function ResourceForm({ submit }: { submit: () => void }) {
           )}
         /> */}
 
+        {/* <FormField
+          control={form.control}
+          name='paid'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Paid</FormLabel>
+              <FormControl>
+                <input placeholder='Paid' type='checkbox' {...field} checked={field.value || false} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
         <FormField
           control={form.control}
           name='paid'
@@ -173,7 +186,12 @@ export function ResourceForm({ submit }: { submit: () => void }) {
             <FormItem>
               <FormLabel>Paid</FormLabel>
               <FormControl>
-                <Input placeholder='Paid' type='checkbox' {...field} checked={field.value || false} onChange={field.onChange} />
+                {/* Ensure checkbox input is handled properly */}
+                <input
+                  type='checkbox'
+                  checked={field.value || false}
+                  onChange={(e) => field.onChange(e.target.checked)} // Handle checkbox change
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
