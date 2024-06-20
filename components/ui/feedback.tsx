@@ -1,9 +1,9 @@
 "use client"
-
+import { createClient } from "@/utils/supabase/client"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 
 import { Button } from "@/components/ui/button"
@@ -43,6 +43,8 @@ const formSchema = z.object({
 
 
 export function FeedbackForm({ submit }: { submit: () => void }) {
+  const supabase = createClient()
+
   //1. Define form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,12 +53,41 @@ export function FeedbackForm({ submit }: { submit: () => void }) {
     }
   })
 
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Fetch the current user
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (data && data.user) {
+        setUserId(data.user.id);
+      } else {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   //2. Define submit handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
-    submit()
+    const feedbackData = {
+      feedback: values.feedback,
+      user_id: userId ? userId : 'db74a0c3-9fb9-4fa7-818a-1f1d507d7d42'
+    };
+
+    const { data, error } = await supabase
+      .from('feedbacks')
+      .insert([feedbackData]);
+
+    if (error) {
+      console.error('Error inserting feedback:', error);
+    } else {
+      console.log('Feedback inserted:', data);
+      submit();
+    }
   }
 
   return (
