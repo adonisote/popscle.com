@@ -1,9 +1,16 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/server';
-import { Popsicle } from 'lucide-react';
-import logo from '@/logo.svg';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default async function Nav() {
   const supabase = createClient();
@@ -26,29 +33,36 @@ export default async function Nav() {
         </Link>
       </div>
 
-      <div className='flex space-x-4'>
-        <div className='flex'>
-          <Link
-            className='p-2 hover:underline hover:underline-offset-4'
-            href='/home'
-          >
-            Spaces
-          </Link>
-          {user && (
-            <>
-              <Link
-                className=' p-2 hover:underline hover:underline-offset-4'
-                href={`/account`}
-              >
-                Profile
-              </Link>
+      <div className='flex'>
+        {user && (
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar className='border-2 border-background mr-4'>
+                  <AvatarImage src='#' />
+                  <AvatarFallback>{user.email[0].toUpperCase()}</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Link className='w-full' href={`/account`}>
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
 
-              <form action='/auth/signout' method='post'>
-                <Button type='submit'>Sign out</Button>
-              </form>
-            </>
-          )}
-        </div>
+                <DropdownMenuItem>
+                  <form action='/auth/signout' method='post'>
+                    <Button variant={'ghost'} className='p-0 m-0' type='submit'>
+                      Sign out
+                    </Button>
+                  </form>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        )}
       </div>
     </div>
   );
