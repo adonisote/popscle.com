@@ -67,7 +67,7 @@ export function FeedbackForm({ submit }: { submit: () => void }) {
     };
 
     fetchUser();
-  }, []);
+  }, [supabase.auth]);
 
   //2. Define submit handler
   async function onSubmit(values: z.infer<typeof formSchema>) {

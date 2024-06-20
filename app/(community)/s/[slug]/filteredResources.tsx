@@ -78,7 +78,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     });
   };
 
-  const handleUpvote = async (resourceId) => {
+  const handleUpvote = async (resourceId: string) => {
     const { error } = await supabase.rpc('increment_votes', { resource_id: resourceId });
     if (error) {
       console.log('Error updating vote', error);
