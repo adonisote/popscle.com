@@ -53,7 +53,7 @@ const handleClick = (person_name: string) => {
   });
 };
 
-export default function TestimonialCard({
+export default function PeopleCardAndSheet({
   name = person.name,
   role = person.role,
   image = '/people/malik.jpeg',
@@ -103,7 +103,7 @@ export default function TestimonialCard({
           onBlur={handleBlur}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className='rounded-xl bg-[#0f0f0f] shadow-2xl min-h-80'
+          className='rounded-xl bg-[#101017] border-[#162029] shadow-2xl min-h-80'
         >
           <div
             className='pointer-events-none absolute -inset-px opacity-0 transition duration-300'
@@ -134,7 +134,7 @@ export default function TestimonialCard({
           <CardFooter>
             <Sheet>
               <SheetTrigger
-                className='h-10 px-4 py-2 w-full bg-[#2f2f2f] hover:bg-pink-400 hover:text-white text-white rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
+                className='h-10 px-4 py-2 w-full bg-muted hover:bg-pink-400 hover:text-white text-white rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
                 onClick={() => handleClick(name)}
               >
                 Join {name.split(' ')[0]}

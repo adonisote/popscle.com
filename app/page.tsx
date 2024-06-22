@@ -1,21 +1,29 @@
 import HeroHeader from '@/components/heroHeader';
 import { Motto } from '@/components/motto';
-import TestimonialCard from '@/components/testimonialCard';
+import PeopleCardAndSheet from '@/components/peopleCardAndSheet';
 import Image from 'next/image';
 import Link from 'next/link';
+
+// bg-[#0f0f0f] - Black but with some white
+// bg-[#060912] - Black Blue from Figma
+// bg-[#0b101e] - Black Blue from Figma with a bit of white
 
 export default function Home() {
   return (
     <>
-      <main className='bg-[#0f0f0f] flex min-h-screen flex-col items-center justify-between p-6 md:p-24'>
-        <div className='absolute inset-0 h-full w-full bg-[#0f0f0f] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:6rem_4rem]'></div>
+      <main className='bg-[#101017] flex min-h-screen flex-col items-center justify-between p-6 md:p-24'>
+        <div className='absolute inset-0 h-full w-full bg-[#101017] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:6rem_4rem]' />
+
         <div className='relative isolate px-6 pt-14 lg:px-8'>
+          <div className='absolute top-0 -z-10 h-full w-full'>
+            <div className='absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[#8f73f47c] opacity-30 blur-[80px]' />
+          </div>
           <div
-            className='absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80'
+            className='absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-[60px] sm:-top-80'
             aria-hidden='true'
           >
             <div
-              className='relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-40 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]'
+              className='relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#F6B0E6] to-[#b5b0f6] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]'
               style={{
                 clipPath:
                   'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
@@ -31,85 +39,85 @@ export default function Home() {
         </span>
 
         <section className='flex flex-col md:flex-row'>
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Ben Bachem'
             role='Founding Engineer, Superchat'
             image='/people/ben.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Manuel Dolderer'
             role='Co-Founder, CODE'
             image='/people/manuel.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Johann Hemmann'
             role='Rust Developer, Ferrous Systems'
             image='/people/johann2.jpg'
           />
         </section>
         <section className='flex flex-col md:flex-row'>
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Svitlana Midianko'
             role='Product Enablement, Google Labs'
             image='/people/svitlana.jpg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Malik Piara'
             role='Product Enablement, CarByte'
             image='/people/malik.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Linus Bolls'
             role='Founding Engineer, Flamingo'
             image='/people/linus.png'
           />
         </section>
         <section className='flex flex-col md:flex-row'>
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Lennart Schoch'
             role='Senior Product Engineer, Bounce'
             image='/people/lennart.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Jonathan Freiberger'
             role='Backend Development'
             image='/people/joni.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Maya Alroy'
             role='UX & Design Acessibility'
             image='/people/maya.png'
           />
         </section>
         <section className='flex flex-col md:flex-row'>
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Lion Reinacher'
             role='Founding Engineer, CircleSquare'
             image='/people/lion.png'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Zaid Zaim'
             role='Spatial Computing Expert, ignore gravity'
             image='/people/zaid.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Pablo Schlesselmann'
             role='Founding Engineer, CircleSquare'
             image='/people/pablo.jpeg'
           />
         </section>
         <section className='flex flex-col md:flex-row'>
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Emely Henninger'
             role='Software Engineer, CERN'
             image='/people/emely.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Heiko Damaske'
             role='Founders Associate, Flinn Comply'
             image='/people/heiko.jpeg'
           />
-          <TestimonialCard
+          <PeopleCardAndSheet
             name='Moritz Eich'
             role='AI Developer, Patient21'
             image='/people/moritz.jpeg'
