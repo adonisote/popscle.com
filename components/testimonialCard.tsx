@@ -25,7 +25,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import posthog from 'posthog-js';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -58,13 +58,60 @@ export default function TestimonialCard({
   role = person.role,
   image = '/people/malik.jpeg',
 }) {
+  const divRef = useRef<HTMLDivElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!divRef.current || isFocused) return;
+
+    const div = divRef.current;
+    const rect = div.getBoundingClientRect();
+
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    setOpacity(1);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setOpacity(0);
+  };
+
+  const handleMouseEnter = () => {
+    setOpacity(1);
+  };
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+  };
+
   const [formIsSubmitted, setFormIsSubmitted] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
   return (
     <>
-      <div className='py-8 px-4 mx-auto w-96 max-w-screen-xl text-center animate-in'>
-        <Card className='rounded-xl bg-slate-900 border-slate-800 shadow-2xl min-h-80'>
+      <div className='my-8 mx-4 w-96 max-w-screen-xl text-center animate-in'>
+        <Card
+          ref={divRef}
+          onMouseMove={handleMouseMove}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className='rounded-xl bg-[#0f0f0f] shadow-2xl min-h-80'
+        >
+          <div
+            className='pointer-events-none absolute -inset-px opacity-0 transition duration-300'
+            style={{
+              opacity,
+              background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255,255,255,.06), transparent 40%)`,
+            }}
+          />
           <CardHeader className='flex items-center'>
             <div className='rounded-full'>
               <Image
@@ -80,19 +127,19 @@ export default function TestimonialCard({
             <h3 className='mb-2 text-xl font-normal tracking-tight leading-none text-white'>
               {name}
             </h3>
-            <p className='mb-2 font-light text-slate-400 lg:text-md sm:px-16 md:min-h-12'>
+            <p className='mb-2 font-normal text-slate-400 lg:text-md sm:px-16 md:min-h-12'>
               {role}
             </p>
           </CardContent>
           <CardFooter>
             <Sheet>
               <SheetTrigger
-                className='h-10 px-4 py-2 w-full bg-slate-800 hover:bg-pink-400 hover:text-white text-slate-400 rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
+                className='h-10 px-4 py-2 w-full bg-[#2f2f2f] hover:bg-pink-400 hover:text-white text-white rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
                 onClick={() => handleClick(name)}
               >
                 Join {name.split(' ')[0]}
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent className='m-2 rounded-xl bg-black w-96 shadow-2xl border-2'>
                 <SheetHeader>
                   <SheetTitle>Join {name.split(' ')[0]} on Popscle</SheetTitle>
                   <SheetDescription>

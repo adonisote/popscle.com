@@ -7,7 +7,8 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <>
-      <main className='bg-slate-900 flex min-h-screen flex-col items-center justify-between p-6 md:p-24'>
+      <main className='bg-[#0f0f0f] flex min-h-screen flex-col items-center justify-between p-6 md:p-24'>
+        <div className='absolute inset-0 h-full w-full bg-[#0f0f0f] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:6rem_4rem]'></div>
         <div className='relative isolate px-6 pt-14 lg:px-8'>
           <div
             className='absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80'
@@ -58,9 +59,9 @@ export default function Home() {
             image='/people/malik.jpeg'
           />
           <TestimonialCard
-            name='Maya Alroy'
-            role='UX & Design Acessibility'
-            image='/people/maya.png'
+            name='Linus Bolls'
+            role='Founding Engineer, Flamingo'
+            image='/people/linus.png'
           />
         </section>
         <section className='flex flex-col md:flex-row'>
@@ -75,9 +76,9 @@ export default function Home() {
             image='/people/joni.jpeg'
           />
           <TestimonialCard
-            name='Linus Bolls'
-            role='Founding Engineer, Flamingo'
-            image='/people/linus.png'
+            name='Maya Alroy'
+            role='UX & Design Acessibility'
+            image='/people/maya.png'
           />
         </section>
         <section className='flex flex-col md:flex-row'>
@@ -95,6 +96,23 @@ export default function Home() {
             name='Pablo Schlesselmann'
             role='Founding Engineer, CircleSquare'
             image='/people/pablo.jpeg'
+          />
+        </section>
+        <section className='flex flex-col md:flex-row'>
+          <TestimonialCard
+            name='Emely Henninger'
+            role='Software Engineer, CERN'
+            image='/people/emely.jpeg'
+          />
+          <TestimonialCard
+            name='Heiko Damaske'
+            role='Founders Associate, Flinn Comply'
+            image='/people/heiko.jpeg'
+          />
+          <TestimonialCard
+            name='Moritz Eich'
+            role='AI Developer, Patient21'
+            image='/people/moritz.jpeg'
           />
         </section>
 
