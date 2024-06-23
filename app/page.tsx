@@ -37,90 +37,92 @@ export default function Home() {
           Join Our Community
         </span>
 
-        <section className='flex flex-col md:flex-row animate-in-after'>
-          <PeopleCardAndSheet
-            name='Ben Bachem'
-            role='Founding Engineer, Superchat'
-            image='/people/ben.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Manuel Dolderer'
-            role='Co-Founder, CODE'
-            image='/people/manuel.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Johann Hemmann'
-            role='Rust Developer, Ferrous Systems'
-            image='/people/johann2.jpg'
-          />
-        </section>
-        <section className='flex flex-col md:flex-row'>
-          <PeopleCardAndSheet
-            name='Svitlana Midianko'
-            role='Product Enablement, Google Labs'
-            image='/people/svitlana.jpg'
-          />
-          <PeopleCardAndSheet
-            name='Malik Piara'
-            role='Product Enablement, CarByte'
-            image='/people/malik.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Linus Bolls'
-            role='Founding Engineer, Flamingo'
-            image='/people/linus.png'
-          />
-        </section>
-        <section className='flex flex-col md:flex-row'>
-          <PeopleCardAndSheet
-            name='Lennart Schoch'
-            role='Senior Product Engineer, Bounce'
-            image='/people/lennart.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Jonathan Freiberger'
-            role='Backend Development'
-            image='/people/joni.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Maya Alroy'
-            role='UX & Design Acessibility'
-            image='/people/maya.png'
-          />
-        </section>
-        <section className='flex flex-col md:flex-row'>
-          <PeopleCardAndSheet
-            name='Lion Reinacher'
-            role='Founding Engineer, CircleSquare'
-            image='/people/lion.png'
-          />
-          <PeopleCardAndSheet
-            name='Zaid Zaim'
-            role='Spatial Computing Expert, ignore gravity'
-            image='/people/zaid.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Pablo Schlesselmann'
-            role='Founding Engineer, CircleSquare'
-            image='/people/pablo.jpeg'
-          />
-        </section>
-        <section className='flex flex-col md:flex-row'>
-          <PeopleCardAndSheet
-            name='Emely Henninger'
-            role='Software Engineer, CERN'
-            image='/people/emely.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Heiko Damaske'
-            role='Founders Associate, Flinn Comply'
-            image='/people/heiko.jpeg'
-          />
-          <PeopleCardAndSheet
-            name='Moritz Eich'
-            role='AI Developer, Patient21'
-            image='/people/moritz.jpeg'
-          />
+        <section className='animate-in-after'>
+          <section className='flex flex-col md:flex-row'>
+            <PeopleCardAndSheet
+              name='Ben Bachem'
+              role='Founding Engineer, Superchat'
+              image='/people/ben.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Manuel Dolderer'
+              role='Co-Founder, CODE'
+              image='/people/manuel.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Johann Hemmann'
+              role='Rust Developer, Ferrous Systems'
+              image='/people/johann2.jpg'
+            />
+          </section>
+          <section className='flex flex-col md:flex-row'>
+            <PeopleCardAndSheet
+              name='Svitlana Midianko'
+              role='Product Enablement, Google Labs'
+              image='/people/svitlana.jpg'
+            />
+            <PeopleCardAndSheet
+              name='Malik Piara'
+              role='Product Enablement, CarByte'
+              image='/people/malik.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Linus Bolls'
+              role='Founding Engineer, Flamingo'
+              image='/people/linus.png'
+            />
+          </section>
+          <section className='flex flex-col md:flex-row'>
+            <PeopleCardAndSheet
+              name='Lennart Schoch'
+              role='Senior Product Engineer, Bounce'
+              image='/people/lennart.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Jonathan Freiberger'
+              role='Backend Development'
+              image='/people/joni.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Maya Alroy'
+              role='UX & Design Acessibility'
+              image='/people/maya.png'
+            />
+          </section>
+          <section className='flex flex-col md:flex-row'>
+            <PeopleCardAndSheet
+              name='Lion Reinacher'
+              role='Founding Engineer, CircleSquare'
+              image='/people/lion.png'
+            />
+            <PeopleCardAndSheet
+              name='Zaid Zaim'
+              role='Spatial Computing Expert, ignore gravity'
+              image='/people/zaid.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Pablo Schlesselmann'
+              role='Founding Engineer, CircleSquare'
+              image='/people/pablo.jpeg'
+            />
+          </section>
+          <section className='flex flex-col md:flex-row'>
+            <PeopleCardAndSheet
+              name='Emely Henninger'
+              role='Software Engineer, CERN'
+              image='/people/emely.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Heiko Damaske'
+              role='Founders Associate, Flinn Comply'
+              image='/people/heiko.jpeg'
+            />
+            <PeopleCardAndSheet
+              name='Moritz Eich'
+              role='AI Developer, Patient21'
+              image='/people/moritz.jpeg'
+            />
+          </section>
         </section>
 
         {/* <div className='relative w-full max-w-lg'>
