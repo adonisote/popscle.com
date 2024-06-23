@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import './globals.css';
 import { CSPostHogProvider } from './providers';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['100', '300', '500'] });
+const manrope = Manrope({
+  subsets: ['latin'],
+  weight: ['200', '300', '500', '600', '800'],
+});
 
 export const metadata: Metadata = {
   title: 'Popscle',
@@ -19,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <CSPostHogProvider>
-        <body className={poppins.className}>{children}</body>
+        <body className={manrope.className}>{children}</body>
       </CSPostHogProvider>
     </html>
   );
