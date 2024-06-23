@@ -62,7 +62,7 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "blob-landing": "landing-blob 8s ease-in-out infinite"
+        "blob-landing": "landing-blob 14s ease-in-out infinite"
       },
       keyframes: {
         "landing-blob": {

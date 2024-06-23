@@ -3,7 +3,7 @@
   @tailwind utilities;
 
   .animate-in-blob {
-    animation: animateInBlob 0.5s ease-in-out 0.4s both, landing-blob 8s ease-in-out infinite;
+    animation: animateInBlob 0.5s ease-in-out 0.4s both, landing-blob 14s ease-in-out infinite;
   }
 
   .animate-in {
