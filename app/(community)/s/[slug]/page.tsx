@@ -6,13 +6,17 @@ import { SpaceHeader } from '@/components/spaceHeader';
 import { Space } from '@/components/spaceHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
+import SubmitTemp from './submitResourceTemp';
+
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
+  console.log('Params: ', params)
+  console.log('Params slug', params.slug)
 
   const { data: spaces, error: spaceError } = await supabase
     .from('spaces')
-    .select('id, title, description')
+    .select('id, title, description, created_at')
     .ilike('title', params.slug);
 
   // If there is no space with the id redirect to /home
@@ -23,6 +27,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const spaceId = spaces[0]?.id;
   const spaceTitle = spaces[0]?.title;
   const spaceDescription = spaces[0]?.description;
+  const spaceCreatedAt = spaces[0]?.created_at
 
   //Fetch resources matching the space_id
   const { data: resources, error: resourcesError } = await supabase
@@ -46,11 +51,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const space: Space = {
     title: spaceTitle,
     description: spaceDescription,
-    id: '',
-    created_at: '',
+    id: spaceId,
+    created_at: spaceCreatedAt,
   };
+
   return (
     <div className='flex flex-col items-center'>
+      <p>Submit new resource</p>
+      <SubmitTemp space={space} />
+
       <SpaceHeader space={space} />
 
       <div className='w-[850px] p-4 border-b'>
