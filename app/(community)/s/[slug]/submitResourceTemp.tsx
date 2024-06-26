@@ -41,12 +41,12 @@ export default function SubmitTemp({ space }: { space: Space }) {
   console.log('selectTypes:', selectTypes)
 
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target
     setFormData((prevData) => ({ ...prevData, [name]: value }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
     setLoading(true)
     console.log('Values of Form, not inserted yet: ', formData)
