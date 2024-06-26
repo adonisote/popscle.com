@@ -1,12 +1,17 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import AddResourceForm from '@/components/AddResourceForm'
+
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
 import ResourceSheet from '@/app/(community)/s/[slug]/submitResource';
+
 
 export type Space = {
   title: string;
@@ -15,7 +20,25 @@ export type Space = {
   created_at: '';
 };
 
-export function SpaceHeader({ space }: { space: Space }) {
+//Submit resource on Dialog:
+
+
+
+//Alternative: submit resource in a new page
+function SubmitResource({ slug }: { slug: string }) {
+
+  return (
+    <Button className='' asChild>
+      <Link href={`/s/${slug}/submit`}>
+        <Plus className='mr-2 h-4 w-4' />
+        Add Resource
+      </Link>
+    </Button>
+
+  )
+}
+
+export function SpaceHeader({ space, slug }: { space: Space, slug: string }) {
   return (
     <Card className='sm:col-span-2 w-[850px] min-w-[650px] rounded-lg'>
       <CardHeader className='pb-3'>
@@ -28,12 +51,11 @@ export function SpaceHeader({ space }: { space: Space }) {
             </CardDescription>
           </div>
 
-          <ResourceSheet />
+          {/* Submit resource in a new page */}
+          <SubmitResource slug={slug} />
 
-          {/* <Button className='self-start'>
-            <Plus className='mr-2 h-4 w-4' />
-            Add New Resource
-          </Button> */}
+          <ResourceSheet />
+          <AddResourceForm />
         </div>
       </CardHeader>
     </Card>
