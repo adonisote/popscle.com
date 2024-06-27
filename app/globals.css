@@ -3,21 +3,21 @@
   @tailwind utilities;
 
   .animate-in-blob {
-    animation: animateInBlob 0.5s ease-in-out 0.4s both, landing-blob 14s ease-in-out infinite;
+    animation: animateInBlob 2.5s ease-out 0.8s both, landing-blob 12s ease-in-out infinite;
   }
 
   .animate-in {
-    animation: animateIn 0.4s ease 1s both;
+    animation: animateIn 0.3s ease-out 0.4s both;
   }
 
   .animate-in-after {
-    animation: animateIn 0.4s ease 1.2s both;
+    animation: animateIn 0.3s ease-out 0.6s both;
   }
   
   @keyframes animateIn {
     from {
       opacity: 0;
-      transform: translateY(25px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
