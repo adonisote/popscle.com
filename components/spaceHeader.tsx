@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import AddResourceForm from '@/components/AddResourceForm'
+
 
 import {
   Card,
@@ -25,7 +25,7 @@ export type Space = {
 
 
 //Alternative: submit resource in a new page
-function SubmitResource({ slug }: { slug: string }) {
+function AddResourceButton({ slug }: { slug: string }) {
 
   return (
     <Button className='' asChild>
@@ -50,12 +50,8 @@ export function SpaceHeader({ space, slug }: { space: Space, slug: string }) {
               {space.description}
             </CardDescription>
           </div>
-
           {/* Submit resource in a new page */}
-          <SubmitResource slug={slug} />
-
-          <ResourceSheet />
-          <AddResourceForm />
+          <AddResourceButton slug={slug} />
         </div>
       </CardHeader>
     </Card>
