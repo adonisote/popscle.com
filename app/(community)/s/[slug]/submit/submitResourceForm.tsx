@@ -3,6 +3,7 @@
 //1. Way to check if the url hasn't been already submited under another form. //consider tinyurls?.
 //What if we have more routes /resourceX/view or resourceX/intro. How to manage that?
 //prohibited urls? 
+//2. We could think about. Once the form is submited. The resource has 0 votes or 1 vote (from the person who submitted)
 
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,6 +33,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
+
 
 
 const formSchema = z.object({
@@ -86,10 +88,18 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
     },
   })
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log('Form submitted: ', values)
+    const { error: submitError } = await supabase
+      .from('resources')
+      .insert([values])
+    if (submitError) {
+      console.log('Error submiting form:', submitError)
+    } else {
+      console.log('Form submitted')
+    }
   }
 
 
@@ -153,7 +163,7 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
           render={({ field }) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={(field.value)}>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Resource type" />
@@ -164,9 +174,6 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
                     <SelectItem key={type.id} value={String(type.id)}>{type.name}</SelectItem>
 
                   ))}
-                  {/* <SelectItem value="1">Book</SelectItem>
-                  <SelectItem value="2">Video</SelectItem>
-                  <SelectItem value="3">Practical</SelectItem> */}
                 </SelectContent>
               </Select>
               <FormDescription>

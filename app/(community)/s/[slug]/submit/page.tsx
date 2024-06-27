@@ -10,18 +10,33 @@ export default async function Page({ params }: { params: { slug: string } }) {
     .from('spaces')
     .select('id, title, description, created_at')
     .ilike('title', params.slug); //replace with .eq() when making sure that all titles are lowercae
+
   // If there is no space with the id redirect to /home
+  if (spaceError) {
+    console.log('Error fetching space:', spaceError);
+    redirect('/home');
+  }
   if (!spaces || spaces.length === 0) {
-    console.log('spaceError;:', spaceError);
     // return <SpaceNotFound />  //Use to redirect to home within 3 seconds
     redirect('/home')
   }
+
+  //Get user id
   const { data: { user }, error: userError } = await supabase
     .auth.getUser()
+  if (userError) {
+    console.log('Error fetching user:', userError); // Improved error logging
+    redirect('/login');
+  }
   if (!user) {
     redirect('/login')
   }
-  console.log('User id:', user?.id)
+
+  const spaceId = spaces[0]?.id;
+  const spaceTitle = spaces[0]?.title;
+  const userId = user?.id
+
+
   // Function to convert a string to title case
   function toTitleCase(str: string): string {
     return str
@@ -30,9 +45,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
       .join(' '); // Join the words back together with a space
   }
-  const spaceId = spaces[0]?.id;
-  const spaceTitle = spaces[0]?.title;
-  const userId = user?.id
 
   return (
     <div>
