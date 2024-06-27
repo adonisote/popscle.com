@@ -8,6 +8,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { useState, useEffect } from 'react'
+import { createClient } from '@/utils/supabase/client'
+
 
 import {
   Form,
@@ -48,18 +51,38 @@ const formSchema = z.object({
   isPaid: z.boolean().default(false)
 })
 
+interface ResourceType {
+  id: number;
+  name: string;
+}
 
 
-export function ResourceForm() {
-  const user_id = '8698a2a2-62b6-464d-bca3-1edbbadb3cf4'
-  const space_id = '47418bc9-d442-4ba0-9e34-d808a6acf4ef'
+export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: string }) {
+  const supabase = createClient()
+  const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([])
+
+  useEffect(() => {
+    const fetchResourceTypes = async () => {
+      const { data, error: typesError } = await supabase
+        .from('types')
+        .select()
+      console.log(data)
+      if (typesError) {
+        console.log('Fetching types error:', typesError)
+      } else {
+        setResourceTypes(data)
+      }
+    }
+
+    fetchResourceTypes()
+  }, [supabase])
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      user_id: user_id, //Need to be passed from props 
-      space_id: space_id, //Need to be passed from props
+      user_id: userId, //Need to be passed from props 
+      space_id: spaceId, //Need to be passed from props
     },
   })
   // 2. Define a submit handler.
@@ -67,8 +90,8 @@ export function ResourceForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log('Form submitted: ', values)
-
   }
+
 
   return (
     <Form {...form}>
@@ -95,7 +118,6 @@ export function ResourceForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                {/* <Input placeholder='Resource description' {...field} /> */}
                 <Textarea
                   placeholder='Short resource description to help others recognize its value '
                   className='resize-none'
@@ -138,9 +160,13 @@ export function ResourceForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="1">Book</SelectItem>
+                  {resourceTypes?.map(type => (
+                    <SelectItem key={type.id} value={String(type.id)}>{type.name}</SelectItem>
+
+                  ))}
+                  {/* <SelectItem value="1">Book</SelectItem>
                   <SelectItem value="2">Video</SelectItem>
-                  <SelectItem value="3">Practical</SelectItem>
+                  <SelectItem value="3">Practical</SelectItem> */}
                 </SelectContent>
               </Select>
               <FormDescription>
@@ -156,9 +182,9 @@ export function ResourceForm() {
             <FormItem className="flex flex-row items-center justify-between" >
               {/* <div> */}
 
+              {/* <FormMessage /> */}
               <FormDescription>Free</FormDescription>
               {/* </div> */}
-              {/* <FormMessage /> */}
               <FormControl>
                 <Switch
                   checked={field.value}
