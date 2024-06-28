@@ -98,7 +98,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     }
   };
 
-  const handleTabChange = (newValue) => {
+  const handleTabChange = (newValue: string) => {
     console.log('Active tab changed to:', newValue)
     setFilter(newValue)
   }
