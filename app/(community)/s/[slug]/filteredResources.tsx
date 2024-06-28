@@ -10,6 +10,8 @@ import clsx from 'clsx';
 import UpvoteResource from './upvote';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 import { ResourceCard } from '@/components/ResourceCard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 
 export default function Resources({ spaceId }: { spaceId: string }) {
   const [data, setData] = useState<Resource[]>([]);
@@ -38,9 +40,9 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     // let query = supabase.from('resources').select().eq('space_id', spaceId);
 
     if (filter === 'FREE') {
-      query = query.eq('paid', false);
+      query = query.eq('isPaid', false);
     } else if (filter === 'PAID') {
-      query = query.eq('paid', true);
+      query = query.eq('isPaid', true);
     }
 
     if (typeFilters.length > 0) {
@@ -96,34 +98,37 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     }
   };
 
+  const handleTabChange = (newValue) => {
+    console.log('Active tab changed to:', newValue)
+    setFilter(newValue)
+  }
+
   return (
     <div className='md:w-max-[800px] mx-4'>
-      <div className='my-4 w-full flex flex-col  items-end '>
-        <div>
-          <Button
-            variant='outline'
-            onClick={() => setFilter('ALL')}
-            className='mx-4'
-          >
-            All
-          </Button>
-          <Button
-            variant='outline'
-            onClick={() => setFilter('FREE')}
-            className='mx-4'
-          >
-            Free
-          </Button>
-          <Button
-            variant='outline'
-            onClick={() => setFilter('PAID')}
-            className='mx-4'
-          >
-            Paid
-          </Button>
-        </div>
+
+
+      <div className='w-[850px] p-4 border-b'>
+        <Tabs defaultValue='all' onValueChange={handleTabChange}>
+          <TabsList>
+            <TabsTrigger value='ALL'>All</TabsTrigger>
+            <TabsTrigger value='FREE'>Free</TabsTrigger>
+            <TabsTrigger value='PAID'>Paid</TabsTrigger>
+          </TabsList>
+          <TabsContent value='ALL'>
+            {/* <Resources spaceId={spaceId} /> */}
+          </TabsContent>
+          <TabsContent value='FREE'>
+            {/* <Resources spaceId={spaceId} /> */}
+          </TabsContent>
+          <TabsContent value='PAID'>
+            {/* <Resources spaceId={spaceId} /> */}
+          </TabsContent>
+        </Tabs>
       </div>
+
       <div>
+
+        {/* Filtering by type */}
         <div className=' flex justify-between'>
           <Button
             variant='outline'
@@ -190,7 +195,16 @@ export default function Resources({ spaceId }: { spaceId: string }) {
             </div> */}
           </>
         ))}
+
+
+      </div>
+
+      <div>
+
       </div>
     </div>
   );
 }
+
+
+//Separate in two components. Filter by free/paid. and by resources type. 

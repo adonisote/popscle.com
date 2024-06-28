@@ -58,6 +58,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <div className='flex flex-col items-center'>
       <SpaceHeader space={space} slug={params.slug} />
 
+      <Resources spaceId={spaceId} />
+      {/* 
       <div className='w-[850px] p-4 border-b'>
         <Tabs defaultValue='all'>
           <TabsList>
@@ -71,9 +73,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <TabsContent value='free'>
             <Resources spaceId={spaceId} />
           </TabsContent>
-          <TabsContent value='paid'></TabsContent>
+          <TabsContent value='paid'>
+            <Resources spaceId={spaceId} />
+          </TabsContent>
         </Tabs>
-      </div>
+      </div> */}
 
       <div className='w-[850px] p-4 border-b'>
         <h2 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
