@@ -1,3 +1,4 @@
+import MobileNav from '@/components/mobileNavigation';
 import FeedbackSheet from '@/components/ui/feedback';
 import Nav from '@/components/ui/nav';
 
@@ -14,6 +15,7 @@ export default async function Layout({
           {children}
           <FeedbackSheet />
         </main>
+        <MobileNav />
       </body>
     </html>
   );
