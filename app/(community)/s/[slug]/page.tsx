@@ -39,13 +39,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     console.log(resourcesError);
   }
 
-  //separate free resources from paid// This should change later to not fetch the whole data from the database
-  const paidResources = resources?.filter(
-    (resource: Resource) => resource.paid
-  );
-  const freeResources = resources?.filter(
-    (resource: Resource) => !resource.paid
-  );
 
   const space: Space = {
     title: spaceTitle,
@@ -59,45 +52,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <SpaceHeader space={space} slug={params.slug} />
 
       <Resources spaceId={spaceId} />
-      {/* 
-      <div className='w-[850px] p-4 border-b'>
-        <Tabs defaultValue='all'>
-          <TabsList>
-            <TabsTrigger value='all'>All</TabsTrigger>
-            <TabsTrigger value='free'>Free</TabsTrigger>
-            <TabsTrigger value='paid'>Paid</TabsTrigger>
-          </TabsList>
-          <TabsContent value='all'>
-            <Resources spaceId={spaceId} />
-          </TabsContent>
-          <TabsContent value='free'>
-            <Resources spaceId={spaceId} />
-          </TabsContent>
-          <TabsContent value='paid'>
-            <Resources spaceId={spaceId} />
-          </TabsContent>
-        </Tabs>
-      </div> */}
-
-      <div className='w-[850px] p-4 border-b'>
-        <h2 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
-          Online Courses
-        </h2>
-        <SkeletonResourceCard />
-        <SkeletonResourceCard />
-        <SkeletonResourceCard />
-        <SkeletonResourceCard />
-      </div>
-
-      <div className='w-[850px] p-4 border-b'>
-        <h2 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
-          Books
-        </h2>
-        <SkeletonResourceCard />
-        <SkeletonResourceCard />
-        <SkeletonResourceCard />
-        <SkeletonResourceCard />
-      </div>
     </div>
   );
 }

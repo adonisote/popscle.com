@@ -4,13 +4,10 @@ import { useEffect, useState, useCallback, Suspense } from 'react';
 
 import { createClient } from '@/utils/supabase/client';
 import { Resource } from '@/types/types';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import clsx from 'clsx';
-import UpvoteResource from './upvote';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 import { ResourceCard } from '@/components/ResourceCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 
 
 export default function Resources({ spaceId }: { spaceId: string }) {
@@ -103,6 +100,20 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     setFilter(newValue)
   }
 
+  console.log(data)
+
+  const groupedResources = types.map(type => {
+    return {
+      type: type.name,
+      resources: data.filter(resource => resource.type_id === type.id)
+    }
+  })
+
+  const capitalizeFirstLetter = (str: string): string => {
+    if (!str) return ''
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+  }
+
   return (
     <div className='md:w-max-[800px] mx-4'>
 
@@ -125,11 +136,10 @@ export default function Resources({ spaceId }: { spaceId: string }) {
           </TabsContent>
         </Tabs>
       </div>
-
       <div>
 
         {/* Filtering by type */}
-        <div className=' flex justify-between'>
+        {/* <div className=' flex justify-between'>
           <Button
             variant='outline'
             size='sm'
@@ -153,50 +163,46 @@ export default function Resources({ spaceId }: { spaceId: string }) {
               {type.name}
             </Button>
           ))}
-        </div>
+        </div> */}
 
-        {isLoading && (
+        {isLoading ? (
           <>
-            <div className='w-[850px] p-4 border-b'>
-              <SkeletonResourceCard />
-              <SkeletonResourceCard />
-              <SkeletonResourceCard />
-              <SkeletonResourceCard />
-            </div>
-          </>
-        )}
+            {types.map(type => (
 
-        {data?.map((resource: Resource) => (
-          <>
-            <ResourceCard
-              key={resource.id}
-              id={resource.id}
-              name={resource.title}
-              score={resource.votes}
-              author={resource.profiles.username}
-              url={resource.url}
-              upvotedBy=''
-              votes={resource.votes}
-              onUpvote={handleUpvote}
-            />
-
-            {/* <div
-              key={resource.id}
-              className='my-4 flex border rounded-lg border-slate-200 hover:bg-primary/90 '
-            >
-              <div className='p-2 flex flex-col items-center justify-center'>
-                <UpvoteResource resourceId={resource.id} />
+              <div key={type.id} className='w-[850px] p-4 border-b'>
+                <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>{capitalizeFirstLetter(type.name)}</p>
+                <SkeletonResourceCard />
+                <SkeletonResourceCard />
+                <SkeletonResourceCard />
+                <SkeletonResourceCard />
               </div>
-              <Link href={resource.url}>
-                <p>{resource.title}</p>
-                <p>{resource.description}</p>
-              </Link>
-              <p>{resource.type_id}</p>
-            </div> */}
+            ))}
           </>
-        ))}
-
-
+        ) : (
+          groupedResources.map(group => (
+            <div key={group.type} className='w-[850px] p-4 border-b'>
+              <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>{capitalizeFirstLetter(group.type)}</p>
+              {
+                group.resources.length > 0 ? (
+                  group.resources.map(resource => (
+                    <ResourceCard
+                      key={resource.id}
+                      id={resource.id}
+                      name={resource.title}
+                      score={resource.votes}
+                      author={resource.profiles.username}
+                      url={resource.url}
+                      upvotedBy=''
+                      votes={resource.votes}
+                      onUpvote={handleUpvote}
+                    />
+                  ))
+                ) : (
+                  <p>No resources available.</p>
+                )}
+            </div>
+          ))
+        )}
       </div>
 
       <div>
