@@ -28,6 +28,7 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet"
+import { Textarea } from "@/components/ui/textarea"
 
 
 
@@ -62,7 +63,7 @@ export function FeedbackForm({ submit }: { submit: () => void }) {
       if (data && data.user) {
         setUserId(data.user.id);
       } else {
-        console.error('Error fetching user:', error);
+        console.log('Error fetching user:', error);
       }
     };
 
@@ -83,7 +84,7 @@ export function FeedbackForm({ submit }: { submit: () => void }) {
       .insert([feedbackData]);
 
     if (error) {
-      console.error('Error inserting feedback:', error);
+      console.log('Error inserting feedback:', error);
     } else {
       console.log('Feedback inserted:', data);
       submit();
@@ -103,10 +104,12 @@ export function FeedbackForm({ submit }: { submit: () => void }) {
                 Thanks for taking the time to give us valuable feedback. This could be everything.
               </FormDescription> */}
               <FormControl>
-                <Input
+                <Textarea
                   placeholder="Your thoughts here! 💖"
+                  className="resize-none"
                   {...field}
                 />
+
               </FormControl>
               <FormMessage />
             </FormItem>
