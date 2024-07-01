@@ -12,7 +12,6 @@ import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 import { ResourceCard } from '@/components/ResourceCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-
 export default function Resources({ spaceId }: { spaceId: string }) {
   const [data, setData] = useState<Resource[]>([]);
   const [filter, setFilter] = useState('ALL');
@@ -99,16 +98,14 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   };
 
   const handleTabChange = (newValue: string) => {
-    console.log('Active tab changed to:', newValue)
-    setFilter(newValue)
-  }
+    console.log('Active tab changed to:', newValue);
+    setFilter(newValue);
+  };
 
   return (
     <div className='md:w-max-[800px] mx-4'>
-
-
       <div className='w-[850px] p-4 border-b'>
-        <Tabs defaultValue='all' onValueChange={handleTabChange}>
+        <Tabs defaultValue='ALL' onValueChange={handleTabChange}>
           <TabsList>
             <TabsTrigger value='ALL'>All</TabsTrigger>
             <TabsTrigger value='FREE'>Free</TabsTrigger>
@@ -127,7 +124,6 @@ export default function Resources({ spaceId }: { spaceId: string }) {
       </div>
 
       <div>
-
         {/* Filtering by type */}
         <div className=' flex justify-between'>
           <Button
@@ -195,16 +191,11 @@ export default function Resources({ spaceId }: { spaceId: string }) {
             </div> */}
           </>
         ))}
-
-
       </div>
 
-      <div>
-
-      </div>
+      <div></div>
     </div>
   );
 }
 
-
-//Separate in two components. Filter by free/paid. and by resources type. 
+//Separate in two components. Filter by free/paid. and by resources type.
