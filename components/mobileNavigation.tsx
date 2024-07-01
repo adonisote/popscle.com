@@ -45,7 +45,7 @@ function HomeIcon(props: any) {
   );
 }
 
-function SettingsIcon(props) {
+function SettingsIcon(props: any) {
   return (
     <svg
       {...props}
