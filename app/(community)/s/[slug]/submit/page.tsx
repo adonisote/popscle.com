@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { ResourceForm } from './submitResourceForm';
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const supabase = createClient()
+  const supabase = createClient();
   const { data: spaces, error: spaceError } = await supabase
     .from('spaces')
     .select('id, title, description, created_at')
@@ -18,31 +18,32 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
   if (!spaces || spaces.length === 0) {
     // return <SpaceNotFound />  //Use to redirect to home within 3 seconds
-    redirect('/home')
+    redirect('/home');
   }
 
   //Get user id
-  const { data: { user }, error: userError } = await supabase
-    .auth.getUser()
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
   if (userError) {
     console.log('Error fetching user:', userError); // Improved error logging
     redirect('/login');
   }
   if (!user) {
-    redirect('/login')
+    redirect('/login');
   }
 
   const spaceId = spaces[0]?.id;
   const spaceTitle = spaces[0]?.title;
-  const userId = user?.id
-
+  const userId = user?.id;
 
   // Function to convert a string to title case
   function toTitleCase(str: string): string {
     return str
       .toLowerCase() // Convert the entire string to lowercase
       .split(/[\s\-]+/) // Split the string by spaces or hyphens
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
       .join(' '); // Join the words back together with a space
   }
 
@@ -52,14 +53,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
         Submit new resource for {toTitleCase(spaceTitle)}
       </p>
       <ResourceForm spaceId={spaceId} userId={userId} />
-
     </div>
-  )
-
+  );
 }
 
 //Client Component:
-
 
 // 'use client'
 // //this could be a server component. I would need to pass the spaceid to a client component.
@@ -67,7 +65,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
 // import { ResourceForm } from "./submitResourceForm"
 // import { useEffect, useState, useCallback } from "react"
 // import { useRouter } from "next/navigation"
-
 
 // export default function SubmitPage({ params }: { params: { slug: string } }) {
 //   const supabase = createClient()
@@ -102,7 +99,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
 //   useEffect(() => {
 //     fetchSpace()
 //   }, [fetchSpace])
-
 
 //   if (error) {
 //     return (

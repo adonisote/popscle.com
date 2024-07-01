@@ -45,7 +45,7 @@ export default async function PrivatePage() {
         {spaces?.map((space: Space) => {
           return (
             <Link href={`/s/${space.title.toLocaleLowerCase()}`} key={space.id}>
-              <div className='rounded-md px-2 py-3 flex items-center space-x-4 hover:bg-muted transition-all delay-100'>
+              <div className='rounded-md px-2 py-3 flex items-center space-x-4 hover:bg-muted  transition duration-300 ease'>
                 <div className='bg-red-500 p-3 rounded-xl'>
                   <Popsicle />
                 </div>
