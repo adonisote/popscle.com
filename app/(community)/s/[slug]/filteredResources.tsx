@@ -96,9 +96,9 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   };
 
   const handleTabChange = (newValue: string) => {
-    console.log('Active tab changed to:', newValue)
-    setFilter(newValue)
-  }
+    console.log('Active tab changed to:', newValue);
+    setFilter(newValue);
+  };
 
   console.log(data)
 
@@ -116,10 +116,8 @@ export default function Resources({ spaceId }: { spaceId: string }) {
 
   return (
     <div className='md:w-max-[800px] mx-4'>
-
-
       <div className='w-[850px] p-4 border-b'>
-        <Tabs defaultValue='all' onValueChange={handleTabChange}>
+        <Tabs defaultValue='ALL' onValueChange={handleTabChange}>
           <TabsList>
             <TabsTrigger value='ALL'>All</TabsTrigger>
             <TabsTrigger value='FREE'>Free</TabsTrigger>
@@ -137,7 +135,6 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         </Tabs>
       </div>
       <div>
-
         {/* Filtering by type */}
         {/* <div className=' flex justify-between'>
           <Button
@@ -205,12 +202,9 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         )}
       </div>
 
-      <div>
-
-      </div>
+      <div></div>
     </div>
   );
 }
 
-
-//Separate in two components. Filter by free/paid. and by resources type. 
+//Separate in two components. Filter by free/paid. and by resources type.

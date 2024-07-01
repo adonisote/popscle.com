@@ -40,10 +40,12 @@ export default async function Nav() {
               <DropdownMenuTrigger asChild>
                 <Avatar className='border-2 border-background'>
                   <AvatarImage src='#' />
-                  <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
+                  <AvatarFallback>
+                    {user?.email?.[0].toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent align='end' className='w-36'>
                 <DropdownMenuItem className='text-muted-foreground'>
                   <Link className='w-full' href={`/account`}>
                     Profile
