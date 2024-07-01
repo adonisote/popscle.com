@@ -163,7 +163,7 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
           render={({ field }) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Resource type" />
