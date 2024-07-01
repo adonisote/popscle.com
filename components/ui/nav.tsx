@@ -40,7 +40,7 @@ export default async function Nav() {
               <DropdownMenuTrigger asChild>
                 <Avatar className='border-2 border-background'>
                   <AvatarImage src='#' />
-                  <AvatarFallback>{user.email[0].toUpperCase()}</AvatarFallback>
+                  <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
