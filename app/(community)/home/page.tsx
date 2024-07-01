@@ -36,7 +36,7 @@ export default async function PrivatePage() {
   }
 
   return (
-    <div className='w-[650px] p-4 '>
+    <div className='w-full p-4 mx-auto md:w-[650px]'>
       <h1 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
         Your Spaces
       </h1>
