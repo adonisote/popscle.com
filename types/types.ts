@@ -17,13 +17,14 @@ type Resource = {
   created_at: string;
   title: string;
   description: string;
-  votes: number;
   url: string;
+  votes: number;
   updated_at?: string;
   user_id: string;
   space_id: string;
   type_id: number;
-  paid: boolean;
+  isPaid: boolean;
+  upvoted_by: any;
   profiles: Profile; // Add the
 };
 

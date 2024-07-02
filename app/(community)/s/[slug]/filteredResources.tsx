@@ -79,20 +79,93 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   };
 
   const handleUpvote = async (resourceId: string) => {
-    const { error } = await supabase.rpc('increment_votes', {
-      resource_id: resourceId,
-    });
-    if (error) {
-      console.log('Error updating vote', error);
-    } else {
-      setData((prevData) =>
-        prevData.map((resource) =>
-          resource.id === resourceId
-            ? { ...resource, votes: resource.votes + 1 }
-            : resource
-        )
-      );
+    const { data: { user }, errrorUSer } = await supabase.auth.getUser()
+    console.log(user)
+    const userId = user?.id
+    // Fetch the current upvoted_by array
+    let { data: resource, error: fetchError } = await supabase
+      .from('resources')
+      .select('upvoted_by, votes')
+      .eq('id', resourceId)
+      .single()
+
+    if (fetchError) {
+      console.log('Error fetching upvoted_by array:', fetchError)
+      return
     }
+    const upvotedBy = resource.upvoted_by ?? []
+    console.log('Resource: ', resource)
+    console.log('Array resource:', upvotedBy)
+    // Add the new userId to the upvoted_by array if not already present
+    // const updateUpvotedBy = upvotedBy.includes(userId)
+    //   ? upvotedBy
+    //   : [...upvotedBy, userId]
+
+    let updateUpvotedBy = upvotedBy
+
+    if (upvotedBy.includes(userId)) {
+      console.log('Devoting......')
+      updateUpvotedBy = updateUpvotedBy.filter((voter: string) => voter !== userId)
+      const { error: updateError } = await supabase
+        .from('resources')
+        .update({ upvoted_by: updateUpvotedBy, votes: resource?.votes - 1 })
+        .eq('id', resourceId)
+
+      if (updateError) {
+        console.log('Error updating: Devoting.........:', updateError);
+        return;
+      } else {
+        setData((prevData) =>
+          prevData.map((resource) =>
+            resource.id === resourceId
+              ? { ...resource, votes: resource.votes - 1, upvoted_by: updateUpvotedBy }
+              : resource
+          ));
+
+      }
+      // return
+    } else {
+      updateUpvotedBy = [...upvotedBy, userId]
+      console.log('New entry in voters')
+      // Update the resource with the new upvoted_by array
+      const { error: updateError } = await supabase
+        .from('resources')
+        .update({ upvoted_by: updateUpvotedBy, votes: resource?.votes + 1 })
+        .eq('id', resourceId)
+
+      if (updateError) {
+        console.log('Error updating upvoted_by array:', updateError);
+        return;
+      } else {
+        setData((prevData) =>
+          prevData.map((resource) =>
+            resource.id === resourceId
+              ? { ...resource, votes: resource.votes + 1, upvoted_by: updateUpvotedBy }
+              : resource
+          ));
+
+      }
+
+
+    }
+
+
+    // const { error } = await supabase.rpc('increment_votes', {
+    //   resource_id: resourceId,
+    // });
+
+
+    // if (error) {
+    //   console.log('Error updating vote', error);
+    // } else {
+    //   setData((prevData) =>
+    //     prevData.map((resource) =>
+    //       resource.id === resourceId
+    //         ? { ...resource, votes: resource.votes + 1 }
+    //         : resource
+    //     )
+    //   );
+    // }
   };
 
   const handleTabChange = (newValue: string) => {
@@ -185,11 +258,11 @@ export default function Resources({ spaceId }: { spaceId: string }) {
                     <ResourceCard
                       key={resource.id}
                       id={resource.id}
-                      name={resource.title}
+                      title={resource.title}
                       score={resource.votes}
                       author={resource.profiles.username}
                       url={resource.url}
-                      upvotedBy=''
+                      upvotedBy={resource.upvoted_by}
                       votes={resource.votes}
                       onUpvote={handleUpvote}
                     />

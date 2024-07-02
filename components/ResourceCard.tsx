@@ -12,18 +12,18 @@ import { CalendarDays } from 'lucide-react';
 
 interface ResourceCardProps {
   id: string;
-  name: any;
+  title: any;
   score: any;
   author: any;
   url: any;
-  upvotedBy: any;
+  upvotedBy: any[];//array on uuid
   votes: number;
   onUpvote: (resourceId: string) => void;
 }
 
 export const ResourceCard: React.FC<ResourceCardProps> = ({
   id,
-  name,
+  title,
   score,
   author,
   url,
@@ -44,7 +44,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           <div className='flex'>
             <div className='flex flex-col'>
               <p>
-                {name}{' '}
+                {title}{' '}
                 <span className='text-sm text-muted-foreground'>
                   ({url.split('https://')})
                 </span>
@@ -87,6 +87,10 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           </div>
           <div className='justify-end mr-20'>
             <AvatarStack />
+            <p>Upvoted by: {upvotedBy?.map(voter => (
+              <p key={voter} >{voter}</p>
+            ))}</p>
+
           </div>
         </div>
       </Link>
