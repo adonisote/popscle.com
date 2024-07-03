@@ -99,7 +99,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
       return
     }
     // User who submited should not be able to upvote
-    if (userId === resource.user_id) {
+    if (resource && userId === resource.user_id) {
       console.log('User who submited should not be able to upvote')
       return
     }
