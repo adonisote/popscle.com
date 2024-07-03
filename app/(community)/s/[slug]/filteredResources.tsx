@@ -103,7 +103,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
       console.log('User who submited should not be able to upvote')
       return
     }
-    const upvotedBy = resource.upvoted_by ?? []
+    const upvotedBy = resource?.upvoted_by ?? []
     console.log('Resource: ', resource)
     console.log('Array resource:', upvotedBy)
     // Add the new userId to the upvoted_by array if not already present
