@@ -85,12 +85,17 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     // Fetch the current upvoted_by array
     let { data: resource, error: fetchError } = await supabase
       .from('resources')
-      .select('upvoted_by, votes')
+      .select('user_id, upvoted_by, votes')
       .eq('id', resourceId)
       .single()
 
     if (fetchError) {
       console.log('Error fetching upvoted_by array:', fetchError)
+      return
+    }
+    // User who submited should not be able to upvote
+    if (userId === resource.user_id) {
+      console.log('User who submited should not be able to upvote')
       return
     }
     const upvotedBy = resource.upvoted_by ?? []

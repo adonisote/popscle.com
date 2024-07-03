@@ -1,3 +1,5 @@
+'use client'
+import { createClient } from '@/utils/supabase/client';
 import { AvatarStack } from './AvatarStack';
 import Link from 'next/link';
 import { ChevronUp } from 'lucide-react';
@@ -9,6 +11,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { CalendarDays } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface ResourceCardProps {
   id: string;
@@ -20,6 +23,10 @@ interface ResourceCardProps {
   votes: number;
   onUpvote: (resourceId: string) => void;
 }
+interface Voter {
+  username: string;
+}
+
 
 export const ResourceCard: React.FC<ResourceCardProps> = ({
   id,
@@ -31,6 +38,29 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   votes,
   onUpvote,
 }) => {
+
+  const [voterUsernames, setVoterUsernames] = useState<Voter[]>([])
+
+  const supabase = createClient()
+
+  useEffect(() => {
+    const getUsernames = async () => {
+      const { data: upvotedBy_usernames, error: fetchError } = await supabase
+        .from('profiles')
+        .select('username')
+        .in('id', upvotedBy)
+
+      console.log(upvotedBy_usernames)
+      if (fetchError) {
+        console.log('Fetching error:', fetchError)
+      } else {
+        setVoterUsernames(upvotedBy_usernames)
+      }
+    }
+    getUsernames()
+  }, [upvotedBy, supabase])
+
+  // console.log(voterUsernames)
   return (
     <div className='flex items-center ease-in-out'>
       {/* The number 1 has to go */}
@@ -87,9 +117,14 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           </div>
           <div className='justify-end mr-20'>
             <AvatarStack />
-            <p>Upvoted by: {upvotedBy?.map(voter => (
+            {/* <p>Upvoted by: {upvotedBy?.map(voter => (
               <p key={voter} >{voter}</p>
-            ))}</p>
+            ))}</p> */}
+            <p>
+              Upvoted by: {voterUsernames?.map(voter => (
+                <p key={voter?.username}>{voter?.username.toLocaleLowerCase()}</p>
+              ))}
+            </p>
 
           </div>
         </div>
