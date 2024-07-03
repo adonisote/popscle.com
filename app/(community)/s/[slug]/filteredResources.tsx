@@ -79,8 +79,13 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   };
 
   const handleUpvote = async (resourceId: string) => {
-    const { data: { user }, errrorUSer } = await supabase.auth.getUser()
-    console.log(user)
+    const { data: { user }, error: errorUSer } = await supabase.auth.getUser()
+
+    if (errorUSer) {
+      console.log('Error fetching user')
+      return
+    }
+
     const userId = user?.id
     // Fetch the current upvoted_by array
     let { data: resource, error: fetchError } = await supabase
