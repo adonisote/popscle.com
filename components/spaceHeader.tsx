@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import ResourceSheet from '@/app/(community)/s/[slug]/submitResource';
+
 
 
 export type Space = {
@@ -20,7 +20,6 @@ export type Space = {
   created_at: '';
 };
 
-//Submit resource on Dialog:
 
 
 
