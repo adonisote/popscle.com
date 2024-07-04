@@ -7,7 +7,7 @@
 
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/client'
@@ -63,6 +63,7 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
   const supabase = createClient()
   const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchResourceTypes = async () => {
@@ -98,6 +99,7 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
       .insert([values])
     if (submitError) {
       console.log('Error submiting form:', submitError)
+      setError(submitError.message)
     } else {
       console.log('Form submitted')
       setIsSubmitted(true)
@@ -227,6 +229,7 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
                 </FormItem>
               )}
             />
+            {error && <p className='text-yellow-400 p-4'>Ups.🙈 That did not work. Maybe the url was already submited.</p>}
 
             <Button type="submit">Submit</Button>
           </form>
