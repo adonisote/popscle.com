@@ -10,8 +10,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: 'Popscle',
-  description:
-    'The Best Resources for Learning Anything, Curated by the Internet.',
+  description: 'Resources to Learn Anything. Curated by People you Trust.',
 };
 
 export default function RootLayout({
