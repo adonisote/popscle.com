@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { createClient } from '@/utils/supabase/client';
 import { AvatarStack } from './AvatarStack';
 import Link from 'next/link';
@@ -19,14 +19,13 @@ interface ResourceCardProps {
   score: any;
   author: any;
   url: any;
-  upvotedBy: any[];//array on uuid
+  upvotedBy: any[]; //array on uuid
   votes: number;
   onUpvote: (resourceId: string) => void;
 }
 interface Voter {
   username: string;
 }
-
 
 export const ResourceCard: React.FC<ResourceCardProps> = ({
   id,
@@ -38,27 +37,26 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   votes,
   onUpvote,
 }) => {
+  const [voterUsernames, setVoterUsernames] = useState<Voter[]>([]);
 
-  const [voterUsernames, setVoterUsernames] = useState<Voter[]>([])
-
-  const supabase = createClient()
+  const supabase = createClient();
 
   useEffect(() => {
     const getUsernames = async () => {
       const { data: upvotedBy_usernames, error: fetchError } = await supabase
         .from('profiles')
         .select('username')
-        .in('id', upvotedBy)
+        .in('id', upvotedBy);
 
-      console.log(upvotedBy_usernames)
+      console.log(upvotedBy_usernames);
       if (fetchError) {
-        console.log('Fetching error:', fetchError)
+        console.log('Fetching error:', fetchError);
       } else {
-        setVoterUsernames(upvotedBy_usernames)
+        setVoterUsernames(upvotedBy_usernames);
       }
-    }
-    getUsernames()
-  }, [upvotedBy, supabase])
+    };
+    getUsernames();
+  }, [upvotedBy, supabase]);
 
   function getMainDomain(url: string) {
     try {
@@ -72,8 +70,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       return null;
     }
   }
-  const mainDomain = getMainDomain(url)
-
+  const mainDomain = getMainDomain(url);
 
   // console.log(voterUsernames)
   return (
@@ -84,8 +81,8 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
         <ChevronUp />
       </div> */}
       <UpvoteResource resourceId={id} votes={votes} onUpvote={onUpvote} />
-      <Link className='w-full' href={url}>
-        <div className='rounded-md px-2 py-3 flex space-x-4 hover:bg-muted transition-all delay-100 justify-between'>
+      <Link className='w-fit flex flex-col md:w-full rounded-md' href={url}>
+        <div className='rounded-md px-2 py-3 flex flex-col md:flex-row space-x-4 hover:bg-muted transition-all delay-100 justify-between'>
           <div className='flex'>
             <div className='flex flex-col'>
               <p>
@@ -136,11 +133,13 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
               <p key={voter} >{voter}</p>
             ))}</p> */}
             <p>
-              Upvoted by: {voterUsernames?.map(voter => (
-                <p key={voter?.username}>{voter?.username.toLocaleLowerCase()}</p>
+              Upvoted by:{' '}
+              {voterUsernames?.map((voter) => (
+                <p key={voter?.username}>
+                  {voter?.username.toLocaleLowerCase()}
+                </p>
               ))}
             </p>
-
           </div>
         </div>
       </Link>
