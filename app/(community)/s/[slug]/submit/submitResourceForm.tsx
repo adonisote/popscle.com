@@ -40,7 +40,7 @@ const formSchema = z.object({
   title: z.string({
     required_error: "Resource title is required",
     invalid_type_error: "Name must be a string",
-  }).min(2).max(50).toLowerCase(),
+  }).min(2).max(50),
   description: z.string().min(10, {
     message: "Description must be at least 10 characters.",
   }).max(255, {
@@ -62,6 +62,7 @@ interface ResourceType {
 export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: string }) {
   const supabase = createClient()
   const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([])
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   useEffect(() => {
     const fetchResourceTypes = async () => {
@@ -99,112 +100,138 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
       console.log('Error submiting form:', submitError)
     } else {
       console.log('Form submitted')
+      setIsSubmitted(true)
+      //Reset the form values after successful submission
+      form.reset({
+        title: '',
+        description: '',
+        url: '',
+        user_id: userId,
+        space_id: spaceId,
+        type_id: 1,
+        isPaid: false
+      })
+
+
     }
   }
 
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name='title'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder='Resource title' {...field} />
-              </FormControl>
-              <FormDescription>
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='description'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder='Short resource description to help others recognize its value '
-                  className='resize-none'
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Short resource description. Max 255 characters.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='url'
-          render={({ field }) => (
-            <FormItem>
+    <div className='h-full flex flex-col items-center justify-center'>
+      {isSubmitted ? (
+        <div className='h-min-[500px] h-full flex flex-col items-center justify-center'>
+          <p>Resource submitted. Thank you!</p>
+          <Button onClick={() => setIsSubmitted(false)}>Start again</Button>
+        </div>
+      ) : (
 
-              <FormLabel>Url</FormLabel>
-              <FormControl>
-                <Input {...field} />
 
-              </FormControl>
-              <FormDescription>Original resource url</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='type_id'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Resource type" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {resourceTypes?.map(type => (
-                    <SelectItem key={type.id} value={String(type.id)}>{type.name}</SelectItem>
 
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='isPaid'
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between" >
-              {/* <div> */}
 
-              {/* <FormMessage /> */}
-              <FormDescription>Free</FormDescription>
-              {/* </div> */}
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormLabel>Paid</FormLabel>
-            </FormItem>
-          )}
-        />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name='title'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Resource title' {...field} />
+                  </FormControl>
+                  <FormDescription>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='description'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder='Short resource description to help others recognize its value '
+                      className='resize-none'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Short resource description. Max 255 characters.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='url'
+              render={({ field }) => (
+                <FormItem>
 
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+                  <FormLabel>Url</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+
+                  </FormControl>
+                  <FormDescription>Original resource url</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='type_id'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Resource type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {resourceTypes?.map(type => (
+                        <SelectItem key={type.id} value={String(type.id)}>{type.name}</SelectItem>
+
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='isPaid'
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between" >
+                  {/* <div> */}
+
+                  {/* <FormMessage /> */}
+                  <FormDescription>Free</FormDescription>
+                  {/* </div> */}
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel>Paid</FormLabel>
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      )}
+    </div>
   )
 }
