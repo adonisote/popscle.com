@@ -60,6 +60,21 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     getUsernames()
   }, [upvotedBy, supabase])
 
+  function getMainDomain(url) {
+    try {
+      // Create a new URL object
+      const parsedUrl = new URL(url);
+      // Return the hostname which is the main domain
+      return parsedUrl.hostname;
+    } catch (e) {
+      // Handle any errors, such as invalid URL
+      console.error('Invalid URL:', e);
+      return null;
+    }
+  }
+  const mainDomain = getMainDomain(url)
+
+
   // console.log(voterUsernames)
   return (
     <div className='flex items-center ease-in-out'>
@@ -76,7 +91,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
               <p>
                 {title}{' '}
                 <span className='text-sm text-muted-foreground'>
-                  ({url.split('https://')})
+                  ({mainDomain})
                 </span>
               </p>
               <div className='flex space-x-1'>
