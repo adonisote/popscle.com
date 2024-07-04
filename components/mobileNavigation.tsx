@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function MobileNav() {
   return (
-    <nav className='fixed bottom-0 left-0 right-0 z-50 flex h-14 w-full items-center justify-center bg-background shadow-t'>
+    <nav className='fixed bottom-0 left-0 right-0 z-50 flex h-14 w-full items-center justify-center bg-background shadow-t md:hidden'>
       <div className='flex w-full max-w-md justify-around px-4 sm:justify-between'>
         <Link
           href='/home'
