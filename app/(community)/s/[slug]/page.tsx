@@ -7,11 +7,10 @@ import { Space } from '@/components/spaceHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 
-
 export default async function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
-  console.log('Params: ', params)
-  console.log('Params slug', params.slug)
+  console.log('Params: ', params);
+  console.log('Params slug', params.slug);
 
   const { data: spaces, error: spaceError } = await supabase
     .from('spaces')
@@ -26,7 +25,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const spaceId = spaces[0]?.id;
   const spaceTitle = spaces[0]?.title;
   const spaceDescription = spaces[0]?.description;
-  const spaceCreatedAt = spaces[0]?.created_at
+  const spaceCreatedAt = spaces[0]?.created_at;
 
   //Fetch resources matching the space_id
   const { data: resources, error: resourcesError } = await supabase
@@ -39,7 +38,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     console.log(resourcesError);
   }
 
-
   const space: Space = {
     title: spaceTitle,
     description: spaceDescription,
@@ -48,7 +46,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col mx-auto'>
       <SpaceHeader space={space} slug={params.slug} />
 
       <Resources spaceId={spaceId} />

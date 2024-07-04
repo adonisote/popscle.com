@@ -8,8 +8,6 @@ import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 import { ResourceCard } from '@/components/ResourceCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-
-
 export default function Resources({ spaceId }: { spaceId: string }) {
   const [data, setData] = useState<Resource[]>([]);
   const [filter, setFilter] = useState('ALL');
@@ -79,47 +77,52 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   };
 
   const handleUpvote = async (resourceId: string) => {
-    const { data: { user }, error: errorUSer } = await supabase.auth.getUser()
+    const {
+      data: { user },
+      error: errorUSer,
+    } = await supabase.auth.getUser();
 
     if (errorUSer) {
-      console.log('Error fetching user')
-      return
+      console.log('Error fetching user');
+      return;
     }
 
-    const userId = user?.id
+    const userId = user?.id;
     // Fetch the current upvoted_by array
     let { data: resource, error: fetchError } = await supabase
       .from('resources')
       .select('user_id, upvoted_by, votes')
       .eq('id', resourceId)
-      .single()
+      .single();
 
     if (fetchError) {
-      console.log('Error fetching upvoted_by array:', fetchError)
-      return
+      console.log('Error fetching upvoted_by array:', fetchError);
+      return;
     }
     // User who submited should not be able to upvote
     if (resource && userId === resource.user_id) {
-      console.log('User who submited should not be able to upvote')
-      return
+      console.log('User who submited should not be able to upvote');
+      return;
     }
-    const upvotedBy = resource?.upvoted_by ?? []
-    console.log('Resource: ', resource)
-    console.log('Array resource:', upvotedBy)
+    const upvotedBy = resource?.upvoted_by ?? [];
+    console.log('Resource: ', resource);
+    console.log('Array resource:', upvotedBy);
     // Add the new userId to the upvoted_by array if not already present
     // const updateUpvotedBy = upvotedBy.includes(userId)
     //   ? upvotedBy
     //   : [...upvotedBy, userId]
 
-    let updateUpvotedBy = upvotedBy
+    let updateUpvotedBy = upvotedBy;
 
     if (upvotedBy.includes(userId)) {
-      console.log('Devoting......')
-      updateUpvotedBy = updateUpvotedBy.filter((voter: string) => voter !== userId)
+      console.log('Devoting......');
+      updateUpvotedBy = updateUpvotedBy.filter(
+        (voter: string) => voter !== userId
+      );
       const { error: updateError } = await supabase
         .from('resources')
         .update({ upvoted_by: updateUpvotedBy, votes: resource?.votes - 1 })
-        .eq('id', resourceId)
+        .eq('id', resourceId);
 
       if (updateError) {
         console.log('Error updating: Devoting.........:', updateError);
@@ -128,20 +131,24 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         setData((prevData) =>
           prevData.map((resource) =>
             resource.id === resourceId
-              ? { ...resource, votes: resource.votes - 1, upvoted_by: updateUpvotedBy }
+              ? {
+                  ...resource,
+                  votes: resource.votes - 1,
+                  upvoted_by: updateUpvotedBy,
+                }
               : resource
-          ));
-
+          )
+        );
       }
       // return
     } else {
-      updateUpvotedBy = [...upvotedBy, userId]
-      console.log('New entry in voters')
+      updateUpvotedBy = [...upvotedBy, userId];
+      console.log('New entry in voters');
       // Update the resource with the new upvoted_by array
       const { error: updateError } = await supabase
         .from('resources')
         .update({ upvoted_by: updateUpvotedBy, votes: resource?.votes + 1 })
-        .eq('id', resourceId)
+        .eq('id', resourceId);
 
       if (updateError) {
         console.log('Error updating upvoted_by array:', updateError);
@@ -150,20 +157,20 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         setData((prevData) =>
           prevData.map((resource) =>
             resource.id === resourceId
-              ? { ...resource, votes: resource.votes + 1, upvoted_by: updateUpvotedBy }
+              ? {
+                  ...resource,
+                  votes: resource.votes + 1,
+                  upvoted_by: updateUpvotedBy,
+                }
               : resource
-          ));
-
+          )
+        );
       }
-
-
     }
-
 
     // const { error } = await supabase.rpc('increment_votes', {
     //   resource_id: resourceId,
     // });
-
 
     // if (error) {
     //   console.log('Error updating vote', error);
@@ -183,23 +190,23 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     setFilter(newValue);
   };
 
-  console.log(data)
+  console.log(data);
 
-  const groupedResources = types.map(type => {
+  const groupedResources = types.map((type) => {
     return {
       type: type.name,
-      resources: data.filter(resource => resource.type_id === type.id)
-    }
-  })
+      resources: data.filter((resource) => resource.type_id === type.id),
+    };
+  });
 
   const capitalizeFirstLetter = (str: string): string => {
-    if (!str) return ''
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
-  }
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
   return (
-    <div className='md:w-max-[800px] mx-4'>
-      <div className='w-[850px] p-4 border-b'>
+    <div className='md:w-max-[800px] '>
+      <div className='w-[850px] py-4'>
         <Tabs defaultValue='ALL' onValueChange={handleTabChange}>
           <TabsList>
             <TabsTrigger value='ALL'>All</TabsTrigger>
@@ -247,10 +254,11 @@ export default function Resources({ spaceId }: { spaceId: string }) {
 
         {isLoading ? (
           <>
-            {types.map(type => (
-
+            {types.map((type) => (
               <div key={type.id} className='w-[850px] p-4 border-b'>
-                <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>{capitalizeFirstLetter(type.name)}</p>
+                <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
+                  {capitalizeFirstLetter(type.name)}
+                </p>
                 <SkeletonResourceCard />
                 <SkeletonResourceCard />
                 <SkeletonResourceCard />
@@ -259,27 +267,28 @@ export default function Resources({ spaceId }: { spaceId: string }) {
             ))}
           </>
         ) : (
-          groupedResources.map(group => (
+          groupedResources.map((group) => (
             <div key={group.type} className='w-[850px] p-4 border-b'>
-              <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>{capitalizeFirstLetter(group.type)}</p>
-              {
-                group.resources.length > 0 ? (
-                  group.resources.map(resource => (
-                    <ResourceCard
-                      key={resource.id}
-                      id={resource.id}
-                      title={resource.title}
-                      score={resource.votes}
-                      author={resource.profiles.username}
-                      url={resource.url}
-                      upvotedBy={resource.upvoted_by}
-                      votes={resource.votes}
-                      onUpvote={handleUpvote}
-                    />
-                  ))
-                ) : (
-                  <p>No resources available.</p>
-                )}
+              <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
+                {capitalizeFirstLetter(group.type)}
+              </p>
+              {group.resources.length > 0 ? (
+                group.resources.map((resource) => (
+                  <ResourceCard
+                    key={resource.id}
+                    id={resource.id}
+                    title={resource.title}
+                    score={resource.votes}
+                    author={resource.profiles.username}
+                    url={resource.url}
+                    upvotedBy={resource.upvoted_by}
+                    votes={resource.votes}
+                    onUpvote={handleUpvote}
+                  />
+                ))
+              ) : (
+                <p>No resources available.</p>
+              )}
             </div>
           ))
         )}
