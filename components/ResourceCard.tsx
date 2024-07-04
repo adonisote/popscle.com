@@ -60,7 +60,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     getUsernames()
   }, [upvotedBy, supabase])
 
-  function getMainDomain(url) {
+  function getMainDomain(url: string) {
     try {
       // Create a new URL object
       const parsedUrl = new URL(url);
