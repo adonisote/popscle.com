@@ -128,18 +128,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
             </div>
           </div>
           <div className='justify-end mr-20'>
-            <AvatarStack />
-            {/* <p>Upvoted by: {upvotedBy?.map(voter => (
-              <p key={voter} >{voter}</p>
-            ))}</p> */}
-            <p>
-              Upvoted by:{' '}
-              {voterUsernames?.map((voter) => (
-                <p key={voter?.username}>
-                  {voter?.username.toLocaleLowerCase()}
-                </p>
-              ))}
-            </p>
+            <AvatarStack voterUsernames={voterUsernames} />
           </div>
         </div>
       </Link>
