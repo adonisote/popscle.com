@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, Suspense } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import { createClient } from '@/utils/supabase/client';
 import { Resource } from '@/types/types';
@@ -67,14 +67,12 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     }
   }, [data, types]);
 
-  const toogleTypeFilter = (typeId: number) => {
-    setTypeFilters((prev) => {
-      if (prev.includes(typeId)) {
-        return prev.filter((id) => id != typeId);
-      } else {
-        return [...prev, typeId];
-      }
-    });
+  const toggleTypeFilter = (typeId: number) => {
+    setTypeFilters((prev) =>
+      prev.includes(typeId)
+        ? prev.filter((id) => id !== typeId)
+        : [...prev, typeId]
+    );
   };
 
   const handleUpvote = async (resourceId: string) => {
@@ -106,12 +104,8 @@ export default function Resources({ spaceId }: { spaceId: string }) {
       return;
     }
     const upvotedBy = resource?.upvoted_by ?? [];
-    console.log('Resource: ', resource);
-    console.log('Array resource:', upvotedBy);
-    // Add the new userId to the upvoted_by array if not already present
-    // const updateUpvotedBy = upvotedBy.includes(userId)
-    //   ? upvotedBy
-    //   : [...upvotedBy, userId]
+    //console.log('Resource: ', resource);
+    //console.log('Array resource:', upvotedBy);
 
     let updateUpvotedBy = upvotedBy;
 
@@ -295,10 +289,6 @@ export default function Resources({ spaceId }: { spaceId: string }) {
             ))
         )}
       </div>
-
-      <div></div>
     </div>
   );
 }
-
-//Separate in two components. Filter by free/paid. and by resources type.
