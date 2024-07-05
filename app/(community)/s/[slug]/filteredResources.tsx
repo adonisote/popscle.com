@@ -30,7 +30,8 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     let query = supabase
       .from('resources')
       .select(`*, profiles (username)`)
-      .eq('space_id', spaceId);
+      .eq('space_id', spaceId)
+      .order('votes', { ascending: false }); // TODO: Order users by reputation.
 
     // let query = supabase.from('resources').select().eq('space_id', spaceId);
 
@@ -267,30 +268,31 @@ export default function Resources({ spaceId }: { spaceId: string }) {
             ))}
           </>
         ) : (
-          groupedResources.map((group) => (
-            <div key={group.type} className='w-[850px] p-4 border-b'>
-              <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
-                {capitalizeFirstLetter(group.type)}
-              </p>
-              {group.resources.length > 0 ? (
-                group.resources.map((resource) => (
-                  <ResourceCard
-                    key={resource.id}
-                    id={resource.id}
-                    title={resource.title}
-                    score={resource.votes}
-                    author={resource.profiles.username}
-                    url={resource.url}
-                    upvotedBy={resource.upvoted_by}
-                    votes={resource.votes}
-                    onUpvote={handleUpvote}
-                  />
-                ))
-              ) : (
-                <p>No resources available.</p>
-              )}
-            </div>
-          ))
+          // group.resources.length > 0 &&
+          groupedResources
+            .filter((group) => group.resources.length > 0)
+            .map((group) => (
+              <div key={group.type} className='w-[850px] p-4 border-b'>
+                <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
+                  {capitalizeFirstLetter(group.type)}
+                </p>
+                {group.resources.map((resource) => (
+                  <>
+                    <ResourceCard
+                      key={resource.id}
+                      id={resource.id}
+                      title={resource.title}
+                      score={resource.votes}
+                      author={resource.profiles.username}
+                      url={resource.url}
+                      upvotedBy={resource.upvoted_by}
+                      votes={resource.votes}
+                      onUpvote={handleUpvote}
+                    />
+                  </>
+                ))}
+              </div>
+            ))
         )}
       </div>
 

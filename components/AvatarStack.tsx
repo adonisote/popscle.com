@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { UserProfilePreview } from './userProfilePreview';
 
 interface AvatarStackProps {
   voterUsernames: { username: string }[]; // Define the structure of the voterUsernames data
