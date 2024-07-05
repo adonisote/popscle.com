@@ -46,7 +46,8 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       const { data: upvotedBy_usernames, error: fetchError } = await supabase
         .from('profiles')
         .select('username')
-        .in('id', upvotedBy);
+        .in('id', upvotedBy)
+        .order('username', { ascending: true }); // TODO: Order users by reputation.
 
       console.log(upvotedBy_usernames);
       if (fetchError) {
