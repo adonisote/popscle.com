@@ -47,7 +47,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className='space-y-5'>
+    <div className='space-y-5 md:w-[650px] m-auto'>
       <h1 className='text-2xl font-semibold leading-none tracking-tight'>
         Submit new resource for {toTitleCase(spaceTitle)}
       </h1>
