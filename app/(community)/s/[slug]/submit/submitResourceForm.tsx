@@ -1,17 +1,25 @@
-'use client'
+'use client';
 //To dos
 //1. Way to check if the url hasn't been already submited under another form. //consider tinyurls?.
 //What if we have more routes /resourceX/view or resourceX/intro. How to manage that?
-//prohibited urls? 
-//2. We could think about. Once the form is submited. The resource has 0 votes or 1 vote (from the person who submitted)
+//prohibited urls?
 
-
-import { zodResolver } from '@hookform/resolvers/zod'
-import { set, useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { useState, useEffect } from 'react'
-import { createClient } from '@/utils/supabase/client'
-
+import { zodResolver } from '@hookform/resolvers/zod';
+import { set, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
+import ContentOptionsRadio from '@/components/radioContentOptions';
+import {
+  LaptopIcon,
+  FileTextIcon,
+  BookIcon,
+  Book,
+  Video,
+  Podcast,
+  ComputerIcon,
+  TypeIcon,
+} from 'lucide-react';
 
 import {
   Form,
@@ -21,88 +29,97 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Switch } from "@/components/ui/switch"
-import { Textarea } from "@/components/ui/textarea"
-
-
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
-  title: z.string({
-    required_error: "Resource title is required",
-    invalid_type_error: "Name must be a string",
-  }).min(2).max(50),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }).max(255, {
-    message: "Description must not be longer than 255 characters.",
-  }),
+  title: z
+    .string({
+      required_error: 'Resource title is required',
+      invalid_type_error: 'Name must be a string',
+    })
+    .min(2)
+    .max(100),
+  description: z
+    .string()
+    .min(10, {
+      message: 'Description must be at least 10 characters.',
+    })
+    .max(255, {
+      message: 'Description must not be longer than 255 characters.',
+    }),
   url: z.string().url(),
   user_id: z.string().uuid(),
   space_id: z.string().uuid(),
   type_id: z.coerce.number().int(),
-  isPaid: z.boolean().default(false)
-})
+  isPaid: z.boolean().default(false),
+});
 
 interface ResourceType {
   id: number;
   name: string;
 }
 
-
-export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: string }) {
-  const supabase = createClient()
-  const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([])
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export function ResourceForm({
+  spaceId,
+  userId,
+}: {
+  spaceId: string;
+  userId: string;
+}) {
+  const supabase = createClient();
+  const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchResourceTypes = async () => {
-      const { data, error: typesError } = await supabase
-        .from('types')
-        .select()
-      console.log(data)
+      const { data, error: typesError } = await supabase.from('types').select();
+      console.log(data);
       if (typesError) {
-        console.log('Fetching types error:', typesError)
+        console.log('Fetching types error:', typesError);
       } else {
-        setResourceTypes(data)
+        setResourceTypes(data);
       }
-    }
+    };
 
-    fetchResourceTypes()
-  }, [supabase])
+    fetchResourceTypes();
+  }, [supabase]);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      user_id: userId, //Need to be passed from props 
+      user_id: userId, //Need to be passed from props
       space_id: spaceId, //Need to be passed from props
     },
-  })
+  });
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log('Form submitted: ', values)
+    console.log('Form submitted: ', values);
     const { error: submitError } = await supabase
       .from('resources')
-      .insert([values])
+      .insert([values]);
     if (submitError) {
-      console.log('Error submiting form:', submitError)
-      setError(submitError.message)
+      console.log('Error submiting form:', submitError);
+      setError(submitError.message);
     } else {
-      console.log('Form submitted')
-      setIsSubmitted(true)
+      console.log('Form submitted');
+      setIsSubmitted(true);
       //Reset the form values after successful submission
       form.reset({
         title: '',
@@ -111,28 +128,24 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
         user_id: userId,
         space_id: spaceId,
         type_id: 1,
-        isPaid: false
-      })
-
-
+        isPaid: false,
+      });
     }
   }
 
-
   return (
-    <div className='h-full flex flex-col items-center justify-center'>
+    <div className='flex flex-col'>
       {isSubmitted ? (
         <div className='h-min-[500px] h-full flex flex-col items-center justify-center'>
           <p>Resource submitted. Thank you!</p>
           <Button onClick={() => setIsSubmitted(false)}>Start again</Button>
         </div>
       ) : (
-
-
-
-
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='space-y-8 mb-20 sm:mb-0'
+          >
             <FormField
               control={form.control}
               name='title'
@@ -142,8 +155,7 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
                   <FormControl>
                     <Input placeholder='Resource title' {...field} />
                   </FormControl>
-                  <FormDescription>
-                  </FormDescription>
+                  <FormDescription></FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -173,68 +185,178 @@ export function ResourceForm({ spaceId, userId }: { spaceId: string, userId: str
               name='url'
               render={({ field }) => (
                 <FormItem>
-
                   <FormLabel>Url</FormLabel>
                   <FormControl>
                     <Input {...field} />
-
                   </FormControl>
                   <FormDescription>Original resource url</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            {/* // Old Select Field for content type. Keeping it becaue it might be useful.
+            
             <FormField
               control={form.control}
               name='type_id'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={String(field.value)}
+                  >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Resource type" />
+                        <SelectValue placeholder='Resource type' />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {resourceTypes?.map(type => (
-                        <SelectItem key={type.id} value={String(type.id)}>{type.name}</SelectItem>
 
+                    <SelectContent>
+                      {resourceTypes?.map((type) => (
+                        <SelectItem key={type.id} value={String(type.id)}>
+                          {type.name}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormDescription></FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+
+            <FormField
+              control={form.control}
+              name='type_id'
+              render={({ field }) => (
+                <FormItem className='space-y-3 w-full md:w-auto'>
+                  <FormLabel className='text-xl font-semibold leading-none tracking-tight'>
+                    Content Type
+                  </FormLabel>
                   <FormDescription>
+                    Select the type of content you&apos;re submitting.
                   </FormDescription>
+
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={String(field.value)}
+                      className=' flex-col space-y-1 grid grid-cols-1 md:grid-cols-2 gap-4'
+                    >
+                      {resourceTypes?.map((type) => (
+                        <FormItem
+                          key={type.id}
+                          className='flex items-center space-x-3 space-y-0  justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
+                        >
+                          <FormControl>
+                            <RadioGroupItem
+                              className='peer sr-only'
+                              value={String(type.id)}
+                            />
+                          </FormControl>
+                          <FormLabel className='font-normal w-full cursor-pointer h-full m-0'>
+                            <div className='flex items-center gap-4'>
+                              <div className='bg-muted rounded-md flex items-center justify-center w-10 h-10'>
+                                {iconMap[type.name] || (
+                                  <ComputerIcon className='h-6 w-6' />
+                                )}
+                              </div>
+                              <div className='flex flex-col'>
+                                {type.name.charAt(0).toUpperCase() +
+                                  type.name.slice(1)}
+                                <p className='text-sm text-muted-foreground'>
+                                  {contentTypeMap[type.name]}
+                                </p>
+                              </div>
+                            </div>
+                          </FormLabel>
+                        </FormItem>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name='isPaid'
               render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between" >
-                  {/* <div> */}
+                <FormItem className='space-y-3'>
+                  <FormLabel className='text-xl font-semibold leading-none tracking-tight'>
+                    Is the resource free or do you have to pay for it?
+                  </FormLabel>
 
-                  {/* <FormMessage /> */}
-                  <FormDescription>Free</FormDescription>
-                  {/* </div> */}
                   <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <RadioGroup
+                      onValueChange={(value) =>
+                        field.onChange(value === 'true')
+                      }
+                      defaultValue={field.value ? 'true' : 'false'}
+                      className='flex'
+                    >
+                      <FormItem className='space-y-0'>
+                        <FormControl>
+                          <RadioGroupItem
+                            value='false'
+                            className='peer sr-only'
+                          />
+                        </FormControl>
+                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40'>
+                          Free
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className='flex items-center space-x-3 space-y-0'>
+                        <FormControl>
+                          <RadioGroupItem
+                            value='true'
+                            className='peer sr-only'
+                          />
+                        </FormControl>
+                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40'>
+                          Paid
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
                   </FormControl>
-                  <FormLabel>Paid</FormLabel>
                 </FormItem>
               )}
             />
-            {error && <p className='text-yellow-400 p-4'>Ups.🙈 That did not work. Maybe the url was already submited.</p>}
 
-            <Button type="submit">Submit</Button>
+            {error && (
+              <p className='text-yellow-400 p-4'>
+                Ups.🙈 That did not work. Maybe the url was already submited.
+              </p>
+            )}
+
+            <Button className='w-full' type='submit'>
+              Submit Resource
+            </Button>
           </form>
         </Form>
       )}
     </div>
-  )
+  );
 }
+
+const iconMap: any = {
+  book: <Book className='h-6 w-6' />,
+  video: <Video className='h-6 w-6' />,
+  article: <FileTextIcon className='h-6 w-6' />,
+  'practical project': <LaptopIcon className='h-6 w-6' />,
+  podcast: <Podcast className='h-6 w-6' />,
+  'online course': <LaptopIcon className='h-6 w-6' />,
+};
+
+const contentTypeMap: any = {
+  book: 'A great book for in-depth learning.',
+  article: 'An interesting article to spread knowledge.',
+  video: 'Something you came across on Youtube or elsewhere.',
+  'interactive content': 'Interactive content for hands-on fun.',
+  'practical project': 'A practical project for real-world practice.',
+  'online course': 'A structured online course.',
+  podcast: 'A helpful podcast episode.',
+};
