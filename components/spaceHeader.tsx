@@ -2,16 +2,12 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
-
-
 
 export type Space = {
   title: string;
@@ -20,12 +16,8 @@ export type Space = {
   created_at: '';
 };
 
-
-
-
 //Alternative: submit resource in a new page
 function AddResourceButton({ slug }: { slug: string }) {
-
   return (
     <Button className='' asChild>
       <Link href={`/s/${slug}/submit`}>
@@ -33,16 +25,15 @@ function AddResourceButton({ slug }: { slug: string }) {
         Add Resource
       </Link>
     </Button>
-
-  )
+  );
 }
 
-export function SpaceHeader({ space, slug }: { space: Space, slug: string }) {
+export function SpaceHeader({ space, slug }: { space: Space; slug: string }) {
   return (
-    <Card className='sm:col-span-2 w-[850px] min-w-[650px] rounded-lg'>
-      <CardHeader className='pb-3'>
-        <div className='bg-gradient-to-tr from-[#FF72E1] to-[#F54C7A] w-full h-12 rounded-md relative' />
-        <div className='flex justify-between items-center py-8'>
+    <Card className='sm:w-full rounded-lg w-screen -m-4 sm:m-0 border-0 sm:border'>
+      <CardHeader className='pb-3 pt-3 px-3'>
+        <div className='bg-gradient-to-tr from-[#FF72E1] to-[#F54C7A] flex w-full h-12 rounded-md p-8 m-0' />
+        <div className='flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center gap-2 sm:gap-0 py-8 px-3'>
           <div className='flex flex-col'>
             <CardTitle>{space.title}</CardTitle>
             <CardDescription className='max-w-lg text-balance leading-relaxed'>
