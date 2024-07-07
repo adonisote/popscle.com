@@ -10,6 +10,15 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { CalendarDays } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { UserProfilePreview } from './userProfilePreview';
@@ -83,16 +92,16 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
         <ChevronUp />
       </div> */}
       <UpvoteResource resourceId={id} votes={votes} onUpvote={onUpvote} />
-      <Link className='w-fit flex flex-col md:w-full rounded-md' href={url}>
+      <div className='w-fit flex flex-col md:w-full rounded-md'>
         <div className='rounded-md px-2 py-3 flex flex-col md:flex-row space-x-4 hover:bg-muted transition-all delay-100 justify-between'>
           <div className='flex'>
             <div className='flex flex-col'>
-              <p>
+              <Link className='' href={url}>
                 {title}{' '}
                 <span className='text-sm text-muted-foreground'>
                   ({mainDomain})
                 </span>
-              </p>
+              </Link>
               <div className='flex space-x-1'>
                 <p className='text-muted-foreground text-sm'>{score} points</p>
                 <p className='text-muted-foreground text-sm'>
@@ -105,10 +114,43 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
             </div>
           </div>
           <div className='justify-end mr-20'>
-            <AvatarStack voterUsernames={voterUsernames} />
+            <>
+              <Sheet>
+                <SheetTrigger>
+                  <AvatarStack voterUsernames={voterUsernames} />
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Recommended By</SheetTitle>
+                    <SheetDescription>
+                      {voterUsernames.map((user) => (
+                        <div
+                          key={user.username}
+                          className='text-lg flex gap-4 items-center mb-2'
+                        >
+                          <Avatar
+                            key={user.username}
+                            className='border-2 border-background'
+                          >
+                            <AvatarImage
+                              src='#'
+                              alt={`Avatar of ${user.username}`}
+                            />
+                            <AvatarFallback>
+                              {user.username[0].toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          {user.username}
+                        </div>
+                      ))}
+                    </SheetDescription>
+                  </SheetHeader>
+                </SheetContent>
+              </Sheet>
+            </>
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };
