@@ -305,7 +305,7 @@ export function ResourceForm({
                             className='peer sr-only'
                           />
                         </FormControl>
-                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40'>
+                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40 cursor-pointer'>
                           Free
                         </FormLabel>
                       </FormItem>
@@ -316,7 +316,7 @@ export function ResourceForm({
                             className='peer sr-only'
                           />
                         </FormControl>
-                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40'>
+                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40 cursor-pointer'>
                           Paid
                         </FormLabel>
                       </FormItem>
