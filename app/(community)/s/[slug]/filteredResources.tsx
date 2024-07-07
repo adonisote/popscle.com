@@ -7,6 +7,7 @@ import { Resource } from '@/types/types';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 import { ResourceCard } from '@/components/ResourceCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Book, ComputerIcon, Video } from 'lucide-react';
 
 export default function Resources({ spaceId }: { spaceId: string }) {
   const [data, setData] = useState<Resource[]>([]);
@@ -267,9 +268,18 @@ export default function Resources({ spaceId }: { spaceId: string }) {
             .filter((group) => group.resources.length > 0)
             .map((group) => (
               <div key={group.type} className='w-[850px] p-4 border-b'>
-                <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
-                  {capitalizeFirstLetter(group.type)}
-                </p>
+                <div className='flex items-center gap-4'>
+                  <div className='bg-muted rounded-md flex items-center justify-center w-10 h-10'>
+                    {group.type == 'video' ? (
+                      <Video className='h-5 w-5' />
+                    ) : (
+                      <Book className='h-5 w-5' />
+                    )}
+                  </div>
+                  <h2 className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
+                    {capitalizeFirstLetter(group.type) + 's'}
+                  </h2>
+                </div>
                 {group.resources.map((resource) => (
                   <>
                     <ResourceCard
