@@ -9,7 +9,7 @@ import { headers } from 'next/headers'
 export async function login(formData: FormData) {
   const supabase = createClient()
   const origin = headers().get('origin')
-  const redirectToUrl = `${origin}`
+  const redirectToUrl = `${origin}/account`
   console.log('Redirect to:', redirectToUrl)
 
   //Retrieve email from form data
