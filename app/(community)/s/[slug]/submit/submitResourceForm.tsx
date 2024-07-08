@@ -9,7 +9,6 @@ import { set, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import ContentOptionsRadio from '@/components/radioContentOptions';
 import {
   LaptopIcon,
   FileTextIcon,
