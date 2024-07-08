@@ -58,7 +58,7 @@ export async function signup(formData: FormData) {
 export async function signInWithGithub() {
   const supabase = createClient()
   const origin = headers().get('origin')
-  const redirectToUrl = `${origin}/auth/callback?next=/hello`
+  const redirectToUrl = `${origin}/auth/callback?next=/account`
 
   console.log('Redirecting to:', redirectToUrl)
 
