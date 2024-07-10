@@ -9,13 +9,14 @@ import { headers } from 'next/headers'
 export async function login(formData: FormData) {
   const supabase = createClient()
   const origin = headers().get('origin')
-  const redirectToUrl = `${origin}/account`
+  const redirectToUrl = `${origin}/auth/callback?next=/account`
   console.log('Redirect to:', redirectToUrl)
 
   //Retrieve email from form data
   const email = formData.get('email') as string
 
   const { error } = await supabase.auth.signInWithOtp({
+
     email: email,
     options: {
       shouldCreateUser: false,
