@@ -4,6 +4,12 @@ import { createClient } from '@/utils/supabase/server';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from '@radix-ui/react-tooltip';
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -37,15 +43,29 @@ export default async function Nav() {
         {user && (
           <>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className='border-2 border-background'>
-                  <AvatarImage src='#' />
-                  <AvatarFallback>
-                    {user?.email?.[0].toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align='end' className='w-36'>
+              <TooltipProvider>
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger>
+                    <DropdownMenuTrigger asChild>
+                      <Avatar className='border-2 border-background'>
+                        <AvatarImage src={''} />
+                        <AvatarFallback>
+                          {user?.email?.[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side='left'
+                    sideOffset={30}
+                    className='text-sm'
+                  >
+                    <p>Account</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <DropdownMenuContent align='end' className='w-48'>
                 <DropdownMenuItem className='text-muted-foreground'>
                   <Link className='w-full' href={`/account`}>
                     Profile
