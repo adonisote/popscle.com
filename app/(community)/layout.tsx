@@ -21,7 +21,7 @@ export default async function Layout({
       <body>
         <Nav />
 
-        <main className='min-h-screen mx-4 flex flex-col flex-1 gap-4 md:gap-8 md:p-4 md:mb-8'>
+        <main className='mx-4 flex flex-col flex-1 gap-4 md:gap-8 md:p-4 md:mb-8'>
           {children}
           <FeedbackSheet />
         </main>
