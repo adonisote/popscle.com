@@ -12,12 +12,10 @@ import { createClient } from '@/utils/supabase/client';
 import {
   LaptopIcon,
   FileTextIcon,
-  BookIcon,
   Book,
   Video,
   Podcast,
   ComputerIcon,
-  TypeIcon,
 } from 'lucide-react';
 
 import {

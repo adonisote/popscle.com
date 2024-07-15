@@ -7,7 +7,14 @@ import { Resource } from '@/types/types';
 import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 import { ResourceCard } from '@/components/ResourceCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Book, ComputerIcon, Video } from 'lucide-react';
+import {
+  Book,
+  ComputerIcon,
+  Video,
+  LaptopIcon,
+  FileTextIcon,
+  Podcast,
+} from 'lucide-react';
 
 export default function Resources({ spaceId }: { spaceId: string }) {
   const [data, setData] = useState<Resource[]>([]);
@@ -270,14 +277,13 @@ export default function Resources({ spaceId }: { spaceId: string }) {
               <div key={group.type} className='w-[850px] p-4 border-b'>
                 <div className='flex items-center gap-4 mb-4'>
                   <div className='bg-muted rounded-md flex items-center justify-center w-10 h-10'>
-                    {group.type == 'video' ? (
-                      <Video className='h-5 w-5' />
-                    ) : (
-                      <Book className='h-5 w-5' />
+                    {iconMap[group.type] || (
+                      <ComputerIcon className='h-6 w-6' />
                     )}
                   </div>
                   <h2 className='text-xl font-semibold tracking-tight first:mt-0'>
-                    {capitalizeFirstLetter(group.type) + 's'}
+                    {capitalizeFirstLetter(group.type) +
+                      (group.type === 'interactive content' ? '' : 's')}
                   </h2>
                 </div>
                 {group.resources.map((resource) => (
@@ -302,3 +308,12 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     </div>
   );
 }
+
+const iconMap: any = {
+  book: <Book className='h-6 w-6' />,
+  video: <Video className='h-6 w-6' />,
+  article: <FileTextIcon className='h-6 w-6' />,
+  'practical project': <LaptopIcon className='h-6 w-6' />,
+  podcast: <Podcast className='h-6 w-6' />,
+  'online course': <LaptopIcon className='h-6 w-6' />,
+};
