@@ -2,15 +2,9 @@
 import { createClient } from '@/utils/supabase/client';
 import { AvatarStack } from './AvatarStack';
 import Link from 'next/link';
-import { ChevronUp } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import UpvoteResource from '@/app/(community)/s/[slug]/upvote';
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card';
-import { Button } from '@/components/ui/button';
+
 import {
   Sheet,
   SheetContent,
@@ -19,7 +13,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { CalendarDays } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { UserProfilePreview } from './userProfilePreview';
 
@@ -48,6 +41,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   onUpvote,
 }) => {
   const [voterUsernames, setVoterUsernames] = useState<Voter[]>([]);
+  const [userIsAuthor, setUserIsAuthor] = useState(true); // If the user is the author, render a different button.
 
   const supabase = createClient();
 
@@ -91,7 +85,13 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       {/* <div className='p-3 hover:text-green-500 hover:animate-ping'>
         <ChevronUp />
       </div> */}
-      <UpvoteResource resourceId={id} votes={votes} onUpvote={onUpvote} />
+      <UpvoteResource
+        resourceId={id}
+        votes={votes}
+        userIsAuthor={author == 'malik' ? userIsAuthor : !userIsAuthor} // TODO: Replace string with user. I would check user ids instead of usernames.
+        isUpvoted={false} // TODO: Check if user upvoted the resource.
+        onUpvote={onUpvote}
+      />
       <div className='w-fit flex flex-col md:w-full rounded-md'>
         <div className='rounded-md px-2 py-3 flex flex-col md:flex-row space-x-4 hover:bg-muted transition-all delay-100 justify-between'>
           <div className='flex'>
