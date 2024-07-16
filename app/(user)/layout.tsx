@@ -20,7 +20,7 @@ export default async function Layout({
   return (
     <html>
       <body>
-        <main className='h-screen w-screen flex flex-col items-center justify-center'>
+        <main className='h-screen w-full flex flex-col items-center justify-center'>
           {children}
           <FeedbackSheet />
         </main>
