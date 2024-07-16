@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import Image from 'next/image'
+import { Pencil } from 'lucide-react'
+import catvatar from '@/public/funny-cat.webp'
 
 export default function Avatar({
   uid,
@@ -63,22 +65,29 @@ export default function Avatar({
   }
 
   return (
-    <div>
+    <div className='relative my-4'>
       {avatarUrl ? (
         <Image
           width={size}
           height={size}
           src={avatarUrl}
           alt="Avatar"
-          className="avatar image"
+          className="avatar image rounded-full"
           style={{ height: size, width: size }}
         />
       ) : (
-        <div className="avatar no-image" style={{ height: size, width: size }} />
+        // <div className="avatar no-image" style={{ height: size, width: size }} />
+        <Image
+          src={catvatar}
+          alt="Cat avatar placeholder"
+          className='rounded-full'
+          style={{ height: size, width: size }}
+          priority={true}
+        />
       )}
       <div style={{ width: size }}>
-        <label className="text-sm button primary block hover:underline hover:underline-offset-4" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'Upload'}
+        <label className=" text-center text-sm button primary hover:underline hover:underline-offset-4 flex  flex-col items-end" htmlFor="single">
+          {uploading ? 'Uploading ...' : <Pencil size={30} className='absolute bottom-0 right-0  border rounded-md  border-slate-200 p-1 m-1 hover:bg-primary/90' />}
         </label>
         <input
           style={{
