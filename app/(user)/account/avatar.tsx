@@ -87,7 +87,7 @@ export default function Avatar({
       )}
       <div style={{ width: size }}>
         <label className=" text-center text-sm button primary hover:underline hover:underline-offset-4 flex  flex-col items-end" htmlFor="single">
-          {uploading ? 'Uploading ...' : <Pencil size={30} className='absolute bottom-0 right-0  border rounded-md  border-slate-200 p-1 m-1 hover:bg-primary/90' />}
+          {uploading ? 'Uploading ...' : <Pencil size={24} className='absolute bottom-0 right-0  border rounded-md  border-slate-200 p-1 hover:bg-primary/90' />}
         </label>
         <input
           style={{
