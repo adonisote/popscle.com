@@ -1,259 +1,211 @@
-// 'use client'
-// import Avatar from './avatar'
-// import { useCallback, useEffect, useState } from 'react'
-// import { createClient } from '@/utils/supabase/client'
-// import { type User } from '@supabase/supabase-js'
-// import { Button } from '@/components/ui/button'
-// import { Input } from '@/components/ui/input'
-// import { Label } from '@/components/ui/label'
-// import { useForm } from 'react-hook-form'
-// import { z } from 'zod'
-// import { zodResolver } from '@hookform/resolvers/zod'
+'use client'
+import { createClient } from "@/utils/supabase/client"
+import { useCallback, useEffect, useState } from "react"
+import { type User } from "@supabase/supabase-js"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from '@/components/ui/label'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import Avatar from './avatar'
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+
+const formSchema = z.object({
+  username: z.string().min(5, { message: "Username must be at least 5 characters" }).max(20, {
+    message: "Username must not be longer than 20 characters"
+  }),
+  full_name: z.string().min(3, {
+    message: "Full name must be at least 3 characters"
+  }).max(30, {
+    message: "Full name must not be longer than 30 characters"
+  }),
+  website: z.string().url().optional(),
+  avatar_url: z.string().optional(), //it is not really a url that is why .url() is not needed
+  updated_at: z.string()
+})
 
 
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage
-// } from '@/components/ui/form'
-// import { resolve } from 'path'
 
 
-// const formSchema = z.object({
-//   username: z.string().min(5, { message: "Username must be at least 5 characters" }).max(20, {
-//     message: "Username must not be longer than 20 characters"
-//   }),
-//   full_name: z.string().min(3, {
-//     message: "Full name must be at least 3 characters"
-//   }).max(30, {
-//     message: "Full name must not be longer than 30 characters"
-//   }),
-//   website: z.string().url().optional(),
-//   avatar_url: z.string().url().optional(),
-// })
 
-// export default function AccountForm({ user }: { user: User | null }) {
-//   const supabase = createClient()
-//   const [loading, setLoading] = useState(true)
-//   const [full_name, setFullname] = useState<string | null>(null)
-//   const [username, setUsername] = useState<string | null>(null)
-//   const [website, setWebsite] = useState<string | null>(null)
-//   const [avatar_url, setAvatarUrl] = useState<string | null>(null)
+export default function AccountForm2({ user }: { user: User }) {
 
-//   const getProfile = useCallback(async () => {
-//     try {
-//       setLoading(true)
-
-//       const { data, error, status } = await supabase
-//         .from('profiles')
-//         .select(`full_name, username, website, avatar_url`)
-//         .eq('id', user?.id)
-//         .single()
-
-//       if (error && status !== 406) {
-//         console.log(error)
-//         throw error
-//       }
-//       console.log(data)
-
-//       if (data) {
-//         setFullname(data.full_name)
-//         setUsername(data.username)
-//         setWebsite(data.website)
-//         setAvatarUrl(data.avatar_url)
-//       }
-//     } catch (error) {
-//       alert('Error loading user data!')
-//     } finally {
-//       setLoading(false)
-//     }
-//   }, [user, supabase])
-
-//   useEffect(() => {
-//     getProfile()
-//   }, [user, getProfile])
-
-//   //1. Define the form
-//   const form = useForm<z.infer<typeof formSchema>>({
-//     resolver: zodResolver(formSchema),
-//     defaultValues: {
-//       username: username ?? '',
-//       full_name: full_name ?? '',
-//       website: website ?? '',
-//       avatar_url: avatar_url ?? '',
-//     }
-//   })
-
-//   // Update form default values when state variables change
-//   useEffect(() => {
-//     form.reset({
-//       username: username ?? '',
-//       full_name: full_name ?? '',
-//       website: website ?? '',
-//       avatar_url: avatar_url ?? '',
-//     })
-//   }, [username, full_name, website, avatar_url, form])
+  const supabase = createClient()
+  const [loading, setLoading] = useState(true)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [profile, setProfile] = useState({
+    full_name: '',
+    username: '',
+    website: '',
+    avatar_url: '',
+    updated_at: ''
+  })
 
 
-//   //2. Define a submit handler
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+      full_name: '',
+      website: '',
+      avatar_url: '',
+      updated_at: ''
+    }
+  })
+  const fetchProfile = useCallback(
+    async () => {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('profiles')
+        .select()
+        .eq('id', user.id)
+        .single()
 
-//   async function updateProfile(
-//     data: z.infer<typeof formSchema>
-//     //   { data
-//     //   username,
-//     //   website,
-//     //   avatar_url,
-//     // }: {
-//     //   username: string | null
-//     //   fullname: string | null
-//     //   website: string | null
-//     //   avatar_url: string | null
-//     // }
-//   ) {
-//     //Destructured Block-scope variables not interfering with state variables, because take precedence
-//     console.log('inside update profile', data)
-//     const { full_name, username, website, avatar_url } = data
-
-//     console.log('Updating profile:', full_name, username, website, avatar_url)
-//     try {
-//       setLoading(true)
-
-//       const { error } = await supabase.from('profiles').upsert({
-//         id: user?.id as string,
-//         full_name,
-//         username,
-//         website,
-//         avatar_url,
-//         updated_at: new Date().toISOString(),
-//       })
-//       if (error) throw error
-//       alert('Profile updated!')
-//       setFullname(full_name)
-//       setUsername(username)
-//       setWebsite(website)
-//       setAvatarUrl(avatar_url)
-//     } catch (error) {
-//       alert('Error updating the data!')
-//     } finally {
-//       setLoading(false)
-//     }
-//   }
-
-//   return (
-//     <Form {...form}>
-//       <form onSubmit={form.handleSubmit(updateProfile)} className='w-full h-full flex flex-col items-center justify-center'>
+      setProfile(data)
+      form.reset(data)
+      setLoading(false)
+      // console.log('Form after fetch:', form.getValues())
 
 
-//         <div className='flex flex-col items-center'>
-//           <Avatar
-//             uid={user?.id ?? null}
-//             url={avatar_url}
-//             size={150}
-//             onUpload={(url) => {
-//               setAvatarUrl(url)
-//               updateProfile({ full_name, username, website, avatar_url: url })
-//             }}
-//           />
-//           <FormItem>
-//             <FormLabel>Email</FormLabel>
-//             <Input className='md:w-[250px]' value={user?.email} disabled />
-//           </FormItem>
-
-//           <FormField
-//             control={form.control}
-//             name='full_name'
-//             render={({ field }) => (
-//               <FormItem>
-//                 <FormLabel>Full Name</FormLabel>
-//                 <FormControl>
-//                   <Input placeholder='Full Name' {...field} />
-//                 </FormControl>
-//                 <FormDescription>
-//                 </FormDescription>
-//                 <FormMessage />
-//               </FormItem>
-//             )}
-
-//           />
+    }, [user, supabase, form])
 
 
-//           {/* <Label htmlFor="fullName">Full Name</Label>
-//           <Input
-//             className='md:w-[250px]'
-//             id="fullName"
-//             type="text"
-//             value={full_name || ''}
-//             onChange={(e) => setFullname(e.target.value)}
-//           /> */}
+  // 1. Define the form
+  useEffect(() => {
+    fetchProfile()
+    setLoading(false)
+  }, [fetchProfile])
+  // 2. Define a submit handler
+  // form.reset(profile)
 
-//           <FormField
-//             control={form.control}
-//             name='username'
-//             render={({ field }) => (
-//               <FormItem>
-//                 <FormLabel>Username</FormLabel>
-//                 <FormControl>
-//                   <Input placeholder='Username' {...field} />
-//                 </FormControl>
-//                 <FormDescription>
-//                 </FormDescription>
-//                 <FormMessage />
-//               </FormItem>
-//             )}
-//           />
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      console.log('On submit:', values)
+      const updatedValues = {
+        ...values,
+        id: user?.id,
+        updated_at: new Date().toISOString(),
+        website: values.website || '',
+        avatar_url: values.avatar_url || ''
+      }
+      console.log('Updated values:', updatedValues)
 
-//           {/* <div>
-//             <Label htmlFor="username">Username</Label>
-//             <Input
-//               className='md:w-[250px]'
-//               id="username"
-//               type="text"
-//               value={username || ''}
-//               onChange={(e) => setUsername(e.target.value)}
-//             />
-//           </div> */}
+      const { error } = await supabase
+        .from('profiles')
+        .upsert(updatedValues)
+      // .eq('id', user.id)
 
-//           <FormField
-//             control={form.control}
-//             name='website'
-//             render={({ field }) => (
-//               <FormItem>
-//                 <FormLabel>Website</FormLabel>
-//                 <FormControl>
-//                   <Input placeholder='Website' {...field} />
-//                 </FormControl>
-//                 <FormDescription>
-//                 </FormDescription>
-//                 <FormMessage />
-//               </FormItem>
-//             )}
-//           />
-//           {/* <div>
-//             <Label htmlFor="website">Website</Label>
-//             <Input
-//               className='md:w-[250px]'
-//               id="website"
-//               type="url"
-//               value={website || ''}
-//               onChange={(e) => setWebsite(e.target.value)}
-//             />
-//           </div> */}
+      if (error) {
+        setError(error.message)
+      } else {
+        alert('Profile updated!')
+        setProfile(updatedValues);
+      }
+    }, [supabase, user.id]
+  )
 
 
-//         </div>
 
-//         <Button
-//           type='submit'
-//           // onClick={() => updateProfile({ full_name, username, website, avatar_url })}
-//           disabled={loading}
-//         >
-//           {loading ? 'Loading ...' : 'Update'}
-//         </Button>
-//       </form>
-//     </Form>
-//   )
-// }
+
+  // form.reset(profile)
+  if (loading) return <p>Loading...</p>
+
+
+
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      {/* <h1>Profile</h1> */}
+      <p className=" text-lg">{profile.full_name ?? 'My Profile'}</p>
+      <Avatar
+        uid={user.id}
+        url={profile.avatar_url}
+        size={150}
+        onUpload={(url) => {
+          setProfile({ ...profile, avatar_url: url })
+          form.setValue('avatar_url', url)
+        }}
+      />
+
+      <div>
+        <Label htmlFor="email">Email:</Label>
+        <Input id="email" className='md:w-[250px] text-center' value={user?.email} disabled />
+      </div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col items-center"
+        >
+          <FormField
+            control={form.control}
+            name="full_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                  <Input className="md:w-[250px] text-center" {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input className="md:w-[250px] text-center" {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="website"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Website</FormLabel>
+                <FormControl>
+                  <Input className="md:w-[250px] text-center" {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* <FormField
+            control={form.control}
+            name="avatar_url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Website</FormLabel>
+                <FormControl>
+                  <Input  {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+          <Button type="submit" className="m-4">Update profile</Button>
+        </form>
+      </Form>
+    </div>
+  )
+}
+
