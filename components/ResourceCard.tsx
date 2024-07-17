@@ -30,6 +30,11 @@ interface Voter {
   username: string;
 }
 
+interface Voters {
+  username: string;
+  avatar_url: string;
+}
+
 export const ResourceCard: React.FC<ResourceCardProps> = ({
   id,
   title,
@@ -40,6 +45,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   votes,
   onUpvote,
 }) => {
+  const [voters, setVoters] = useState<Voters[]>([]);
   const [voterUsernames, setVoterUsernames] = useState<Voter[]>([]);
   const [userIsAuthor, setUserIsAuthor] = useState(true); // If the user is the author, render a different button.
 
@@ -47,22 +53,41 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
 
   useEffect(() => {
     const getUsernames = async () => {
-      const { data: upvotedBy_usernames, error: fetchError } = await supabase
+      const { data, error: fetchError } = await supabase
         .from('profiles')
-        .select('username')
+        .select('username, avatar_url')
         .in('id', upvotedBy)
-        .order('username', { ascending: true }); // TODO: Order users by reputation.
+      // .order('username', { ascending: true }); // TODO: Order users by reputation.
 
-      console.log(upvotedBy_usernames);
+      console.log('Upvoted by:', data);
+
       if (fetchError) {
         console.log('Fetching error:', fetchError);
       } else {
-        setVoterUsernames(upvotedBy_usernames);
+
+        //Fetch signed Urls for voters with avatar_url
+        const votersWithUrls = await Promise.all(
+          data.map(async (voter) => {
+            if (voter.avatar_url) {
+              const { data: urlData } = await supabase.storage
+                .from('avatars')
+                .createSignedUrl(voter.avatar_url, 3600)
+              return {
+                ...voter, avatar_url: urlData?.signedUrl || ''
+              }
+            }
+            return voter
+          })
+        )
+        setVoters(votersWithUrls);
+
+        // setVoterUsernames(upvotedBy_usernames);
       }
     };
     getUsernames();
   }, [upvotedBy, supabase]);
 
+  console.log('Voters with urls:', voters)
   function getMainDomain(url: string) {
     try {
       // Create a new URL object
@@ -76,6 +101,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     }
   }
   const mainDomain = getMainDomain(url);
+  console.log('Voters:', voters)
 
   // console.log(voterUsernames)
   return (
@@ -117,13 +143,13 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
             <>
               <Sheet>
                 <SheetTrigger>
-                  <AvatarStack voterUsernames={voterUsernames} />
+                  <AvatarStack voters={voters} />
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
                     <SheetTitle>Recommended By</SheetTitle>
                     <SheetDescription>
-                      {voterUsernames.map((user) => (
+                      {voters.map((user) => (
                         <div
                           key={user.username}
                           className='text-lg flex gap-4 items-center mb-2'
