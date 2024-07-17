@@ -159,7 +159,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
                             className='border-2 border-background'
                           >
                             <AvatarImage
-                              src='#'
+                              src={user.avatar_url}
                               alt={`Avatar of ${user.username}`}
                             />
                             <AvatarFallback>
