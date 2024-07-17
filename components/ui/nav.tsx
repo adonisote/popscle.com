@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { string } from 'zod';
 
 export default async function Nav() {
   const supabase = createClient();
@@ -24,6 +25,25 @@ export default async function Nav() {
     data: { user },
     error,
   } = await supabase.auth.getUser();
+
+  const { data: avatar, error: fetchError } = await supabase
+    .from('profiles')
+    .select('avatar_url')
+    .eq('id', user?.id)
+    .single();
+
+  let signedAvatarUrl = '';
+  if (avatar) {
+    const { data, error } = await supabase
+      .storage
+      .from('avatars')
+      .createSignedUrl(avatar?.avatar_url, 3600)
+    if (error) {
+    } else if (data) {
+      signedAvatarUrl = data.signedUrl;
+    }
+  }
+
 
   return (
     <div className='w-full flex justify-between p-4'>
@@ -48,7 +68,7 @@ export default async function Nav() {
                   <TooltipTrigger>
                     <DropdownMenuTrigger asChild>
                       <Avatar className='border-2 border-background'>
-                        <AvatarImage src={''} />
+                        <AvatarImage src={signedAvatarUrl} />
                         <AvatarFallback>
                           {user?.email?.[0].toUpperCase()}
                         </AvatarFallback>
