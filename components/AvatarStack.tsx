@@ -10,7 +10,7 @@ const supabase = createClient();
 
 interface AvatarStackProps {
   //Problem because not acception url
-  voters: { username: string, avatar_url: string }[]; // Define the structure of the voterUsernames data
+  voters: { full_name: string, avatar_url: string }[]; // Define the structure of the voterUsernames data
 }
 
 
@@ -19,9 +19,9 @@ export function AvatarStack({ voters }: AvatarStackProps) {
     <>
       <div className='flex -space-x-3 rtl:space-x-reverse'>
         {voters?.slice(0, 2).map((voter) => (
-          <Avatar key={voter?.username} className='border-2 border-background'>
-            <AvatarImage src={voter?.avatar_url} alt={`Avatar of ${voter?.username}`} />
-            <AvatarFallback>{voter?.username[0].toUpperCase()}</AvatarFallback>
+          <Avatar key={voter?.full_name} className='border-2 border-background'>
+            <AvatarImage src={voter?.avatar_url} alt={`Avatar of ${voter?.full_name}`} />
+            <AvatarFallback>{voter?.full_name[0].toUpperCase()}</AvatarFallback>
           </Avatar>
         ))}
         {voters?.length > 2 && ( // Conditionally render the "+n" when there are more than 2 voters

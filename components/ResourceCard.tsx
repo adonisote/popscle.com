@@ -26,12 +26,12 @@ interface ResourceCardProps {
   votes: number;
   onUpvote: (resourceId: string) => void;
 }
-interface Voter {
-  username: string;
-}
+// interface Voter {
+//   username: string;
+// }
 
 interface Voters {
-  username: string;
+  full_name: string;
   avatar_url: string;
 }
 
@@ -54,7 +54,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     const getUsernames = async () => {
       const { data, error: fetchError } = await supabase
         .from('profiles')
-        .select('username, avatar_url')
+        .select('full_name, avatar_url')
         .in('id', upvotedBy)
       // .order('username', { ascending: true }); // TODO: Order users by reputation.
 
@@ -148,22 +148,22 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
                     <SheetDescription>
                       {voters.map((user) => (
                         <div
-                          key={user.username}
+                          key={user.full_name}
                           className='text-lg flex gap-4 items-center mb-2'
                         >
                           <Avatar
-                            key={user.username}
+                            key={user.full_name}
                             className='border-2 border-background'
                           >
                             <AvatarImage
                               src={user.avatar_url}
-                              alt={`Avatar of ${user.username}`}
+                              alt={`Avatar of ${user.full_name}`}
                             />
                             <AvatarFallback>
-                              {user.username[0].toUpperCase()}
+                              {user.full_name[0].toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
-                          {user.username}
+                          {user.full_name}
                         </div>
                       ))}
                     </SheetDescription>

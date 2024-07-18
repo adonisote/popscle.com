@@ -37,7 +37,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   const getData = useCallback(async () => {
     let query = supabase
       .from('resources')
-      .select(`*, profiles (username)`)
+      .select(`*, profiles (full_name)`)
       .eq('space_id', spaceId)
       .order('votes', { ascending: false }); // TODO: Order users by reputation.
 
@@ -293,7 +293,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
                       id={resource.id}
                       title={resource.title}
                       score={resource.votes}
-                      author={resource.profiles.username}
+                      author={resource.profiles.full_name}
                       url={resource.url}
                       upvotedBy={resource.upvoted_by}
                       votes={resource.votes}
