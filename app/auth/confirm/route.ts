@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type') as EmailOtpType | null
   console.log('Next before: ', searchParams.get('next'))
-  const next = searchParams.get('next') ?? '/hello'
+  const next = searchParams.get('next') ?? '/home'
   // const next = '/'
 
   // Create redirect link without the secret token

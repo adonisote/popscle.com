@@ -11,7 +11,7 @@ export default async function Layout({
     data: { user }
   } = await supabase.auth.getUser();
   if (user) {
-    redirect('/hello')
+    redirect('/home')
   }
 
   return (
