@@ -46,7 +46,6 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   onUpvote,
 }) => {
   const [voters, setVoters] = useState<Voters[]>([]);
-  const [voterUsernames, setVoterUsernames] = useState<Voter[]>([]);
   const [userIsAuthor, setUserIsAuthor] = useState(true); // If the user is the author, render a different button.
 
   const supabase = createClient();
@@ -59,10 +58,10 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
         .in('id', upvotedBy)
       // .order('username', { ascending: true }); // TODO: Order users by reputation.
 
-      console.log('Upvoted by:', data);
+      // console.log('Upvoted by:', data);
 
       if (fetchError) {
-        console.log('Fetching error:', fetchError);
+        // console.log('Fetching error:', fetchError);
       } else {
 
         //Fetch signed Urls for voters with avatar_url
@@ -87,7 +86,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     getUsernames();
   }, [upvotedBy, supabase]);
 
-  console.log('Voters with urls:', voters)
+
   function getMainDomain(url: string) {
     try {
       // Create a new URL object
@@ -96,14 +95,12 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       return parsedUrl.hostname;
     } catch (e) {
       // Handle any errors, such as invalid URL
-      console.error('Invalid URL:', e);
+      // console.error('Invalid URL:', e);
       return null;
     }
   }
   const mainDomain = getMainDomain(url);
-  console.log('Voters:', voters)
 
-  // console.log(voterUsernames)
   return (
     <div className='flex items-center ease-in-out'>
       {/* The number 1 has to go */}

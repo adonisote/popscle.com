@@ -27,12 +27,12 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   const getTypes = useCallback(async () => {
     const { data, error } = await supabase.from('types').select();
     if (error) {
-      console.log(error);
+      // console.log(error);
     } else {
       setTypes(data);
     }
   }, [supabase]);
-  console.log(types);
+  // console.log(types);
 
   const getData = useCallback(async () => {
     let query = supabase
@@ -55,7 +55,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
 
     const { data, error } = await query;
     if (error) {
-      console.log('Error fetching resources:', error);
+      // console.log('Error fetching resources:', error);
     } else {
       setData(data);
     }
@@ -90,7 +90,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     } = await supabase.auth.getUser();
 
     if (errorUSer) {
-      console.log('Error fetching user');
+      // console.log('Error fetching user');
       return;
     }
 
@@ -103,7 +103,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
       .single();
 
     if (fetchError) {
-      console.log('Error fetching upvoted_by array:', fetchError);
+      // console.log('Error fetching upvoted_by array:', fetchError);
       return;
     }
     // User who submited should not be able to upvote
@@ -118,7 +118,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     let updateUpvotedBy = upvotedBy;
 
     if (upvotedBy.includes(userId)) {
-      console.log('Devoting......');
+      // console.log('Devoting......');
       updateUpvotedBy = updateUpvotedBy.filter(
         (voter: string) => voter !== userId
       );
@@ -135,10 +135,10 @@ export default function Resources({ spaceId }: { spaceId: string }) {
           prevData.map((resource) =>
             resource.id === resourceId
               ? {
-                  ...resource,
-                  votes: resource.votes - 1,
-                  upvoted_by: updateUpvotedBy,
-                }
+                ...resource,
+                votes: resource.votes - 1,
+                upvoted_by: updateUpvotedBy,
+              }
               : resource
           )
         );
@@ -146,7 +146,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
       // return
     } else {
       updateUpvotedBy = [...upvotedBy, userId];
-      console.log('New entry in voters');
+      // console.log('New entry in voters');
       // Update the resource with the new upvoted_by array
       const { error: updateError } = await supabase
         .from('resources')
@@ -154,17 +154,17 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         .eq('id', resourceId);
 
       if (updateError) {
-        console.log('Error updating upvoted_by array:', updateError);
+        // console.log('Error updating upvoted_by array:', updateError);
         return;
       } else {
         setData((prevData) =>
           prevData.map((resource) =>
             resource.id === resourceId
               ? {
-                  ...resource,
-                  votes: resource.votes + 1,
-                  upvoted_by: updateUpvotedBy,
-                }
+                ...resource,
+                votes: resource.votes + 1,
+                upvoted_by: updateUpvotedBy,
+              }
               : resource
           )
         );
@@ -193,7 +193,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     setFilter(newValue);
   };
 
-  console.log(data);
+  // console.log(data);
 
   const groupedResources = types.map((type) => {
     return {
