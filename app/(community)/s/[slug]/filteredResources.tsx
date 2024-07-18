@@ -258,7 +258,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         {isLoading ? (
           <>
             {types.map((type) => (
-              <div key={type.id} className='w-[850px] p-4 border-b'>
+              <div key={type.id} className='w-[850px] py-4 border-b'>
                 <p className='pb-2 text-xl font-semibold tracking-tight first:mt-0 mb-2'>
                   {capitalizeFirstLetter(type.name)}
                 </p>
@@ -274,7 +274,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
           groupedResources
             .filter((group) => group.resources.length > 0)
             .map((group) => (
-              <div key={group.type} className='w-[850px] p-4 border-b'>
+              <div key={group.type} className='w-[850px] py-4 border-b'>
                 <div className='flex items-center gap-4 mb-4'>
                   <div className='bg-muted rounded-md flex items-center justify-center w-10 h-10'>
                     {iconMap[group.type] || (
