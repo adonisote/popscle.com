@@ -128,7 +128,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
         .eq('id', resourceId);
 
       if (updateError) {
-        console.log('Error updating: Devoting.........:', updateError);
+        // console.log('Error updating: Devoting.........:', updateError);
         return;
       } else {
         setData((prevData) =>
@@ -189,7 +189,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   };
 
   const handleTabChange = (newValue: string) => {
-    console.log('Active tab changed to:', newValue);
+    // console.log('Active tab changed to:', newValue);
     setFilter(newValue);
   };
 
