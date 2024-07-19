@@ -21,6 +21,7 @@ interface ResourceCardProps {
   title: any;
   score: any;
   author: any;
+  providerAvatar: string;
   url: any;
   upvotedBy: any[]; //array on uuid
   votes: number;
@@ -40,6 +41,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   title,
   score,
   author,
+  providerAvatar,
   url,
   upvotedBy,
   votes,
@@ -130,7 +132,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
                 <p className='text-muted-foreground text-sm'>
                   by{' '}
                   <span className='hover:underline underline-offset-4'>
-                    <UserProfilePreview author={author} />
+                    <UserProfilePreview author={author} providerAvatar={providerAvatar} />
                   </span>
                 </p>
               </div>

@@ -11,18 +11,21 @@ import {
 
 interface UserProfilePreviewProps {
   author: string;
+  providerAvatar: string;
 }
 
 export const UserProfilePreview: React.FC<UserProfilePreviewProps> = ({
   author,
+  providerAvatar
 }) => {
+  console.log('Avatar URL:', providerAvatar);
   return (
     <HoverCard>
       <HoverCardTrigger>{author}</HoverCardTrigger>
       <HoverCardContent className='w-80'>
         <div className='flex justify-between space-x-4'>
           <Avatar>
-            <AvatarImage src='' /> {/* TODO: Replace with user profile photo */}
+            <AvatarImage src={providerAvatar} /> {/* TODO: Replace with user profile photo */}
             <AvatarFallback>{author[0].toUpperCase()}</AvatarFallback>
           </Avatar>
           <div className='space-y-1'>

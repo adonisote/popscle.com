@@ -10,7 +10,8 @@ type Space = {
 }
 
 type Profile = {
-  username: string;
+  full_name: string;
+  avatar_url: string;
 };
 type Resource = {
   id: string;

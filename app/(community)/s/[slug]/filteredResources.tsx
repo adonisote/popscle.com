@@ -37,7 +37,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
   const getData = useCallback(async () => {
     let query = supabase
       .from('resources')
-      .select(`*, profiles (full_name)`)
+      .select(`*, profiles (full_name, avatar_url)`)
       .eq('space_id', spaceId)
       .order('votes', { ascending: false }); // TODO: Order users by reputation.
 
@@ -57,7 +57,22 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     if (error) {
       // console.log('Error fetching resources:', error);
     } else {
-      setData(data);
+      //Create signedUrls for providers
+      const completedResources = await Promise.all(
+        data.map(async (resource) => {
+          if (resource.profiles.avatar_url) {
+            const { data: urlData } = await supabase.storage
+              .from('avatars')
+              .createSignedUrl(resource.profiles.avatar_url, 3600);
+            return {
+              ...resource, profiles: { ...resource.profiles, avatar_url: urlData?.signedUrl || '' },
+            };
+          }
+          return resource;
+        })
+      );
+
+      setData(completedResources);
     }
   }, [spaceId, supabase, filter, typeFilters]);
 
@@ -193,7 +208,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     setFilter(newValue);
   };
 
-  // console.log(data);
+  console.log(data);
 
   const groupedResources = types.map((type) => {
     return {
@@ -294,6 +309,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
                       title={resource.title}
                       score={resource.votes}
                       author={resource.profiles.full_name}
+                      providerAvatar={resource.profiles.avatar_url}
                       url={resource.url}
                       upvotedBy={resource.upvoted_by}
                       votes={resource.votes}
