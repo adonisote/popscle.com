@@ -51,7 +51,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <h1 className='text-2xl font-semibold leading-none tracking-tight'>
         Submit new resource for {toTitleCase(spaceTitle)}
       </h1>
-      <ResourceForm spaceId={spaceId} userId={userId} />
+      <ResourceForm spaceId={spaceId} userId={userId} slug={params.slug} />
     </div>
   );
 }
