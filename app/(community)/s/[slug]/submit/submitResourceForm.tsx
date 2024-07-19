@@ -40,6 +40,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   title: z
@@ -72,14 +73,18 @@ interface ResourceType {
 export function ResourceForm({
   spaceId,
   userId,
+  slug
 }: {
   spaceId: string;
   userId: string;
+  slug: string;
 }) {
   const supabase = createClient();
   const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  // console.log('Params: ', slug);
 
   useEffect(() => {
     const fetchResourceTypes = async () => {
@@ -127,6 +132,9 @@ export function ResourceForm({
         type_id: 1,
         isPaid: false,
       });
+      setTimeout(() => {
+        router.push(`/s/${slug}`);
+      }, 3000);
     }
   }
 
@@ -134,8 +142,8 @@ export function ResourceForm({
     <div className='flex flex-col'>
       {isSubmitted ? (
         <div className='h-min-[500px] h-full flex flex-col items-center justify-center'>
-          <p>Resource submitted. Thank you!</p>
-          <Button onClick={() => setIsSubmitted(false)}>Start again</Button>
+          <p className='text-2xl'>Thank You! 💖</p>
+          {/* <Button onClick={() => setIsSubmitted(false)}>Start again</Button> */}
         </div>
       ) : (
         <Form {...form}>
