@@ -9,13 +9,14 @@ import { headers } from 'next/headers'
 export async function login(formData: FormData) {
   const supabase = createClient()
   const origin = headers().get('origin')
-  const redirectToUrl = `${origin}`
+  const redirectToUrl = `${origin}/auth/callback?next=/home`
   console.log('Redirect to:', redirectToUrl)
 
   //Retrieve email from form data
   const email = formData.get('email') as string
 
   const { error } = await supabase.auth.signInWithOtp({
+
     email: email,
     options: {
       shouldCreateUser: false,
@@ -58,7 +59,7 @@ export async function signup(formData: FormData) {
 export async function signInWithGithub() {
   const supabase = createClient()
   const origin = headers().get('origin')
-  const redirectToUrl = `${origin}/auth/callback?next=/hello`
+  const redirectToUrl = `${origin}/auth/callback?next=/home`
 
   console.log('Redirecting to:', redirectToUrl)
 
