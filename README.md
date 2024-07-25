@@ -15,9 +15,9 @@ Tech stack:
 
 You will need an account to be able to access to the app, at the moment it runs by invite only. 
 
-Login: [Popscle.com](popscle-com.vercel.app/login)
+Login: [Popscle.com](https://popscle-com.vercel.app/login)
 
-Check our [landing page](popscle-com.vercel.app)
+Check our [landing page](https://popscle-com.vercel.app/)
 
 ## Instalation
 ```zsh
