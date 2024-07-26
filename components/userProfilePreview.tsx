@@ -18,7 +18,7 @@ export const UserProfilePreview: React.FC<UserProfilePreviewProps> = ({
   author,
   providerAvatar
 }) => {
-  console.log('Avatar URL:', providerAvatar);
+  // console.log('Avatar URL:', providerAvatar);
   return (
     <HoverCard>
       <HoverCardTrigger>{author}</HoverCardTrigger>
