@@ -9,8 +9,8 @@ import { SkeletonResourceCard } from '@/components/SkeletonResourceCard';
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
-  console.log('Params: ', params);
-  console.log('Params slug', params.slug);
+  // console.log('Params: ', params);
+  // console.log('Params slug', params.slug);
 
   const { data: spaces, error: spaceError } = await supabase
     .from('spaces')
@@ -27,6 +27,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const spaceDescription = spaces[0]?.description;
   const spaceCreatedAt = spaces[0]?.created_at;
 
+  //Fetch logged user id
+  const { data: { user }, error } = await supabase.auth.getUser()
+  let userId = ''
+  if (user) {
+    userId = user.id
+  }
+
+
   //Fetch resources matching the space_id
   const { data: resources, error: resourcesError } = await supabase
     .from('resources')
@@ -35,7 +43,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   if (!resources) {
     return <div>No resources available for the space</div>;
-    console.log(resourcesError);
   }
 
   const space: Space = {
@@ -49,7 +56,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <div className='flex flex-col mx-auto'>
       <SpaceHeader space={space} slug={params.slug} />
 
-      <Resources spaceId={spaceId} />
+      <Resources spaceId={spaceId} userId={userId} />
     </div>
   );
 }
