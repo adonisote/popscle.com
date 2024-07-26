@@ -16,7 +16,7 @@ import {
   Podcast,
 } from 'lucide-react';
 
-export default function Resources({ spaceId }: { spaceId: string }) {
+export default function Resources({ spaceId, userId }: { spaceId: string, userId: string }) {
   const [data, setData] = useState<Resource[]>([]);
   const [filter, setFilter] = useState('ALL');
   const [typeFilters, setTypeFilters] = useState<number[]>([]);
@@ -208,7 +208,7 @@ export default function Resources({ spaceId }: { spaceId: string }) {
     setFilter(newValue);
   };
 
-  console.log(data);
+  // console.log(data);
 
   const groupedResources = types.map((type) => {
     return {
@@ -314,6 +314,8 @@ export default function Resources({ spaceId }: { spaceId: string }) {
                       upvotedBy={resource.upvoted_by}
                       votes={resource.votes}
                       onUpvote={handleUpvote}
+                      contributorId={resource.user_id}
+                      userId={userId}
                     />
                   </>
                 ))}

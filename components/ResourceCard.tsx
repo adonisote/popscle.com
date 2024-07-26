@@ -4,6 +4,9 @@ import { AvatarStack } from './AvatarStack';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import UpvoteResource from '@/app/(community)/s/[slug]/upvote';
+import { Button } from './ui/button';
+import { Trash2 } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 
 import {
   Sheet,
@@ -26,6 +29,8 @@ interface ResourceCardProps {
   upvotedBy: any[]; //array on uuid
   votes: number;
   onUpvote: (resourceId: string) => void;
+  contributorId: string;
+  userId: string;
 }
 // interface Voter {
 //   username: string;
@@ -46,9 +51,12 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   upvotedBy,
   votes,
   onUpvote,
+  contributorId,
+  userId
 }) => {
   const [voters, setVoters] = useState<Voters[]>([]);
   const [userIsAuthor, setUserIsAuthor] = useState(true); // If the user is the author, render a different button.
+  const [logedUser, setLogedUser] = useState('')
 
   const supabase = createClient();
 
@@ -85,6 +93,14 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
         // setVoterUsernames(upvotedBy_usernames);
       }
     };
+    // const getLogUser = async () => {
+    //   const { data, error } = supabase.auth.getUser()
+    //   console.log(data)
+
+    // }
+
+
+
     getUsernames();
   }, [upvotedBy, supabase]);
 
@@ -102,6 +118,25 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     }
   }
   const mainDomain = getMainDomain(url);
+
+  function Options() {
+    if (userId === contributorId) {
+
+      return (
+
+        <div>
+
+          <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
+            <Pencil className='h-4 w-4' />
+          </Button>
+          <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
+            <Trash2 className='h-4 w-4' />
+          </Button>
+        </div>
+
+      )
+    }
+  }
 
   return (
     <div className='flex items-center ease-in-out'>
@@ -136,6 +171,11 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
                   </span>
                 </p>
               </div>
+
+              {/* Make them render only you are the one who created the resource */}
+              <Options />
+
+
             </div>
           </div>
           <div className='justify-end mr-20'>
