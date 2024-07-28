@@ -10,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/toaster';
 
 export default async function Layout({
   children,
@@ -25,6 +26,7 @@ export default async function Layout({
           {children}
           <FeedbackSheet />
         </main>
+        <Toaster />
         <MobileNav />
       </body>
     </html>
