@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, } from 'react';
 
 import { createClient } from '@/utils/supabase/client';
 import { Resource } from '@/types/types';
@@ -81,6 +81,11 @@ export default function Resources({ spaceId, userId }: { spaceId: string, userId
     getData();
     getTypes();
   }, [getData, getTypes]);
+
+  const refreshData = () => {
+    getData();
+  }
+
 
   // This updates the loading state when the data fetching is complete.
   // There might be more efficient ways of implementing data fetching that work asynchronously and use Suspense.
@@ -302,22 +307,23 @@ export default function Resources({ spaceId, userId }: { spaceId: string, userId
                   </h2>
                 </div>
                 {group.resources.map((resource) => (
-                  <>
-                    <ResourceCard
-                      key={resource.id}
-                      id={resource.id}
-                      title={resource.title}
-                      score={resource.votes}
-                      author={resource.profiles.full_name}
-                      providerAvatar={resource.profiles.avatar_url}
-                      url={resource.url}
-                      upvotedBy={resource.upvoted_by}
-                      votes={resource.votes}
-                      onUpvote={handleUpvote}
-                      contributorId={resource.user_id}
-                      userId={userId}
-                    />
-                  </>
+
+                  <ResourceCard
+                    key={resource.id}
+                    id={resource.id}
+                    title={resource.title}
+                    score={resource.votes}
+                    author={resource.profiles.full_name}
+                    providerAvatar={resource.profiles.avatar_url}
+                    url={resource.url}
+                    upvotedBy={resource.upvoted_by}
+                    votes={resource.votes}
+                    onUpvote={handleUpvote}
+                    contributorId={resource.user_id}
+                    userId={userId}
+                    refreshData={refreshData}
+                  />
+
                 ))}
               </div>
             ))

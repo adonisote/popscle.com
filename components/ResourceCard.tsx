@@ -7,6 +7,19 @@ import UpvoteResource from '@/app/(community)/s/[slug]/upvote';
 import { Button } from './ui/button';
 import { Trash2 } from 'lucide-react';
 import { Pencil } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+import { useToast } from '@/components/ui/use-toast';
 
 import {
   Sheet,
@@ -31,6 +44,7 @@ interface ResourceCardProps {
   onUpvote: (resourceId: string) => void;
   contributorId: string;
   userId: string;
+  refreshData: () => void;
 }
 // interface Voter {
 //   username: string;
@@ -46,13 +60,14 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   title,
   score,
   author,
-  providerAvatar,
+  providerAvatar,//change to contributor -> Contributor: Person who submitted the resource
   url,
   upvotedBy,
   votes,
   onUpvote,
   contributorId,
-  userId
+  userId,
+  refreshData,
 }) => {
   const [voters, setVoters] = useState<Voters[]>([]);
   const [userIsAuthor, setUserIsAuthor] = useState(true); // If the user is the author, render a different button.
@@ -93,13 +108,6 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
         // setVoterUsernames(upvotedBy_usernames);
       }
     };
-    // const getLogUser = async () => {
-    //   const { data, error } = supabase.auth.getUser()
-    //   console.log(data)
-
-    // }
-
-
 
     getUsernames();
   }, [upvotedBy, supabase]);
@@ -119,22 +127,23 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   }
   const mainDomain = getMainDomain(url);
 
-  function Options() {
-    if (userId === contributorId) {
+  //Function to delete a Resource, passed as props to Options component
+  const { toast } = useToast()
 
-      return (
-
-        <div>
-
-          <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
-            <Pencil className='h-4 w-4' />
-          </Button>
-          <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
-            <Trash2 className='h-4 w-4' />
-          </Button>
-        </div>
-
-      )
+  const deleteResource = async (resource_id: string) => {
+    const { error } = await supabase
+      .from('resources')
+      .delete()
+      .eq('id', resource_id)
+    if (error) {
+      console.log(error)
+    } else {
+      // alert('delet success')
+      refreshData()//Call the refreshData function to update the UI
+      toast({
+        // title: "Resource Deleted",
+        description: "Your contribution has been deleted",
+      })
     }
   }
 
@@ -144,7 +153,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       {/* <div className='flex self-center text-sm'>{1}.</div> */}
       {/* <div className='p-3 hover:text-green-500 hover:animate-ping'>
         <ChevronUp />
-      </div> */}
+        </div> */}
       <UpvoteResource
         resourceId={id}
         votes={votes}
@@ -173,7 +182,12 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
               </div>
 
               {/* Make them render only you are the one who created the resource */}
-              <Options />
+              <Options
+                userId={userId}
+                contributorId={contributorId}
+                resourceId={id}
+                deleteResource={deleteResource}
+              />
 
 
             </div>
@@ -219,3 +233,65 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     </div>
   );
 };
+
+
+function Options(
+  {
+    userId,
+    contributorId,
+    resourceId,
+    deleteResource,
+
+  }: {
+    userId: string;
+    contributorId: string;
+    resourceId: string;
+    deleteResource: (resource_id: string) => void;
+
+  }) {
+  const { toast } = useToast()
+
+
+
+
+  if (userId === contributorId) {
+
+    return (
+
+      <div>
+        <AlertDialog>
+          <AlertDialogTrigger>
+            <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
+              <Trash2 className='h-4 w-4' />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Wait a sec!</AlertDialogTitle>
+              <AlertDialogDescription>
+                Your contribution adds so much value! Deleting it would be a big loss. Are you sure?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  deleteResource(resourceId)
+                }}
+              >
+                {/* <Button variant='destructive' > */}
+                Yes, delete
+                {/* </Button> */}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
+          <Pencil className='h-4 w-4' />
+        </Button>
+      </div>
+
+    )
+  }
+}
