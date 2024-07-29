@@ -24,10 +24,50 @@ Check our [landing page](https://popscle-com.vercel.app/)
 pnpm i
 ```
 
+## Run locally using supabase
+[Full instruction](https://supabase.com/docs/guides/cli/getting-started?queryGroups=platform&platform=macos)
+
+1. Install supabase cli
+```zsh
+pnpm add supabase --save-dev
+```
+2. Run supabase inside your project folder
+```zsh
+pnpm supabase init
+```
+3. Now, to start the Supabase stack, run:
+```zsh
+pnpm supabase start
+```
+The local development environment includes Supabase Studio, a graphical interface for working with your database, running by default on localhost:54323.
+
+
+4. Once all of the Supabase services are running, you'll see output containing your local Supabase credentials. It should look like this, with urls and keys that you'll use in your local project:
+```zsh
+
+Started supabase local development setup.
+
+         API URL: http://localhost:54321
+          DB URL: postgresql://postgres:postgres@localhost:54322/postgres
+      Studio URL: http://localhost:54323
+    Inbucket URL: http://localhost:54324
+        anon key: eyJh......
+service_role key: eyJh......
+```
+5. Add API URL and Anon Key to your .env.local, you will also need some key for Posthog services. Contact Adonis: 
+
+.env.local
+```zsh
+NEXT_PUBLIC_SUPABASE_URL="http://localhost:54321"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJh......"
+NEXT_PUBLIC_POSTHOG_KEY=""
+NEXT_PUBLIC_POSTHOG_HOST=""
+```
+
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```zsh
 pnpm dev
