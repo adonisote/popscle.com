@@ -32,6 +32,19 @@ import {
 import { useEffect, useState } from 'react';
 import { UserProfilePreview } from './userProfilePreview';
 
+import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+  DialogFooter,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { ResourceForm } from '@/app/(community)/s/[slug]/submit/submitResourceForm';
+
+
 interface ResourceCardProps {
   id: string;
   title: any;
@@ -241,16 +254,12 @@ function Options(
     contributorId,
     resourceId,
     deleteResource,
-
   }: {
     userId: string;
     contributorId: string;
     resourceId: string;
     deleteResource: (resource_id: string) => void;
-
   }) {
-  const { toast } = useToast()
-
 
 
 
@@ -286,12 +295,59 @@ function Options(
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        {/* Edit is being implemented */}
+        <EditResourceButton slug='frontend' resourceId={resourceId} />
 
-        <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
-          <Pencil className='h-4 w-4' />
-        </Button>
+        {/* <Dialog >
+          <DialogTrigger>Open</DialogTrigger>
+          <DialogContent >
+            <DialogHeader>
+              <DialogTitle>Update contribution</DialogTitle>
+              <DialogDescription>
+                The community will appreciate your updates
+              </DialogDescription>
+            </DialogHeader>
+
+            <form onSubmit={(e) => { e.preventDefault(); const formData = new FormData(e.target as HTMLFormElement); resourceUpdate(resourceId, formData) }}>
+              Here will be the form prefilled
+              <label htmlFor="test">test</label>
+              <input type="text" id='test' />
+
+              <DialogFooter >
+                <DialogClose asChild>
+                  <Button type='button' variant='secondary'>
+                    Close
+                  </Button>
+                </DialogClose>
+                <Button type='submit'>Update</Button>
+                {/* <Button onClick={() => console.log("form submited")} >
+                Submit
+                </Button> 
+
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog> */}
+
+
+
       </div>
 
     )
   }
 }
+
+function EditResourceButton({ slug, resourceId }: { slug: string, resourceId: string }) {
+  console.log('slug', slug)
+
+  return (
+    <Button variant='outline' size='icon' className='hover:border hover:border-slate-200'>
+      <Link href={`/s/${slug}/edit?resourceId=${resourceId}`}>
+        <Pencil className='h-4 w-4' />
+      </Link>
+
+    </Button>
+
+  )
+
+} 
