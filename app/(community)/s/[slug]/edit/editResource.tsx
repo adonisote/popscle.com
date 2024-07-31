@@ -28,6 +28,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useToast } from '@/components/ui/use-toast';
 
 import {
   Select,
@@ -105,16 +106,7 @@ export function ResourceEditForm({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  // const [resource, setResource] = useState({
-  //   id: '',
-  //   title: '',
-  //   description: '',
-  //   url: '',
-  //   // user_id: '',//No need of userId
-  //   space_id: '',
-  //   type_id: 1,
-  //   isPaid: false
-  // })
+  const { toast } = useToast();
 
 
 
@@ -140,8 +132,13 @@ export function ResourceEditForm({
       console.log('Error submiting form:', submitError);
       setError(submitError.message);
     } else {
+
       console.log('Form submitted');
       setIsSubmitted(true);
+      toast({
+        title: 'Resource updated!',
+        description: 'Thank you for contribution 💖!',
+      });
       //Reset the form values after successful submission
       form.reset({
         title: '',
@@ -152,9 +149,10 @@ export function ResourceEditForm({
         type_id: 1,
         isPaid: false,
       });
-      setTimeout(() => {
-        router.push(`/s/${slug}`);
-      }, 3000);
+      router.push(`/s/${slug}`);
+      // setTimeout(() => {
+      //   router.push(`/s/${slug}`);
+      // }, 3000);
     }
   }
 
@@ -200,66 +198,66 @@ export function ResourceEditForm({
 
   return (
     <div className='flex flex-col'>
-      {isSubmitted ? (
-        <div className='h-min-[500px] h-full flex flex-col items-center justify-center'>
-          <p className='text-2xl'>Thank You! 💖</p>
-          {/* <Button onClick={() => setIsSubmitted(false)}>Start again</Button> */}
-        </div>
-      ) : (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-8 mb-20 sm:mb-0'
-          >
-            <FormField
-              control={form.control}
-              name='title'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Resource title' {...field} />
-                  </FormControl>
-                  <FormDescription></FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='description'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder='Short resource description to help others recognize its value '
-                      className='resize-none'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Short resource description. Max 255 characters.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='url'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Url</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>Original resource url</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* // Old Select Field for content type. Keeping it becaue it might be useful.
+      {/* {isSubmitted ? ( */}
+      {/* <div className='h-min-[500px] h-full flex flex-col items-center justify-center'> */}
+      {/* <p className='text-2xl'>Thank You! 💖</p> */}
+      {/* <Button onClick={() => setIsSubmitted(false)}>Start again</Button> */}
+      {/* </div> */}
+      {/* ) : ( */}
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='space-y-8 mb-20 sm:mb-0'
+        >
+          <FormField
+            control={form.control}
+            name='title'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder='Resource title' {...field} />
+                </FormControl>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='description'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder='Short resource description to help others recognize its value '
+                    className='resize-none'
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Short resource description. Max 255 characters.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='url'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Url</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormDescription>Original resource url</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* // Old Select Field for content type. Keeping it becaue it might be useful.
             
             <FormField
               control={form.control}
@@ -291,120 +289,120 @@ export function ResourceEditForm({
               )}
             /> */}
 
-            <FormField
-              control={form.control}
-              name='type_id'
-              render={({ field }) => (
-                <FormItem className='space-y-3 w-full md:w-auto'>
-                  <FormLabel className='text-xl font-semibold leading-none tracking-tight'>
-                    Content Type
-                  </FormLabel>
-                  <FormDescription>
-                    Select the type of content you&apos;re submitting.
-                  </FormDescription>
+          <FormField
+            control={form.control}
+            name='type_id'
+            render={({ field }) => (
+              <FormItem className='space-y-3 w-full md:w-auto'>
+                <FormLabel className='text-xl font-semibold leading-none tracking-tight'>
+                  Content Type
+                </FormLabel>
+                <FormDescription>
+                  Select the type of content you&apos;re submitting.
+                </FormDescription>
 
-                  <FormControl>
-                    <RadioGroup
-                      value={String(field.value)}//useValue instead of defaultValue
-                      onValueChange={field.onChange}
-                      // defaultValue={String(field.value)}
-                      className=' flex-col space-y-1 grid grid-cols-1 md:grid-cols-2 gap-4'
-                    >
-                      {resourceTypes?.map((type) => (
-                        <FormItem
-                          key={type.id}
-                          className='flex items-center space-x-3 space-y-0  justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
-                        >
-                          <FormControl>
-                            <RadioGroupItem
-                              className='peer sr-only'
-                              value={String(type.id)}
-                            />
-                          </FormControl>
-                          <FormLabel className='font-normal w-full cursor-pointer h-full m-0'>
-                            <div className='flex items-center gap-4'>
-                              <div className='bg-muted rounded-md flex items-center justify-center w-10 h-10'>
-                                {iconMap[type.name] || (
-                                  <ComputerIcon className='h-6 w-6' />
-                                )}
-                              </div>
-                              <div className='flex flex-col'>
-                                {type.name.charAt(0).toUpperCase() +
-                                  type.name.slice(1)}
-                                <p className='text-sm text-muted-foreground'>
-                                  {contentTypeMap[type.name]}
-                                </p>
-                              </div>
+                <FormControl>
+                  <RadioGroup
+                    value={String(field.value)}//useValue instead of defaultValue
+                    onValueChange={field.onChange}
+                    // defaultValue={String(field.value)}
+                    className=' flex-col space-y-1 grid grid-cols-1 md:grid-cols-2 gap-4'
+                  >
+                    {resourceTypes?.map((type) => (
+                      <FormItem
+                        key={type.id}
+                        className='flex items-center space-x-3 space-y-0  justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
+                      >
+                        <FormControl>
+                          <RadioGroupItem
+                            className='peer sr-only'
+                            value={String(type.id)}
+                          />
+                        </FormControl>
+                        <FormLabel className='font-normal w-full cursor-pointer h-full m-0'>
+                          <div className='flex items-center gap-4'>
+                            <div className='bg-muted rounded-md flex items-center justify-center w-10 h-10'>
+                              {iconMap[type.name] || (
+                                <ComputerIcon className='h-6 w-6' />
+                              )}
                             </div>
-                          </FormLabel>
-                        </FormItem>
-                      ))}
-                    </RadioGroup>
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='isPaid'
-              render={({ field }) => (
-                <FormItem className='space-y-3'>
-                  <FormLabel className='text-xl font-semibold leading-none tracking-tight'>
-                    Is the resource free or do you have to pay for it?
-                  </FormLabel>
-
-                  <FormControl>
-                    <RadioGroup
-                      value={field.value ? 'true' : 'false'} //useValue instead of defaultValue
-                      onValueChange={(value) =>
-                        field.onChange(value === 'true')
-                      }
-                      // defaultValue={field.value ? 'true' : 'false'}
-                      className='flex'
-                    >
-                      <FormItem className='space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem
-                            value='false'
-                            className='peer sr-only'
-                          />
-                        </FormControl>
-                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40 cursor-pointer'>
-                          Free
+                            <div className='flex flex-col'>
+                              {type.name.charAt(0).toUpperCase() +
+                                type.name.slice(1)}
+                              <p className='text-sm text-muted-foreground'>
+                                {contentTypeMap[type.name]}
+                              </p>
+                            </div>
+                          </div>
                         </FormLabel>
                       </FormItem>
-                      <FormItem className='flex items-center space-x-3 space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem
-                            value='true'
-                            className='peer sr-only'
-                          />
-                        </FormControl>
-                        <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40 cursor-pointer'>
-                          Paid
-                        </FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+                    ))}
+                  </RadioGroup>
+                </FormControl>
 
-            {error && (
-              <p className='text-yellow-400 p-4'>
-                Ups.🙈 That did not work. Maybe the url was already submited.
-              </p>
+                <FormMessage />
+              </FormItem>
             )}
+          />
 
-            <Button className='w-full' type='submit'>
-              Submit Resource
-            </Button>
-          </form>
-        </Form>
-      )}
+          <FormField
+            control={form.control}
+            name='isPaid'
+            render={({ field }) => (
+              <FormItem className='space-y-3'>
+                <FormLabel className='text-xl font-semibold leading-none tracking-tight'>
+                  Is the resource free or do you have to pay for it?
+                </FormLabel>
+
+                <FormControl>
+                  <RadioGroup
+                    value={field.value ? 'true' : 'false'} //useValue instead of defaultValue
+                    onValueChange={(value) =>
+                      field.onChange(value === 'true')
+                    }
+                    // defaultValue={field.value ? 'true' : 'false'}
+                    className='flex'
+                  >
+                    <FormItem className='space-y-0'>
+                      <FormControl>
+                        <RadioGroupItem
+                          value='false'
+                          className='peer sr-only'
+                        />
+                      </FormControl>
+                      <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40 cursor-pointer'>
+                        Free
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className='flex items-center space-x-3 space-y-0'>
+                      <FormControl>
+                        <RadioGroupItem
+                          value='true'
+                          className='peer sr-only'
+                        />
+                      </FormControl>
+                      <FormLabel className='font-normal flex items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary w-40 cursor-pointer'>
+                        Paid
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          {error && (
+            <p className='text-yellow-400 p-4'>
+              Ups.🙈 That did not work. Maybe the url was already submited.
+            </p>
+          )}
+
+          <Button className='w-full' type='submit'>
+            Update Resource
+          </Button>
+        </form>
+      </Form>
+      {/* )} */}
     </div>
   );
 }
