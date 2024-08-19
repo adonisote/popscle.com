@@ -21,7 +21,7 @@ export function AvatarStack({ voters }: AvatarStackProps) {
         {voters?.slice(0, 2).map((voter) => (
           <Avatar key={voter?.full_name} className='border-2 border-background'>
             <AvatarImage src={voter?.avatar_url} alt={`Avatar of ${voter?.full_name}`} />
-            <AvatarFallback>{voter?.full_name[0].toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{voter.full_name ? voter.full_name[0]?.toUpperCase() : 'N/A'}</AvatarFallback>
           </Avatar>
         ))}
         {voters?.length > 2 && ( // Conditionally render the "+n" when there are more than 2 voters
